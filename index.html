@@ -679,6 +679,7 @@
         conditionsData = await response.json();
         initFilters();
         renderPosts();
+        applyFilters(); // Apply filters AFTER posts are rendered
         document.getElementById('loading').classList.add('hidden');
       } catch (error) {
         document.getElementById('loading').innerHTML = `
@@ -706,8 +707,6 @@
         });
         el.addEventListener('change', applyFilters);
       });
-      
-      applyFilters();
     }
 
     function populateSelect(id, values, labelFn = v => v) {

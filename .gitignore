@@ -51,6 +51,7 @@ Thumbs.db
 *.zsav
 # JSON and XML
 *.json
+!conditions.json
 *.xml
 *.yaml
 *.yml
