@@ -1,0 +1,1119 @@
+---
+title: "Campaign Track Conditions Showcase"
+output: 
+  html_document:
+    theme: flatly
+    toc: false
+    code_folding: hide
+date: "2025-09-21"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+
+# Load required libraries
+library(tidyverse)
+library(DT)
+library(knitr)
+library(htmltools)
+library(bslib)
+library(plotly)
+library(googledrive)
+library(httr)
+
+# Set up the theme
+theme <- bs_theme(
+  version = 5,
+  primary = "#007bff",
+  secondary = "#6c757d",
+  success = "#28a745",
+  info = "#17a2b8",
+  warning = "#ffc107",
+  danger = "#dc3545",
+  light = "#f8f9fa",
+  dark = "#343a40"
+)
+```
+
+```{r debug-data, include=FALSE}
+# Internal debugging - not shown in output
+# This chunk is now empty - all debugging moved to load-data chunk
+```
+
+```{r load-data}
+# Load the dataset
+data <- read_csv("https://docs.google.com/spreadsheets/d/e/2PACX-1vSyLbbFkD7PZovG5dcsR77xG9KUX7ZZd6slVMK5-nGa-1MRioNkuIK4LZETy2DFHnhhbYTgi4GtmOUx/pub?gid=1465041612&single=true&output=csv")
+
+# Data loaded successfully
+```
+
+```{r debug-data-info, include=FALSE}
+# Internal debugging for data - not shown in output
+cat("Data loaded successfully\n")
+cat("Number of rows:", nrow(data), "\n")
+cat("Number of columns:", ncol(data), "\n")
+cat("Column names:", paste(names(data), collapse = ", "), "\n")
+
+# Debug: Check the data structure
+cat("=== DATA DEBUG INFO ===\n")
+cat("Missing values in key columns:\n")
+cat("age_group:", sum(is.na(data$age_group)), "out of", nrow(data), "\n")
+cat("gender:", sum(is.na(data$gender)), "out of", nrow(data), "\n")
+cat("policy_issue:", sum(is.na(data$policy_issue)), "out of", nrow(data), "\n")
+cat("ideology_congruency:", sum(is.na(data$ideology_congruency)), "out of", nrow(data), "\n")
+
+# Check unique values
+cat("Unique age_groups:", paste(unique(data$age_group), collapse = ", "), "\n")
+cat("Unique genders:", paste(unique(data$gender), collapse = ", "), "\n")
+cat("Unique policy_issues:", paste(unique(data$policy_issue), collapse = ", "), "\n")
+cat("Unique ideology_congruency:", paste(unique(data$ideology_congruency), collapse = ", "), "\n")
+cat("========================\n")
+
+# Get unique policy issues
+policy_issues <- data %>%
+  distinct(policy_issue) %>%
+  arrange(policy_issue)
+
+# Get unique conditions grouped by policy issue
+conditions_by_issue <- data %>%
+  distinct(age_group, gender, policy_issue, ideology_congruency) %>%
+  arrange(policy_issue, age_group, gender, ideology_congruency)
+
+# Google Drive folder URL for images
+drive_folder_url <- "https://drive.google.com/drive/folders/1iZc512V8SFubLegZ70O__d24FBPtq_bs"
+
+# Google Drive Authentication Setup
+options(
+  gargle_oauth_cache = "~/.R/gargle",           # where tokens live
+  gargle_oauth_email = "favoone4@gmail.com"     # auto-picks this account
+)
+
+# Function to get file IDs from Google Drive folder
+get_drive_file_ids <- function(folder_id = "1iZc512V8SFubLegZ70O__d24FBPtq_bs") {
+  cat("Checking Google Drive authentication...\n")
+  if (!googledrive::drive_has_token()) {
+    cat("No token found, authenticating...\n")
+    googledrive::drive_auth()
+  } else {
+    cat("Token found, proceeding...\n")
+  }
+  
+  cat("Attempting to list files in folder:", folder_id, "\n")
+  tryCatch({
+    files <- googledrive::drive_ls(googledrive::as_id(folder_id))
+    cat("Successfully retrieved", nrow(files), "files from Google Drive\n")
+    setNames(files$id, files$name)
+  }, error = function(e) {
+    cat("Error accessing Google Drive folder:", e$message, "\n")
+    return(c())
+  })
+}
+
+# Cache file IDs to avoid hitting API each render
+id_cache <- ".cache/drive_ids.rds"
+dir.create(".cache", showWarnings = FALSE)
+
+# Always refresh Google Drive files to get new images
+file_id_mapping <- get_drive_file_ids()
+saveRDS(file_id_mapping, id_cache)
+
+# Additional direct image links mapping
+# You can use these file IDs directly in your data's image columns
+# Example: Set image_1 = "1Fg1NO1wxWs2f0qdKnmJgkERRUNtvEOi2" in your data
+direct_image_links <- c(
+  "1Fg1NO1wxWs2f0qdKnmJgkERRUNtvEOi2" = "https://drive.google.com/file/d/1Fg1NO1wxWs2f0qdKnmJgkERRUNtvEOi2/view?usp=drive_link",
+  "1yXxfTTM7TJ5afXDdwD6fuLjdXXXmxSVr" = "https://drive.google.com/file/d/1yXxfTTM7TJ5afXDdwD6fuLjdXXXmxSVr/view?usp=drive_link",
+  "1O2Ps1uzVA_DUqKZIOeqF6-xXoB5sH2Ph" = "https://drive.google.com/file/d/1O2Ps1uzVA_DUqKZIOeqF6-xXoB5sH2Ph/view?usp=drive_link",
+  "1OhLCJk3Jpk83SyidpMVmlNfhHQJmHzY7" = "https://drive.google.com/file/d/1OhLCJk3Jpk83SyidpMVmlNfhHQJmHzY7/view?usp=drive_link",
+  "1P2Kgo1BOOEnuXh0RINgeIgS-AKPS40gX" = "https://drive.google.com/file/d/1P2Kgo1BOOEnuXh0RINgeIgS-AKPS40gX/view?usp=drive_link",
+  "1oJbq2eNA4rUBhMwoM5CPOObCLVfnJ7Fn" = "https://drive.google.com/file/d/1oJbq2eNA4rUBhMwoM5CPOObCLVfnJ7Fn/view?usp=drive_link",
+  "1hm0uHVACJGJ3vTjljLtiSHdxXouQcAmT" = "https://drive.google.com/file/d/1hm0uHVACJGJ3vTjljLtiSHdxXouQcAmT/view?usp=drive_link"
+)
+
+# Function to check if an image name is a direct file ID
+is_direct_file_id <- function(image_name) {
+  return(image_name %in% names(direct_image_links))
+}
+
+# Test function to verify download works
+test_download <- function(file_id) {
+  cat("Testing download for file ID:", file_id, "\n")
+  
+  # Test direct download URL
+  test_url <- paste0("https://drive.google.com/uc?export=download&id=", file_id)
+  cat("Test URL:", test_url, "\n")
+  
+  # Try download.file
+  test_path <- "test_download.webp"
+  tryCatch({
+    download.file(test_url, test_path, mode = "wb")
+    if(file.exists(test_path)) {
+      file_size <- file.size(test_path)
+      cat("Download successful! File size:", file_size, "bytes\n")
+      if(file_size > 1000) {  # More than 1KB
+        cat("File appears to be valid image\n")
+        unlink(test_path)  # Clean up
+        return(TRUE)
+      } else {
+        cat("File too small, might be HTML error page\n")
+        unlink(test_path)
+        return(FALSE)
+      }
+    } else {
+      cat("Download failed - no file created\n")
+      return(FALSE)
+    }
+  }, error = function(e) {
+    cat("Download error:", e$message, "\n")
+    return(FALSE)
+  })
+}
+
+# Debug: Print file mapping info (moved to internal chunk)
+```
+
+```{r debug-drive, include=FALSE}
+# Internal debugging for Google Drive - not shown in output
+cat("Number of files found in Google Drive:", length(file_id_mapping), "\n")
+if(length(file_id_mapping) > 0) {
+  cat("All available file names:\n")
+  for(i in seq_along(file_id_mapping)) {
+    cat("  ", names(file_id_mapping)[i], "->", file_id_mapping[i], "\n")
+  }
+}
+
+cat("Direct file IDs available:\n")
+for(id in names(direct_image_links)) {
+  cat("  ", id, "->", direct_image_links[id], "\n")
+}
+
+# Test download with your specific file ID
+cat("\n=== TESTING DOWNLOAD ===\n")
+test_result <- test_download("1hm0uHVACJGJ3vTjljLtiSHdxXouQcAmT")
+cat("Test result:", test_result, "\n")
+cat("========================\n")
+
+# Function to download image from Google Drive and return local path
+download_image <- function(image_name) {
+  if(is.na(image_name) || image_name == "") return("")
+  
+  # Create local images directory
+  local_dir <- "ai_experiment_images"
+  if(!dir.exists(local_dir)) {
+    dir.create(local_dir, showWarnings = FALSE)
+  }
+  
+  # Check if image already exists locally
+  local_path <- file.path(local_dir, image_name)
+  if(file.exists(local_path)) {
+    return(local_path)
+  }
+  
+  # Check if this is a direct Google Drive link
+  if(grepl("^https://drive\\.google\\.com/file/d/", image_name)) {
+    # Extract file ID from direct link
+    file_id <- gsub("^https://drive\\.google\\.com/file/d/([^/]+)/.*", "\\1", image_name)
+    if(file_id != image_name) {
+      # Try googledrive package first
+      tryCatch({
+        googledrive::drive_download(
+          googledrive::as_id(file_id),
+          path = local_path,
+          overwrite = TRUE
+        )
+        if(file.exists(local_path) && file.size(local_path) > 0) {
+          return(local_path)
+        }
+      }, error = function(e) {
+        # Fallback to direct download URL
+        tryCatch({
+          # Use the correct Google Drive download URL format
+          download_url <- paste0("https://drive.google.com/uc?export=download&id=", file_id)
+          httr::GET(download_url, httr::write_disk(local_path, overwrite = TRUE))
+          if(file.exists(local_path) && file.size(local_path) > 0) {
+            return(local_path)
+          }
+        }, error = function(e2) {
+          # Try alternative download method with download.file
+          tryCatch({
+            download_url <- paste0("https://drive.google.com/uc?export=download&id=", file_id)
+            download.file(download_url, local_path, mode = "wb")
+            if(file.exists(local_path) && file.size(local_path) > 0) {
+              return(local_path)
+            }
+          }, error = function(e3) {
+            return("")
+          })
+        })
+      })
+    }
+  }
+  
+  # Try to find the file with fuzzy matching
+  file_id <- NULL
+  
+  # First check if it's a direct file ID from our additional links
+  if(is_direct_file_id(image_name)) {
+    file_id <- image_name
+  } else {
+    # Safe exact match lookup from Google Drive folder
+    exact_match <- tryCatch({
+      file_id_mapping[[image_name]]
+    }, error = function(e) {
+      NULL
+    })
+    
+    if(!is.null(exact_match) && exact_match != "" && !is.na(exact_match)) {
+      file_id <- exact_match
+    } else {
+    # Try fuzzy matching - look for similar names
+    # Remove extra .webp extensions
+    clean_name <- gsub("\\.webp\\.webp$", ".webp", image_name)
+    if(clean_name != image_name) {
+      file_id <- tryCatch({
+        file_id_mapping[[clean_name]]
+      }, error = function(e) NULL)
+    }
+    
+    # Try without .webp extension
+    if(is.null(file_id) || file_id == "" || is.na(file_id)) {
+      no_webp <- gsub("\\.webp$", "", image_name)
+      file_id <- tryCatch({
+        file_id_mapping[[no_webp]]
+      }, error = function(e) NULL)
+    }
+    
+    # Try partial matching
+    if(is.null(file_id) || file_id == "" || is.na(file_id)) {
+      available_names <- names(file_id_mapping)
+      # Look for names that contain the key parts
+      key_parts <- strsplit(image_name, "_")[[1]]
+      for(available_name in available_names) {
+        if(all(sapply(key_parts[1:3], function(part) grepl(part, available_name, fixed = TRUE)))) {
+          file_id <- tryCatch({
+            file_id_mapping[[available_name]]
+          }, error = function(e) NULL)
+          break
+        }
+      }
+    }
+  }
+  }
+  
+  if(is.null(file_id) || file_id == "" || is.na(file_id)) {
+    return("")
+  }
+  
+  # Download the image from Google Drive
+  tryCatch({
+    # Use googledrive to download the file
+    googledrive::drive_download(
+      googledrive::as_id(file_id),
+      path = local_path,
+      overwrite = TRUE
+    )
+    if(file.exists(local_path) && file.size(local_path) > 0) {
+      return(local_path)
+    }
+  }, error = function(e) {
+    # Try alternative download method with correct URL format
+    tryCatch({
+      # Use the correct Google Drive download URL format
+      download_url <- paste0("https://drive.google.com/uc?export=download&id=", file_id)
+      httr::GET(download_url, httr::write_disk(local_path, overwrite = TRUE))
+      if(file.exists(local_path) && file.size(local_path) > 0) {
+        return(local_path)
+      }
+    }, error = function(e2) {
+      # Try download.file as final fallback
+      tryCatch({
+        download_url <- paste0("https://drive.google.com/uc?export=download&id=", file_id)
+        download.file(download_url, local_path, mode = "wb")
+        if(file.exists(local_path) && file.size(local_path) > 0) {
+          return(local_path)
+        } else {
+          return("")
+        }
+      }, error = function(e3) {
+        return("")
+      })
+    })
+  })
+}
+
+# Function to create mock post
+create_mock_post <- function(text, image_name, author, time_ago) {
+  if(is.na(text) || text == "") text <- ""
+  if(is.na(image_name) || image_name == "") image_name <- ""
+
+  # Extract initials for avatar
+  author_parts <- strsplit(author, "_")[[1]]
+  initials <- paste0(substr(author_parts[1], 1, 1), substr(author_parts[2], 1, 1))
+
+  cat('<div class="mock-post">\n')
+
+  # Post header with avatar
+  cat('<div class="post-header">\n')
+  cat('<div class="post-avatar">', initials, '</div>\n')
+  cat('<div class="post-meta">\n')
+  cat('<div class="post-author-row">\n')
+  cat('<div class="post-author">', author_parts[1], ' ', author_parts[2], '</div>\n')
+  cat('<div class="post-handle">@', author, '</div>\n')
+  cat('<div class="post-time">· ', time_ago, '</div>\n')
+  cat('</div>\n')
+  cat('</div>\n')
+  cat('</div>\n')
+
+  # Post text
+  if(text != "") {
+    cat('<div class="post-text">', text, '</div>\n')
+  }
+
+  # Post image
+  if(image_name != "") {
+    local_image_path <- download_image(image_name)
+    cat('<div class="post-image">\n')
+    if(local_image_path != "" && !is.na(local_image_path) && file.exists(local_image_path)) {
+      # Use local image file
+      cat('<img src="', local_image_path, '" alt="', image_name, '">\n')
+    } else {
+      # Show placeholder with link to Google Drive
+      cat('<div style="text-align: center; padding: 40px; background-color: #1a1a1a; border-radius: 16px; border: 2px dashed #2f3336;">\n')
+      cat('<div style="font-size: 48px; margin-bottom: 16px;">📷</div>\n')
+      cat('<div style="font-size: 14px; color: #71767b; margin-bottom: 8px;">', image_name, '</div>\n')
+      cat('<a href="', drive_folder_url, '" target="_blank" style="color: #1d9bf0; text-decoration: none; font-size: 12px;">View in Google Drive</a>\n')
+      cat('</div>\n')
+    }
+    cat('</div>\n')
+  }
+
+  # Post footer with engagement
+  cat('<div class="post-footer">\n')
+  cat('<div class="post-engagement comment">\n')
+  cat('<span>💬</span>\n')
+  cat('<span>', sample(3:20, 1), '</span>\n')
+  cat('</div>\n')
+  cat('<div class="post-engagement retweet">\n')
+  cat('<span>🔄</span>\n')
+  cat('<span>', sample(5:25, 1), '</span>\n')
+  cat('</div>\n')
+  cat('<div class="post-engagement heart">\n')
+  cat('<span>❤️</span>\n')
+  cat('<span>', sample(20:100, 1), '</span>\n')
+  cat('</div>\n')
+  cat('<div class="post-engagement share">\n')
+  cat('<span>📤</span>\n')
+  cat('</div>\n')
+  cat('</div>\n')
+  cat('</div>\n')
+}
+```
+
+<style>
+.nav-tabs {
+  border-bottom: 2px solid #007bff;
+}
+.nav-tabs .nav-link {
+  border: 1px solid transparent;
+  border-top-left-radius: 0.375rem;
+  border-top-right-radius: 0.375rem;
+  margin-right: 2px;
+  background-color: #f8f9fa;
+  color: #495057;
+}
+.nav-tabs .nav-link:hover {
+  border-color: #e9ecef #e9ecef #dee2e6;
+  background-color: #e9ecef;
+}
+.nav-tabs .nav-link.active {
+  color: #495057;
+  background-color: #fff;
+  border-color: #007bff #007bff #fff;
+  border-bottom: 1px solid #fff;
+}
+.tab-content {
+  padding: 20px;
+  border: 1px solid #dee2e6;
+  border-top: none;
+  background-color: #fff;
+}
+.condition-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  margin: 10px 0;
+  background-color: #f9f9f9;
+}
+.image-container {
+  text-align: center;
+  margin: 20px 0;
+}
+.image-container img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  margin: 10px;
+}
+.text-content {
+  background-color: white;
+  padding: 15px;
+  border-radius: 5px;
+  margin: 10px 0;
+  border-left: 4px solid #007bff;
+}
+.condition-header {
+  background-color: #007bff;
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
+.image-tabs {
+  margin-top: 20px;
+}
+.image-tab-content {
+  padding: 15px;
+  border: 1px solid #dee2e6;
+  border-top: none;
+  background-color: #f8f9fa;
+}
+.mock-post {
+  background: linear-gradient(135deg, #000 0%, #0a0a0a 50%, #000 100%);
+  color: #fff;
+  border-radius: 20px;
+  margin: 20px 0;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid #2f3336;
+  position: relative;
+  box-shadow: 
+    0 4px 20px rgba(0, 0, 0, 0.4),
+    0 1px 3px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  backdrop-filter: blur(10px);
+}
+.mock-post::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(29, 155, 240, 0.3), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.mock-post:hover::before {
+  opacity: 1;
+}
+.mock-post:hover {
+  transform: translateY(-4px) scale(1.01);
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.6),
+    0 4px 12px rgba(29, 155, 240, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  border-color: rgba(29, 155, 240, 0.3);
+}
+.post-header {
+  padding: 16px 20px 8px 20px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.post-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1d9bf0, #0d8bd9, #1a8cd8, #0f7bc7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 18px;
+  flex-shrink: 0;
+  border: 2px solid rgba(29, 155, 240, 0.3);
+  box-shadow: 
+    0 4px 12px rgba(29, 155, 240, 0.4),
+    0 0 0 0 rgba(29, 155, 240, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+.post-avatar::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(transparent, rgba(255, 255, 255, 0.1), transparent);
+  animation: rotate 3s linear infinite;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.post-avatar:hover::before {
+  opacity: 1;
+}
+.post-avatar:hover {
+  transform: scale(1.1) rotate(5deg);
+  box-shadow: 
+    0 8px 20px rgba(29, 155, 240, 0.6),
+    0 0 0 4px rgba(29, 155, 240, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  border-color: rgba(29, 155, 240, 0.6);
+}
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.post-meta {
+  flex: 1;
+  min-width: 0;
+}
+.post-author-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 2px;
+}
+.post-author {
+  font-weight: 700;
+  color: #fff;
+  font-size: 15px;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.post-handle {
+  color: #71767b;
+  font-size: 15px;
+  margin: 0;
+  white-space: nowrap;
+}
+.post-time {
+  color: #71767b;
+  font-size: 15px;
+  margin: 0;
+  white-space: nowrap;
+}
+.post-text {
+  padding: 0 20px 12px 20px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: #fff;
+  margin: 0;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  position: relative;
+  background: linear-gradient(135deg, #fff 0%, #e8f4fd 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: textShimmer 3s ease-in-out infinite;
+}
+.post-text a {
+  color: #1d9bf0;
+  text-decoration: none;
+  position: relative;
+  transition: all 0.3s ease;
+}
+.post-text a::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #1d9bf0, #0d8bd9);
+  transition: width 0.3s ease;
+}
+.post-text a:hover::after {
+  width: 100%;
+}
+.post-text a:hover {
+  text-shadow: 0 0 8px rgba(29, 155, 240, 0.5);
+}
+@keyframes textShimmer {
+  0%, 100% { 
+    background-position: 0% 50%; 
+  }
+  50% { 
+    background-position: 100% 50%; 
+  }
+}
+.post-image {
+  margin: 12px 20px 0 20px;
+  border-radius: 20px;
+  overflow: hidden;
+  background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
+  border: 1px solid rgba(47, 51, 54, 0.5);
+  position: relative;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    0 2px 8px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.post-image::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, transparent 30%, rgba(29, 155, 240, 0.1) 50%, transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: 1;
+}
+.post-image:hover::before {
+  opacity: 1;
+}
+.post-image:hover {
+  transform: scale(1.03) translateY(-2px);
+  box-shadow: 
+    0 16px 48px rgba(0, 0, 0, 0.6),
+    0 4px 16px rgba(29, 155, 240, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  border-color: rgba(29, 155, 240, 0.3);
+}
+.post-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  max-height: 350px;
+  background: linear-gradient(135deg, #1a1a1a 0%, #0f0f0f 100%);
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 0;
+}
+.post-image:hover img {
+  filter: brightness(1.1) contrast(1.05);
+}
+.post-footer {
+  padding: 12px 20px 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #2f3336;
+  margin-top: 12px;
+}
+.post-engagement {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 10px 14px;
+  border-radius: 24px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  font-size: 13px;
+  color: #71767b;
+  min-width: 0;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, transparent 0%, rgba(255, 255, 255, 0.02) 100%);
+  border: 1px solid transparent;
+}
+.post-engagement::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+  transition: left 0.6s ease;
+}
+.post-engagement::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: radial-gradient(circle, rgba(29, 155, 240, 0.3) 0%, transparent 70%);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: all 0.3s ease;
+}
+.post-engagement:hover::before {
+  left: 100%;
+}
+.post-engagement:hover::after {
+  width: 100px;
+  height: 100px;
+}
+.post-engagement:hover {
+  background: linear-gradient(135deg, rgba(29, 155, 240, 0.1) 0%, rgba(29, 155, 240, 0.05) 100%);
+  color: #1d9bf0;
+  transform: translateY(-2px) scale(1.05);
+  border-color: rgba(29, 155, 240, 0.2);
+  box-shadow: 
+    0 4px 16px rgba(29, 155, 240, 0.2),
+    0 2px 8px rgba(0, 0, 0, 0.1);
+}
+.post-engagement span:first-child {
+  font-size: 18px;
+  line-height: 1;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  z-index: 2;
+}
+.post-engagement:hover span:first-child {
+  transform: scale(1.2) rotate(5deg);
+  filter: drop-shadow(0 0 4px rgba(29, 155, 240, 0.5));
+}
+.post-engagement span:last-child {
+  font-size: 13px;
+  font-weight: 500;
+  margin-left: 2px;
+  position: relative;
+  z-index: 2;
+  transition: all 0.3s ease;
+}
+.post-engagement:hover span:last-child {
+  transform: scale(1.1);
+}
+.post-engagement:last-child {
+  margin-left: auto;
+}
+.post-engagement.heart:hover {
+  background: linear-gradient(135deg, rgba(249, 24, 128, 0.15) 0%, rgba(249, 24, 128, 0.05) 100%);
+  color: #f91880;
+  border-color: rgba(249, 24, 128, 0.3);
+  box-shadow: 
+    0 4px 16px rgba(249, 24, 128, 0.3),
+    0 2px 8px rgba(0, 0, 0, 0.1);
+}
+.post-engagement.retweet:hover {
+  background: linear-gradient(135deg, rgba(0, 186, 124, 0.15) 0%, rgba(0, 186, 124, 0.05) 100%);
+  color: #00ba7c;
+  border-color: rgba(0, 186, 124, 0.3);
+  box-shadow: 
+    0 4px 16px rgba(0, 186, 124, 0.3),
+    0 2px 8px rgba(0, 0, 0, 0.1);
+}
+.post-engagement.comment:hover {
+  background: linear-gradient(135deg, rgba(29, 155, 240, 0.15) 0%, rgba(29, 155, 240, 0.05) 100%);
+  color: #1d9bf0;
+  border-color: rgba(29, 155, 240, 0.3);
+  box-shadow: 
+    0 4px 16px rgba(29, 155, 240, 0.3),
+    0 2px 8px rgba(0, 0, 0, 0.1);
+}
+.post-engagement.share:hover {
+  background: linear-gradient(135deg, rgba(29, 155, 240, 0.15) 0%, rgba(29, 155, 240, 0.05) 100%);
+  color: #1d9bf0;
+  border-color: rgba(29, 155, 240, 0.3);
+  box-shadow: 
+    0 4px 16px rgba(29, 155, 240, 0.3),
+    0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Loading Animation for Images */
+.post-image.loading {
+  position: relative;
+}
+.post-image.loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 40px;
+  height: 40px;
+  margin: -20px 0 0 -20px;
+  border: 3px solid rgba(29, 155, 240, 0.3);
+  border-top: 3px solid #1d9bf0;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  z-index: 10;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Floating Particles Effect */
+.mock-post::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(circle at 20% 20%, rgba(29, 155, 240, 0.1) 1px, transparent 1px),
+    radial-gradient(circle at 80% 80%, rgba(29, 155, 240, 0.05) 1px, transparent 1px),
+    radial-gradient(circle at 40% 60%, rgba(29, 155, 240, 0.08) 1px, transparent 1px);
+  background-size: 50px 50px, 80px 80px, 60px 60px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+.mock-post:hover::after {
+  opacity: 1;
+  animation: float 6s ease-in-out infinite;
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+/* Premium Glow Effects */
+.mock-post {
+  position: relative;
+}
+.mock-post::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, #1d9bf0, #0d8bd9, #1a8cd8, #0f7bc7);
+  border-radius: 22px;
+  opacity: 0;
+  z-index: -1;
+  transition: opacity 0.3s ease;
+}
+.mock-post:hover::before {
+  opacity: 0.3;
+  animation: glow 2s ease-in-out infinite alternate;
+}
+@keyframes glow {
+  from { filter: blur(2px); }
+  to { filter: blur(4px); }
+}
+
+/* Text Selection Styling */
+::selection {
+  background: rgba(29, 155, 240, 0.3);
+  color: #fff;
+}
+::-moz-selection {
+  background: rgba(29, 155, 240, 0.3);
+  color: #fff;
+}
+
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #1d9bf0, #0d8bd9);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #0d8bd9, #1d9bf0);
+}
+</style>
+
+
+- **Total Conditions**: `r nrow(conditions_by_issue)`
+- **Policy Issues**: `r nrow(policy_issues)`
+- **Age Groups**: `r paste(unique(conditions_by_issue$age_group), collapse = ", ")`
+- **Genders**: `r paste(unique(conditions_by_issue$gender), collapse = ", ")`
+- **Ideology Congruency**: `r paste(unique(conditions_by_issue$ideology_congruency), collapse = ", ")`
+
+## Policy Issues
+
+```{r debug-processing, include=FALSE}
+# Internal debugging for processing
+cat("=== STARTING POLICY TABS CREATION ===\n")
+cat("Number of policy issues to process:", nrow(policy_issues), "\n")
+cat("Policy issues:", paste(policy_issues$policy_issue, collapse = ", "), "\n")
+```
+
+```{r create-policy-tabs, results='asis'}
+# Create policy tabs for all issues in the data
+# Show all policy issues and all conditions dynamically
+
+for(i in seq_len(nrow(policy_issues))) {
+  issue <- policy_issues$policy_issue[i]
+  
+  # Get conditions for this policy issue
+  issue_conditions <- conditions_by_issue %>%
+    filter(policy_issue == issue)
+  
+  cat('### ', issue, ' {.tabset}\n\n')
+  
+  # Show all conditions for this issue
+  max_conditions <- nrow(issue_conditions)
+  
+  for(j in 1:max_conditions) {
+    condition <- issue_conditions[j, ]
+    
+    # Create tab name
+    tab_name <- paste0(condition$age_group, " ", condition$gender, " ", condition$ideology_congruency)
+    
+    cat('#### ', tab_name, ' {.tabset}\n\n')
+    
+    # Get the data for this specific condition
+    condition_data <- tryCatch({
+      data %>%
+        filter(age_group == condition$age_group,
+               gender == condition$gender,
+               policy_issue == condition$policy_issue,
+               ideology_congruency == condition$ideology_congruency)
+    }, error = function(e) {
+      data.frame()  # Return empty data frame
+    })
+    
+    # Check if we found data
+    if(nrow(condition_data) == 0) {
+      next
+    }
+    
+    # Take the first row
+    condition_data <- condition_data[1, ]
+    
+    # Check if this condition has both text and images (with safe column access)
+    has_text_1 <- tryCatch({
+      !is.na(condition_data$text_reponse_1[1]) && condition_data$text_reponse_1[1] != ""
+    }, error = function(e) FALSE)
+    
+    has_text_2 <- tryCatch({
+      !is.na(condition_data$text_reponse_2[1]) && condition_data$text_reponse_2[1] != ""
+    }, error = function(e) FALSE)
+    
+    has_image_1 <- tryCatch({
+      !is.na(condition_data$image_1[1]) && condition_data$image_1[1] != ""
+    }, error = function(e) FALSE)
+    
+    has_image_2 <- tryCatch({
+      !is.na(condition_data$image_2[1]) && condition_data$image_2[1] != ""
+    }, error = function(e) FALSE)
+    
+    # Only process if we have at least one complete text+image pair
+    if(!((has_text_1 && has_image_1) || (has_text_2 && has_image_2))) {
+      next
+    }
+    
+    # Version 1 tab - only show if we have both text and image
+    if(has_text_1 && has_image_1) {
+      cat('##### Version 1\n\n')
+      cat('<div class="mock-posts-container">\n')
+      
+      author_name <- paste0(condition$age_group, "_", condition$gender, "_", condition$ideology_congruency)
+      
+      # Safe access to text and image columns
+      text_1 <- tryCatch(condition_data$text_reponse_1[1], error = function(e) "")
+      image_1 <- tryCatch(condition_data$image_1[1], error = function(e) "")
+      
+      create_mock_post(text_1, image_1, author_name, "2h")
+      
+      cat('</div>\n\n')
+    }
+    
+    # Version 2 tab - only show if we have both text and image
+    if(has_text_2 && has_image_2) {
+      cat('##### Version 2\n\n')
+      cat('<div class="mock-posts-container">\n')
+      
+      author_name <- paste0(condition$age_group, "_", condition$gender, "_", condition$ideology_congruency)
+      
+      # Safe access to text and image columns
+      text_2 <- tryCatch(condition_data$text_reponse_2[1], error = function(e) "")
+      image_2 <- tryCatch(condition_data$image_2[1], error = function(e) "")
+      
+      create_mock_post(text_2, image_2, author_name, "1h")
+      
+      cat('</div>\n\n')
+    }
+    
+    # Condition details
+    cat('##### Condition Details\n\n')
+    
+    # Safe access to condition detail columns
+    outgroup_text <- tryCatch(condition_data$outgroup[1], error = function(e) NA)
+    values_text <- tryCatch(condition_data$values[1], error = function(e) NA)
+    scenarios_text <- tryCatch(condition_data$scenarios[1], error = function(e) NA)
+    slogan_text <- tryCatch(condition_data$slogan[1], error = function(e) NA)
+    
+    if(!is.na(outgroup_text) && outgroup_text != "") {
+      cat('<div class="text-content">\n')
+      cat('<h6>Outgroup Description</h6>\n')
+      cat('<p>', outgroup_text, '</p>\n')
+      cat('</div>\n\n')
+    }
+    
+    if(!is.na(values_text) && values_text != "") {
+      cat('<div class="text-content">\n')
+      cat('<h6>Values</h6>\n')
+      cat('<p>', values_text, '</p>\n')
+      cat('</div>\n\n')
+    }
+    
+    if(!is.na(scenarios_text) && scenarios_text != "") {
+      cat('<div class="text-content">\n')
+      cat('<h6>Scenarios</h6>\n')
+      cat('<p>', gsub("•", "•", scenarios_text), '</p>\n')
+      cat('</div>\n\n')
+    }
+    
+    if(!is.na(slogan_text) && slogan_text != "") {
+      cat('<div class="text-content">\n')
+      cat('<h6>Slogan</h6>\n')
+      cat('<p><strong>', slogan_text, '</strong></p>\n')
+      cat('</div>\n\n')
+    }
+  }
+}
+```
+
+## Data Summary
+
+```{r data-summary}
+# Create a summary table by policy issue
+summary_data <- conditions_by_issue %>%
+  group_by(policy_issue, age_group, gender, ideology_congruency) %>%
+  summarise(
+    n_conditions = n(),
+    .groups = 'drop'
+  ) %>%
+  arrange(policy_issue, age_group, gender, ideology_congruency)
+
+kable(summary_data, 
+      caption = "Summary of Conditions by Policy Issue, Demographics and Ideology",
+      col.names = c("Policy Issue", "Age Group", "Gender", "Ideology", "Number of Conditions"))
+
+# Create a policy issue summary
+policy_summary <- conditions_by_issue %>%
+  group_by(policy_issue) %>%
+  summarise(
+    n_conditions = n(),
+    .groups = 'drop'
+  ) %>%
+  arrange(desc(n_conditions))
+
+kable(policy_summary, 
+      caption = "Summary by Policy Issue",
+      col.names = c("Policy Issue", "Number of Conditions"))
+```
+
+## Notes
+
+- All images are stored in the [Google Drive folder](https://drive.google.com/drive/folders/1iZc512V8SFubLegZ70O__d24FBPtq_bs)
+- Each condition has two images and two text responses
+- The document is organized by condition ID for easy navigation
+- Use the table of contents on the left to jump between conditions

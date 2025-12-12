@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Experiment · Feed</title>
+  
+  <!-- Choices.js -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Chirp Font (X's font) approximation -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --x-black: #000000;
+      --x-dark: #0f1419;
+      --x-gray-dark: #16181c;
+      --x-gray: #2f3336;
+      --x-gray-light: #536471;
+      --x-gray-lighter: #71767b;
+      --x-white: #e7e9ea;
+      --x-blue: #1d9bf0;
+      --x-blue-hover: #1a8cd8;
+      --x-green: #00ba7c;
+      --x-pink: #f91880;
+      --x-orange: #ff7a00;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--x-black);
+      color: var(--x-white);
+      min-height: 100vh;
+    }
+
+    /* ============================================
+       THREE COLUMN LAYOUT (Like X)
+       ============================================ */
+    .app-container {
+      display: flex;
+      max-width: 1300px;
+      margin: 0 auto;
+      min-height: 100vh;
+    }
+
+    /* LEFT SIDEBAR */
+    .sidebar-left {
+      width: 275px;
+      flex-shrink: 0;
+      padding: 0 12px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .x-logo {
+      padding: 12px;
+      margin-bottom: 4px;
+    }
+
+    .x-logo i {
+      font-size: 30px;
+      color: var(--x-white);
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 12px;
+      border-radius: 30px;
+      font-size: 20px;
+      color: var(--x-white);
+      text-decoration: none;
+      transition: background 0.2s;
+      cursor: pointer;
+    }
+
+    .nav-item:hover {
+      background: rgba(231, 233, 234, 0.1);
+    }
+
+    .nav-item.active {
+      font-weight: 700;
+    }
+
+    .nav-item i {
+      width: 26px;
+      font-size: 24px;
+    }
+
+    .post-btn {
+      background: var(--x-blue);
+      color: white;
+      border: none;
+      border-radius: 30px;
+      padding: 16px 0;
+      font-size: 17px;
+      font-weight: 700;
+      width: 100%;
+      margin-top: 16px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .post-btn:hover {
+      background: var(--x-blue-hover);
+    }
+
+    /* MAIN FEED */
+    .main-feed {
+      flex: 1;
+      max-width: 600px;
+      border-left: 1px solid var(--x-gray);
+      border-right: 1px solid var(--x-gray);
+      min-height: 100vh;
+    }
+
+    .feed-header {
+      position: sticky;
+      top: 0;
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(12px);
+      z-index: 100;
+      border-bottom: 1px solid var(--x-gray);
+    }
+
+    .feed-title {
+      padding: 12px 16px;
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .feed-tabs {
+      display: flex;
+    }
+
+    .feed-tab {
+      flex: 1;
+      text-align: center;
+      padding: 16px;
+      color: var(--x-gray-lighter);
+      font-weight: 500;
+      cursor: pointer;
+      position: relative;
+      transition: background 0.2s;
+    }
+
+    .feed-tab:hover {
+      background: rgba(231, 233, 234, 0.1);
+    }
+
+    .feed-tab.active {
+      color: var(--x-white);
+      font-weight: 700;
+    }
+
+    .feed-tab.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 56px;
+      height: 4px;
+      background: var(--x-blue);
+      border-radius: 2px;
+    }
+
+    /* RIGHT SIDEBAR - FILTERS */
+    .sidebar-right {
+      width: 350px;
+      flex-shrink: 0;
+      padding: 0 24px 100px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow: visible;
+    }
+
+    .search-box {
+      margin: 8px 0 16px;
+      position: relative;
+    }
+
+    .search-box i {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--x-gray-lighter);
+    }
+
+    .search-box input {
+      width: 100%;
+      background: var(--x-gray-dark);
+      border: 1px solid transparent;
+      border-radius: 30px;
+      padding: 12px 16px 12px 48px;
+      font-size: 15px;
+      color: var(--x-white);
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .search-box input:focus {
+      background: transparent;
+      border-color: var(--x-blue);
+    }
+
+    .search-box input::placeholder {
+      color: var(--x-gray-lighter);
+    }
+
+    .filter-card {
+      background: var(--x-gray-dark);
+      border-radius: 16px;
+      margin-bottom: 16px;
+      overflow: visible;
+    }
+
+    .filter-card-header {
+      padding: 12px 16px;
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    .filter-group {
+      padding: 12px 16px;
+      border-top: 1px solid var(--x-gray);
+    }
+
+    .filter-label {
+      font-size: 13px;
+      color: var(--x-gray-lighter);
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    .filter-info {
+      padding: 12px 16px;
+      border-top: 1px solid var(--x-gray);
+      background: rgba(29, 155, 240, 0.1);
+    }
+
+    .filter-info-text {
+      font-size: 15px;
+      color: var(--x-blue);
+      font-weight: 600;
+    }
+
+    .filter-info-sub {
+      font-size: 13px;
+      color: var(--x-gray-lighter);
+      margin-top: 4px;
+    }
+
+    /* Choices.js overrides */
+    .choices {
+      margin-bottom: 0;
+    }
+
+    .choices__inner {
+      background: var(--x-black) !important;
+      border: 1px solid var(--x-gray) !important;
+      border-radius: 8px !important;
+      min-height: 42px !important;
+      padding: 4px 8px !important;
+    }
+
+    .choices__input {
+      background: transparent !important;
+      color: var(--x-white) !important;
+    }
+
+    .choices__list--single .choices__item {
+      color: var(--x-white) !important;
+    }
+
+    .choices__list--dropdown {
+      background: var(--x-black) !important;
+      border: 1px solid var(--x-gray) !important;
+      border-radius: 12px !important;
+      box-shadow: 0 0 15px rgba(255,255,255,0.2) !important;
+      z-index: 9999 !important;
+    }
+
+    .choices__list--dropdown .choices__item {
+      color: var(--x-white) !important;
+      padding: 12px 16px !important;
+    }
+
+    .choices__list--dropdown .choices__item--selectable.is-highlighted {
+      background: rgba(231, 233, 234, 0.1) !important;
+    }
+
+    .choices[data-type*="select-one"]::after {
+      border-color: var(--x-gray-lighter) transparent transparent transparent !important;
+    }
+
+    /* ============================================
+       POST CARD (X Style)
+       ============================================ */
+    .post {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--x-gray);
+      display: flex;
+      gap: 12px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .post:hover {
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .post-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--x-blue), var(--x-blue-hover));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .post-content {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .post-header {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-bottom: 2px;
+    }
+
+    .post-name {
+      font-weight: 700;
+      font-size: 15px;
+      color: var(--x-white);
+    }
+
+    .post-verified {
+      color: var(--x-blue);
+      font-size: 16px;
+    }
+
+    .post-handle {
+      color: var(--x-gray-lighter);
+      font-size: 15px;
+    }
+
+    .post-time {
+      color: var(--x-gray-lighter);
+      font-size: 15px;
+    }
+
+    .post-more {
+      margin-left: auto;
+      color: var(--x-gray-lighter);
+      padding: 8px;
+      margin: -8px;
+      border-radius: 50%;
+      transition: all 0.2s;
+    }
+
+    .post-more:hover {
+      background: rgba(29, 155, 240, 0.1);
+      color: var(--x-blue);
+    }
+
+    .post-text {
+      font-size: 15px;
+      line-height: 1.4;
+      color: var(--x-white);
+      margin-bottom: 12px;
+      white-space: pre-wrap;
+    }
+
+    .post-hashtag {
+      color: var(--x-blue);
+    }
+
+    /* Image carousel */
+    .post-media {
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid var(--x-gray);
+      position: relative;
+      margin-bottom: 12px;
+    }
+
+    .carousel-track {
+      display: flex;
+      transition: transform 0.3s ease;
+    }
+
+    .carousel-slide {
+      min-width: 100%;
+    }
+
+    .carousel-slide img {
+      width: 100%;
+      display: block;
+      max-height: 510px;
+      object-fit: cover;
+    }
+
+    .carousel-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 32px;
+      height: 32px;
+      background: rgba(15, 20, 25, 0.75);
+      backdrop-filter: blur(4px);
+      border: none;
+      border-radius: 50%;
+      color: #fff;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      z-index: 10;
+    }
+
+    .carousel-nav:hover {
+      background: rgba(39, 44, 48, 0.95);
+    }
+
+    .carousel-nav.prev { left: 8px; }
+    .carousel-nav.next { right: 8px; }
+
+    .carousel-counter {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      background: rgba(0, 0, 0, 0.75);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 13px;
+      z-index: 10;
+    }
+
+    .carousel-dots {
+      position: absolute;
+      bottom: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 4px;
+      padding: 4px 8px;
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 10px;
+    }
+
+    .carousel-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.4);
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .carousel-dot.active {
+      background: #fff;
+    }
+
+    /* Post actions */
+    .post-actions {
+      display: flex;
+      justify-content: space-between;
+      max-width: 425px;
+    }
+
+    .post-action {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--x-gray-lighter);
+      font-size: 13px;
+      padding: 8px 12px;
+      margin: -8px -12px;
+      border-radius: 30px;
+      transition: all 0.2s;
+    }
+
+    .post-action i {
+      font-size: 18px;
+    }
+
+    .post-action.reply:hover { color: var(--x-blue); background: rgba(29, 155, 240, 0.1); }
+    .post-action.repost:hover { color: var(--x-green); background: rgba(0, 186, 124, 0.1); }
+    .post-action.like:hover { color: var(--x-pink); background: rgba(249, 24, 128, 0.1); }
+    .post-action.views:hover { color: var(--x-blue); background: rgba(29, 155, 240, 0.1); }
+    .post-action.share:hover { color: var(--x-blue); background: rgba(29, 155, 240, 0.1); }
+
+    /* ============================================
+       STATES
+       ============================================ */
+    .hidden { display: none !important; }
+
+    .loading, .no-results {
+      padding: 40px;
+      text-align: center;
+      color: var(--x-gray-lighter);
+    }
+
+    .loading i {
+      font-size: 24px;
+      animation: spin 1s linear infinite;
+      margin-bottom: 12px;
+    }
+
+    .no-results i {
+      font-size: 48px;
+      margin-bottom: 16px;
+      opacity: 0.5;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 12px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--x-gray); border-radius: 6px; border: 3px solid var(--x-black); }
+
+    /* Responsive */
+    @media (max-width: 1024px) {
+      .sidebar-right { display: none; }
+    }
+
+    @media (max-width: 768px) {
+      .sidebar-left { width: 68px; }
+      .nav-item span { display: none; }
+      .post-btn span { display: none; }
+      .post-btn { padding: 14px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-container">
+    <!-- LEFT SIDEBAR -->
+    <aside class="sidebar-left">
+      <div class="x-logo">
+        <i class="fab fa-x-twitter"></i>
+      </div>
+      <nav>
+        <a class="nav-item active"><i class="fas fa-house"></i> <span>Home</span></a>
+        <a class="nav-item"><i class="fas fa-magnifying-glass"></i> <span>Explore</span></a>
+        <a class="nav-item"><i class="far fa-bell"></i> <span>Notifications</span></a>
+        <a class="nav-item"><i class="far fa-envelope"></i> <span>Messages</span></a>
+        <a class="nav-item"><i class="far fa-bookmark"></i> <span>Bookmarks</span></a>
+        <a class="nav-item"><i class="far fa-user"></i> <span>Profile</span></a>
+      </nav>
+      <button class="post-btn"><span>Post</span><i class="fas fa-feather-pointed" style="display:none"></i></button>
+    </aside>
+
+    <!-- MAIN FEED -->
+    <main class="main-feed">
+      <header class="feed-header">
+        <div class="feed-title">AI Experiment</div>
+        <div class="feed-tabs">
+          <div class="feed-tab active">For you</div>
+          <div class="feed-tab">Following</div>
+        </div>
+      </header>
+
+      <!-- Loading -->
+      <div class="loading" id="loading">
+        <i class="fas fa-spinner"></i>
+        <p>Loading posts...</p>
+      </div>
+
+      <!-- Posts Container -->
+      <div id="posts-container"></div>
+
+      <!-- No Results -->
+      <div class="no-results hidden" id="no-results">
+        <i class="far fa-face-frown"></i>
+        <h3>No posts found</h3>
+        <p>Try changing the filter combination</p>
+      </div>
+    </main>
+
+    <!-- RIGHT SIDEBAR - FILTERS -->
+    <aside class="sidebar-right">
+      <div class="search-box">
+        <i class="fas fa-magnifying-glass"></i>
+        <input type="text" placeholder="Search" disabled>
+      </div>
+
+      <div class="filter-card">
+        <div class="filter-card-header">Filter Posts</div>
+        
+        <div class="filter-group">
+          <div class="filter-label">Age Group</div>
+          <select id="filter-age"></select>
+        </div>
+        
+        <div class="filter-group">
+          <div class="filter-label">Gender</div>
+          <select id="filter-gender"></select>
+        </div>
+        
+        <div class="filter-group">
+          <div class="filter-label">Policy Issue</div>
+          <select id="filter-policy"></select>
+        </div>
+        
+        <div class="filter-group">
+          <div class="filter-label">Ideology</div>
+          <select id="filter-ideology"></select>
+        </div>
+
+        <div class="filter-info">
+          <div class="filter-info-text"><span id="visible-count">0</span> post(s) shown</div>
+          <div class="filter-info-sub">Matching current filters</div>
+        </div>
+      </div>
+
+      <div class="filter-card">
+        <div class="filter-card-header">Keyboard Shortcuts</div>
+        <div class="filter-group" style="border-top:none; font-size: 13px; color: var(--x-gray-lighter);">
+          <p style="margin-bottom: 8px;"><kbd style="background:#2f3336; padding: 2px 6px; border-radius: 4px;">←</kbd> <kbd style="background:#2f3336; padding: 2px 6px; border-radius: 4px;">→</kbd> Navigate images</p>
+          <p>Click image carousel to focus</p>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+  <script>
+    let conditionsData = null;
+    let choicesInstances = {};
+
+    // Tweet templates
+    const tweetTemplates = [
+      "Dit is wat er echt speelt in onze samenleving. We moeten hier iets aan doen! 🏠 {hashtags}",
+      "Kijk naar dit beeld en vertel me dat dit acceptabel is. {hashtags}",
+      "De realiteit van vandaag. Wanneer gaan we eindelijk actie ondernemen? {hashtags}",
+      "Dit raakt miljoenen Nederlanders. Het is tijd voor verandering. 💪 {hashtags}",
+      "Herkenbaar? Dit is de werkelijkheid voor veel mensen in ons land. {hashtags}",
+      "We kunnen niet langer wegkijken. Dit moet anders! {hashtags}",
+      "Een beeld zegt meer dan duizend woorden. Dit is Nederland vandaag. {hashtags}",
+      "Hoelang blijven we dit nog accepteren? Er moet nu iets gebeuren. {hashtags}",
+      "Stem van de straat. Dit is wat mensen écht bezighoudt. {hashtags}",
+      "De feiten spreken voor zich. Tijd om te handelen! {hashtags}"
+    ];
+
+    async function loadData() {
+      try {
+        const response = await fetch('conditions.json');
+        if (!response.ok) throw new Error('Failed to load');
+        conditionsData = await response.json();
+        initFilters();
+        renderPosts();
+        document.getElementById('loading').classList.add('hidden');
+      } catch (error) {
+        document.getElementById('loading').innerHTML = `
+          <i class="fas fa-exclamation-triangle" style="animation:none"></i>
+          <p style="margin-top:12px">Could not load posts</p>
+          <p style="font-size:13px; color:var(--x-gray-lighter); margin-top:8px">Run: python3 generate_conditions_json.py</p>
+        `;
+      }
+    }
+
+    function initFilters() {
+      const { filters } = conditionsData;
+      
+      populateSelect('filter-age', filters.age_groups);
+      populateSelect('filter-gender', filters.genders, v => v.charAt(0).toUpperCase() + v.slice(1));
+      populateSelect('filter-policy', filters.policy_issues, v => v.replace(/_/g, ' '));
+      populateSelect('filter-ideology', filters.ideologies, v => v.charAt(0).toUpperCase() + v.slice(1));
+      
+      ['filter-age', 'filter-gender', 'filter-policy', 'filter-ideology'].forEach(id => {
+        const el = document.getElementById(id);
+        choicesInstances[id] = new Choices(el, {
+          searchEnabled: false,
+          itemSelectText: '',
+          shouldSort: false
+        });
+        el.addEventListener('change', applyFilters);
+      });
+      
+      applyFilters();
+    }
+
+    function populateSelect(id, values, labelFn = v => v) {
+      const select = document.getElementById(id);
+      values.forEach((value, i) => {
+        const opt = document.createElement('option');
+        opt.value = value;
+        opt.textContent = labelFn(value);
+        if (i === 0) opt.selected = true;
+        select.appendChild(opt);
+      });
+    }
+
+    function renderPosts() {
+      const container = document.getElementById('posts-container');
+      container.innerHTML = '';
+      
+      conditionsData.conditions.forEach((cond, idx) => {
+        container.appendChild(createPost(cond, idx));
+      });
+      
+      initCarousels();
+    }
+
+    function createPost(cond, idx) {
+      const post = document.createElement('article');
+      post.className = 'post';
+      post.dataset.age = cond.age_group;
+      post.dataset.gender = cond.gender;
+      post.dataset.policy = cond.policy_issue;
+      post.dataset.ideology = cond.ideology;
+      
+      const name = `${cond.gender.charAt(0).toUpperCase() + cond.gender.slice(1)} ${cond.age_group}`;
+      const handle = `@${cond.ideology}_voter`;
+      const time = `${Math.floor(Math.random() * 23) + 1}h`;
+      const initials = cond.age_group.slice(0, 2) + cond.gender.charAt(0).toUpperCase();
+      
+      const hashtags = `#${cond.ideology} #${cond.policy_issue.replace(/_/g, '')}`;
+      const tweetText = tweetTemplates[Math.floor(Math.random() * tweetTemplates.length)]
+        .replace('{hashtags}', `<span class="post-hashtag">${hashtags}</span>`);
+      
+      const slidesHtml = cond.images.map(img => 
+        `<div class="carousel-slide"><img src="generated_images/${cond.image_dir}/${img}" loading="lazy"></div>`
+      ).join('');
+      
+      const dotsHtml = cond.images.map((_, i) => 
+        `<button class="carousel-dot${i === 0 ? ' active' : ''}" data-index="${i}"></button>`
+      ).join('');
+      
+      const eng = {
+        replies: Math.floor(Math.random() * 50) + 5,
+        reposts: Math.floor(Math.random() * 200) + 20,
+        likes: Math.floor(Math.random() * 500) + 50,
+        views: (Math.floor(Math.random() * 50) + 10) / 10 + 'K'
+      };
+      
+      post.innerHTML = `
+        <div class="post-avatar">${initials}</div>
+        <div class="post-content">
+          <div class="post-header">
+            <span class="post-name">${name}</span>
+            <i class="fas fa-circle-check post-verified"></i>
+            <span class="post-handle">${handle}</span>
+            <span class="post-time">· ${time}</span>
+            <div class="post-more"><i class="fas fa-ellipsis"></i></div>
+          </div>
+          <div class="post-text">${tweetText}</div>
+          <div class="post-media" data-carousel="${idx}">
+            <div class="carousel-counter"><span class="current">1</span>/${cond.images.length}</div>
+            <div class="carousel-track">${slidesHtml}</div>
+            <button class="carousel-nav prev"><i class="fas fa-chevron-left"></i></button>
+            <button class="carousel-nav next"><i class="fas fa-chevron-right"></i></button>
+            <div class="carousel-dots">${dotsHtml}</div>
+          </div>
+          <div class="post-actions">
+            <div class="post-action reply"><i class="far fa-comment"></i> ${eng.replies}</div>
+            <div class="post-action repost"><i class="fas fa-retweet"></i> ${eng.reposts}</div>
+            <div class="post-action like"><i class="far fa-heart"></i> ${eng.likes}</div>
+            <div class="post-action views"><i class="fas fa-chart-simple"></i> ${eng.views}</div>
+            <div class="post-action share"><i class="fas fa-arrow-up-from-bracket"></i></div>
+          </div>
+        </div>
+      `;
+      
+      return post;
+    }
+
+    function applyFilters() {
+      const age = document.getElementById('filter-age').value;
+      const gender = document.getElementById('filter-gender').value;
+      const policy = document.getElementById('filter-policy').value;
+      const ideology = document.getElementById('filter-ideology').value;
+      
+      let count = 0;
+      document.querySelectorAll('.post').forEach(post => {
+        const match = post.dataset.age === age && 
+                      post.dataset.gender === gender && 
+                      post.dataset.policy === policy && 
+                      post.dataset.ideology === ideology;
+        post.classList.toggle('hidden', !match);
+        if (match) count++;
+      });
+      
+      document.getElementById('visible-count').textContent = count;
+      document.getElementById('no-results').classList.toggle('hidden', count > 0);
+      document.getElementById('posts-container').classList.toggle('hidden', count === 0);
+    }
+
+    function initCarousels() {
+      document.querySelectorAll('[data-carousel]').forEach(carousel => {
+        const track = carousel.querySelector('.carousel-track');
+        const slides = carousel.querySelectorAll('.carousel-slide');
+        const dots = carousel.querySelectorAll('.carousel-dot');
+        const counter = carousel.querySelector('.current');
+        let current = 0;
+        
+        const go = (i) => {
+          if (i < 0) i = slides.length - 1;
+          if (i >= slides.length) i = 0;
+          current = i;
+          track.style.transform = `translateX(-${current * 100}%)`;
+          dots.forEach((d, j) => d.classList.toggle('active', j === current));
+          if (counter) counter.textContent = current + 1;
+        };
+        
+        carousel.querySelector('.prev')?.addEventListener('click', e => { e.stopPropagation(); go(current - 1); });
+        carousel.querySelector('.next')?.addEventListener('click', e => { e.stopPropagation(); go(current + 1); });
+        dots.forEach((d, i) => d.addEventListener('click', e => { e.stopPropagation(); go(i); }));
+        
+        carousel.addEventListener('keydown', e => {
+          if (e.key === 'ArrowLeft') go(current - 1);
+          if (e.key === 'ArrowRight') go(current + 1);
+        });
+        carousel.tabIndex = 0;
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', loadData);
+  </script>
+</body>
+</html>

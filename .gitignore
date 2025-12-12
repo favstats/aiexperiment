@@ -1,0 +1,84 @@
+# R
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+*.Rproj
+
+# Quarto
+.quarto/
+# OS
+.DS_Store
+Thumbs.db
+# IDE
+.vscode/
+.idea/
+# Temporary files
+*.tmp
+*.temp
+*.log
+# DATA FILES - EXCLUDED BY DEFAULT
+# Uncomment specific lines below if you want to include certain data types
+# R Data Files
+*.rds
+*.RData
+*.rda
+*.RDS
+*.RDATA
+*.RDA
+# CSV and Delimited Files
+*.csv
+*.tsv
+*.txt
+*.dat
+*.tab
+# Excel Files
+*.xlsx
+*.xls
+*.xlsm
+*.xlsb
+# Database Files
+*.db
+*.sqlite
+*.sqlite3
+*.mdb
+*.accdb
+# Statistical Software Files
+*.sav
+*.dta
+*.sas7bdat
+*.por
+*.zsav
+# JSON and XML
+*.json
+*.xml
+*.yaml
+*.yml
+# Archive Files
+*.zip
+*.tar
+*.tar.gz
+*.gz
+*.bz2
+*.7z
+*.rar
+# Large Files (typically data)
+*.parquet
+*.feather
+*.fst
+*.h5
+*.hdf5
+# Data Directories
+data/
+datasets/
+raw_data/
+processed_data/
+output_data/
+# Backup Files
+*~
+*.bak
+*.backup
+*.orig
+# Large files (>10MB)
+oldimages/generated_images3/prompt_0002/image_01.jpg
+oldimages/generated_images3/prompt_0002/image_02.jpg
