@@ -19,7 +19,7 @@ config <- list(
   aspect_ratio = "1:1",
   output_dir   = "generated_images",
   n_images     = 3,
-  rate_limit   = 1
+  rate_limit   = 1  # Increased to 10 seconds to avoid rate limits
 )
 
 # ============================================================
@@ -39,7 +39,7 @@ cli_alert_info("Loaded {nrow(df)} rows with valid prompts")
 # API Function
 # ============================================================
 
-generate_image <- function(prompt, config) {
+generate_image <- function(prompt, config, max_retries = 5) {
   url <- glue(
     "https://generativelanguage.googleapis.com/v1beta/models/{config$model}:generateContent",
     "?key={config$api_key}"
@@ -56,18 +56,35 @@ generate_image <- function(prompt, config) {
     )
   )
 
-  resp <- request(url) |>
-    req_headers(`Content-Type` = "application/json") |>
-    req_body_json(body) |>
-    req_timeout(180) |>
-    req_perform() |>
-    resp_body_json()
+  # Retry logic with exponential backoff
+  for (attempt in 1:max_retries) {
+    tryCatch({
+      resp <- request(url) |>
+        req_headers(`Content-Type` = "application/json") |>
+        req_body_json(body) |>
+        req_timeout(180) |>
+        req_perform() |>
+        resp_body_json()
 
-  # Extract image
-  parts <- resp$candidates[[1]]$content$parts
-  img_part <- keep(parts, ~ !is.null(.x$inlineData))[[1]]
+      # Extract image
+      parts <- resp$candidates[[1]]$content$parts
+      img_part <- keep(parts, ~ !is.null(.x$inlineData))[[1]]
 
-  img_part$inlineData
+      return(img_part$inlineData)
+
+    }, error = function(e) {
+      if (grepl("429|Too Many Requests|rate", e$message, ignore.case = TRUE)) {
+        wait_time <- 30 * (2 ^ (attempt - 1))  # 30s, 60s, 120s, 240s, 480s
+        cli_alert_warning("    Rate limited! Waiting {wait_time}s before retry {attempt}/{max_retries}...")
+        Sys.sleep(wait_time)
+        if (attempt == max_retries) {
+          stop(e$message)
+        }
+      } else {
+        stop(e$message)
+      }
+    })
+  }
 }
 
 save_image <- function(image_data, filepath) {

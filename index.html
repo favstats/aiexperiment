@@ -311,6 +311,150 @@
       border-color: var(--x-gray-lighter) transparent transparent transparent !important;
     }
 
+    /* Generate Feed Button */
+    .generate-feed-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--x-blue), #8b5cf6);
+      color: white;
+      border: none;
+      border-radius: 30px;
+      padding: 12px 20px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .generate-feed-btn:hover {
+      transform: scale(1.02);
+      box-shadow: 0 4px 20px rgba(29, 155, 240, 0.4);
+    }
+
+    .generate-feed-btn:active {
+      transform: scale(0.98);
+    }
+
+    /* Mixed Feed Mode Indicator */
+    .feed-mode-indicator {
+      background: linear-gradient(135deg, var(--x-blue), #8b5cf6);
+      color: white;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .feed-mode-indicator button {
+      background: rgba(255,255,255,0.2);
+      border: none;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 13px;
+      transition: background 0.2s;
+    }
+
+    .feed-mode-indicator button:hover {
+      background: rgba(255,255,255,0.3);
+    }
+
+    /* Placeholder post styling */
+    .post.placeholder-post .post-avatar {
+      background: linear-gradient(135deg, #6b7280, #4b5563);
+    }
+
+    .ai-badge {
+      background: linear-gradient(135deg, var(--x-blue), #8b5cf6);
+      color: white;
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 10px;
+      margin-left: 8px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .ai-badge.hidden {
+      display: none;
+    }
+
+    /* Toggle buttons row */
+    .toggle-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .toggle-btn {
+      flex: 1;
+      background: transparent;
+      border: 1px solid var(--x-gray);
+      color: var(--x-gray-lighter);
+      border-radius: 20px;
+      padding: 8px 12px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .toggle-btn:hover {
+      background: rgba(255,255,255,0.05);
+      color: var(--x-white);
+    }
+
+    .toggle-btn.active {
+      background: var(--x-blue);
+      border-color: var(--x-blue);
+      color: white;
+    }
+
+    /* Number input row */
+    .input-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .input-label {
+      font-size: 14px;
+      color: var(--x-white);
+    }
+
+    .number-input {
+      width: 70px;
+      background: var(--x-black);
+      border: 1px solid var(--x-gray);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 14px;
+      color: var(--x-white);
+      text-align: center;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .number-input:focus {
+      border-color: var(--x-blue);
+    }
+
+    .number-input::-webkit-inner-spin-button,
+    .number-input::-webkit-outer-spin-button {
+      opacity: 1;
+    }
+
     /* ============================================
        POST CARD (X Style)
        ============================================ */
@@ -549,6 +693,394 @@
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: var(--x-gray); border-radius: 6px; border: 3px solid var(--x-black); }
 
+    /* ============================================
+       QUALITY CONTROL MODE
+       ============================================ */
+    .qc-container {
+      flex: 1;
+      max-width: 900px;
+      border-left: 1px solid var(--x-gray);
+      border-right: 1px solid var(--x-gray);
+      min-height: 100vh;
+      display: none;
+    }
+
+    .qc-container.active {
+      display: block;
+    }
+
+    .main-feed.hidden {
+      display: none;
+    }
+
+    .sidebar-right.hidden {
+      display: none !important;
+    }
+
+    .qc-header {
+      position: sticky;
+      top: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(12px);
+      z-index: 100;
+      border-bottom: 1px solid var(--x-gray);
+      padding: 16px;
+    }
+
+    .qc-header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .qc-title {
+      font-size: 20px;
+      font-weight: 700;
+    }
+
+    .qc-progress {
+      font-size: 14px;
+      color: var(--x-gray-lighter);
+    }
+
+    .qc-coder-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .qc-coder-input {
+      background: var(--x-gray-dark);
+      border: 1px solid var(--x-gray);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 14px;
+      color: var(--x-white);
+      width: 150px;
+      outline: none;
+    }
+
+    .qc-coder-input:focus {
+      border-color: var(--x-blue);
+    }
+
+    .qc-filter-toggle {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--x-gray-lighter);
+    }
+
+    .qc-filter-toggle input[type="checkbox"] {
+      accent-color: var(--x-blue);
+    }
+
+    .qc-content {
+      display: flex;
+      gap: 0;
+    }
+
+    .qc-image-panel {
+      flex: 1;
+      padding: 20px;
+      border-right: 1px solid var(--x-gray);
+    }
+
+    .qc-image-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .qc-nav-btn {
+      background: var(--x-gray-dark);
+      border: 1px solid var(--x-gray);
+      color: var(--x-white);
+      padding: 10px 20px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .qc-nav-btn:hover:not(:disabled) {
+      background: var(--x-gray);
+    }
+
+    .qc-nav-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .qc-image-counter {
+      font-size: 14px;
+      color: var(--x-gray-lighter);
+    }
+
+    .qc-image-wrapper {
+      background: var(--x-gray-dark);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+
+    .qc-image-wrapper img {
+      width: 100%;
+      display: block;
+    }
+
+    .qc-condition-info {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .qc-condition-tag {
+      background: var(--x-gray-dark);
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 13px;
+      color: var(--x-gray-lighter);
+    }
+
+    .qc-condition-tag.highlight {
+      background: var(--x-blue);
+      color: white;
+    }
+
+    /* QC Form Panel */
+    .qc-form-panel {
+      width: 380px;
+      padding: 20px;
+      overflow-y: auto;
+      max-height: calc(100vh - 100px);
+    }
+
+    .qc-form-section {
+      margin-bottom: 24px;
+    }
+
+    .qc-form-section-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--x-white);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .qc-field {
+      margin-bottom: 16px;
+    }
+
+    .qc-field-label {
+      font-size: 14px;
+      color: var(--x-white);
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .qc-radio-group {
+      display: flex;
+      gap: 8px;
+    }
+
+    .qc-radio-option {
+      flex: 1;
+      position: relative;
+    }
+
+    .qc-radio-option input {
+      position: absolute;
+      opacity: 0;
+    }
+
+    .qc-radio-option label {
+      display: block;
+      text-align: center;
+      padding: 10px;
+      background: var(--x-gray-dark);
+      border: 1px solid var(--x-gray);
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 13px;
+      transition: all 0.2s;
+    }
+
+    .qc-radio-option input:checked + label {
+      background: var(--x-blue);
+      border-color: var(--x-blue);
+      color: white;
+    }
+
+    .qc-radio-option label:hover {
+      border-color: var(--x-blue);
+    }
+
+    /* Star Rating */
+    .qc-star-rating {
+      display: flex;
+      gap: 4px;
+    }
+
+    .qc-star {
+      font-size: 24px;
+      color: var(--x-gray);
+      cursor: pointer;
+      transition: color 0.15s;
+    }
+
+    .qc-star.active,
+    .qc-star.hover {
+      color: var(--x-orange);
+    }
+
+    /* Range Slider */
+    .qc-range-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .qc-range {
+      flex: 1;
+      -webkit-appearance: none;
+      background: var(--x-gray);
+      height: 6px;
+      border-radius: 3px;
+      outline: none;
+    }
+
+    .qc-range::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--x-blue);
+      cursor: pointer;
+    }
+
+    .qc-range-value {
+      min-width: 30px;
+      text-align: center;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    /* Valence Scale */
+    .qc-valence-scale {
+      display: flex;
+      justify-content: space-between;
+      gap: 4px;
+    }
+
+    .qc-valence-option {
+      flex: 1;
+      position: relative;
+    }
+
+    .qc-valence-option input {
+      position: absolute;
+      opacity: 0;
+    }
+
+    .qc-valence-option label {
+      display: block;
+      text-align: center;
+      padding: 8px 4px;
+      background: var(--x-gray-dark);
+      border: 1px solid var(--x-gray);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 11px;
+      transition: all 0.2s;
+    }
+
+    .qc-valence-option:first-child input:checked + label { background: #dc2626; border-color: #dc2626; }
+    .qc-valence-option:nth-child(2) input:checked + label { background: #f97316; border-color: #f97316; }
+    .qc-valence-option:nth-child(3) input:checked + label { background: #6b7280; border-color: #6b7280; }
+    .qc-valence-option:nth-child(4) input:checked + label { background: #22c55e; border-color: #22c55e; }
+    .qc-valence-option:last-child input:checked + label { background: #16a34a; border-color: #16a34a; }
+
+    /* Notes */
+    .qc-notes {
+      width: 100%;
+      background: var(--x-gray-dark);
+      border: 1px solid var(--x-gray);
+      border-radius: 8px;
+      padding: 12px;
+      font-size: 14px;
+      color: var(--x-white);
+      resize: vertical;
+      min-height: 80px;
+      font-family: inherit;
+      outline: none;
+    }
+
+    .qc-notes:focus {
+      border-color: var(--x-blue);
+    }
+
+    /* Submit Button */
+    .qc-submit-btn {
+      width: 100%;
+      background: var(--x-green);
+      color: white;
+      border: none;
+      border-radius: 30px;
+      padding: 14px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .qc-submit-btn:hover {
+      background: #00a36c;
+    }
+
+    .qc-submit-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .qc-status {
+      text-align: center;
+      margin-top: 12px;
+      font-size: 14px;
+    }
+
+    .qc-status.success {
+      color: var(--x-green);
+    }
+
+    .qc-status.error {
+      color: #dc2626;
+    }
+
+    /* Coded indicator */
+    .qc-coded-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--x-green);
+      color: white;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
     /* Responsive */
     @media (max-width: 1024px) {
       .sidebar-right { display: none; }
@@ -570,7 +1102,8 @@
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></svg>
       </div>
       <nav>
-        <a class="nav-item active"><i class="fas fa-house"></i> <span>Home</span></a>
+        <a class="nav-item active" id="nav-home" onclick="switchMode('feed')"><i class="fas fa-house"></i> <span>Home</span></a>
+        <a class="nav-item" id="nav-qc" onclick="switchMode('qc')"><i class="fas fa-clipboard-check"></i> <span>Quality Control</span></a>
         <a class="nav-item"><i class="fas fa-magnifying-glass"></i> <span>Explore</span></a>
         <a class="nav-item"><i class="far fa-bell"></i> <span>Notifications</span></a>
         <a class="nav-item"><i class="far fa-envelope"></i> <span>Messages</span></a>
@@ -607,6 +1140,226 @@
       </div>
     </main>
 
+    <!-- QUALITY CONTROL MODE -->
+    <div class="qc-container" id="qc-container">
+      <header class="qc-header">
+        <div class="qc-header-top">
+          <div class="qc-title"><i class="fas fa-clipboard-check"></i> Quality Control</div>
+          <div class="qc-progress" id="qc-progress">Image 1 of 0</div>
+        </div>
+        <div class="qc-coder-row">
+          <label style="font-size: 14px; color: var(--x-gray-lighter);">Coder ID:</label>
+          <input type="text" class="qc-coder-input" id="qc-coder-id" placeholder="Enter your ID">
+          <div class="qc-filter-toggle">
+            <input type="checkbox" id="qc-uncoded-only">
+            <label for="qc-uncoded-only">Show uncoded only</label>
+          </div>
+        </div>
+      </header>
+
+      <div class="qc-content">
+        <div class="qc-image-panel">
+          <div class="qc-image-nav">
+            <button class="qc-nav-btn" id="qc-prev" onclick="qcNavigate(-1)">
+              <i class="fas fa-chevron-left"></i> Previous
+            </button>
+            <div class="qc-image-counter" id="qc-counter">1 / 0</div>
+            <button class="qc-nav-btn" id="qc-next" onclick="qcNavigate(1)">
+              Next <i class="fas fa-chevron-right"></i>
+            </button>
+          </div>
+
+          <div class="qc-image-wrapper">
+            <img id="qc-image" src="" alt="Image to rate">
+          </div>
+
+          <div class="qc-condition-info" id="qc-condition-info">
+            <!-- Condition tags will be inserted here -->
+          </div>
+        </div>
+
+        <div class="qc-form-panel">
+          <form id="qc-form" onsubmit="submitQCForm(event)">
+            <!-- Binary Criteria -->
+            <div class="qc-form-section">
+              <div class="qc-form-section-title">Quality Criteria</div>
+              
+              <div class="qc-field">
+                <label class="qc-field-label">No prominent weird/garbled text?</label>
+                <div class="qc-radio-group">
+                  <div class="qc-radio-option">
+                    <input type="radio" name="no_weird_text" id="nwt-yes" value="yes" required>
+                    <label for="nwt-yes">Yes</label>
+                  </div>
+                  <div class="qc-radio-option">
+                    <input type="radio" name="no_weird_text" id="nwt-no" value="no">
+                    <label for="nwt-no">No</label>
+                  </div>
+                  <div class="qc-radio-option">
+                    <input type="radio" name="no_weird_text" id="nwt-unclear" value="unclear">
+                    <label for="nwt-unclear">Unclear</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="qc-field">
+                <label class="qc-field-label">Outgroup member(s) present?</label>
+                <div class="qc-radio-group">
+                  <div class="qc-radio-option">
+                    <input type="radio" name="outgroup_present" id="op-yes" value="yes" required>
+                    <label for="op-yes">Yes</label>
+                  </div>
+                  <div class="qc-radio-option">
+                    <input type="radio" name="outgroup_present" id="op-no" value="no">
+                    <label for="op-no">No</label>
+                  </div>
+                  <div class="qc-radio-option">
+                    <input type="radio" name="outgroup_present" id="op-unclear" value="unclear">
+                    <label for="op-unclear">Unclear</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="qc-field">
+                <label class="qc-field-label">Looks authentic/realistic (not obviously AI)?</label>
+                <div class="qc-radio-group">
+                  <div class="qc-radio-option">
+                    <input type="radio" name="looks_authentic" id="la-yes" value="yes" required>
+                    <label for="la-yes">Yes</label>
+                  </div>
+                  <div class="qc-radio-option">
+                    <input type="radio" name="looks_authentic" id="la-no" value="no">
+                    <label for="la-no">No</label>
+                  </div>
+                  <div class="qc-radio-option">
+                    <input type="radio" name="looks_authentic" id="la-unclear" value="unclear">
+                    <label for="la-unclear">Unclear</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="qc-field">
+                <label class="qc-field-label">Age representation matches condition?</label>
+                <div class="qc-radio-group">
+                  <div class="qc-radio-option">
+                    <input type="radio" name="age_accurate" id="aa-yes" value="yes" required>
+                    <label for="aa-yes">Yes</label>
+                  </div>
+                  <div class="qc-radio-option">
+                    <input type="radio" name="age_accurate" id="aa-no" value="no">
+                    <label for="aa-no">No</label>
+                  </div>
+                  <div class="qc-radio-option">
+                    <input type="radio" name="age_accurate" id="aa-unclear" value="unclear">
+                    <label for="aa-unclear">Unclear</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="qc-field">
+                <label class="qc-field-label">Gender representation matches condition?</label>
+                <div class="qc-radio-group">
+                  <div class="qc-radio-option">
+                    <input type="radio" name="gender_accurate" id="ga-yes" value="yes" required>
+                    <label for="ga-yes">Yes</label>
+                  </div>
+                  <div class="qc-radio-option">
+                    <input type="radio" name="gender_accurate" id="ga-no" value="no">
+                    <label for="ga-no">No</label>
+                  </div>
+                  <div class="qc-radio-option">
+                    <input type="radio" name="gender_accurate" id="ga-unclear" value="unclear">
+                    <label for="ga-unclear">Unclear</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="qc-field">
+                <label class="qc-field-label">Suitable for experiment (overall)?</label>
+                <div class="qc-radio-group">
+                  <div class="qc-radio-option">
+                    <input type="radio" name="suitable" id="su-yes" value="yes" required>
+                    <label for="su-yes">Yes</label>
+                  </div>
+                  <div class="qc-radio-option">
+                    <input type="radio" name="suitable" id="su-no" value="no">
+                    <label for="su-no">No</label>
+                  </div>
+                  <div class="qc-radio-option">
+                    <input type="radio" name="suitable" id="su-unclear" value="unclear">
+                    <label for="su-unclear">Unclear</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Scales -->
+            <div class="qc-form-section">
+              <div class="qc-form-section-title">Ratings</div>
+
+              <div class="qc-field">
+                <label class="qc-field-label">Image Quality</label>
+                <div class="qc-star-rating" id="qc-star-rating">
+                  <i class="fas fa-star qc-star" data-value="1"></i>
+                  <i class="fas fa-star qc-star" data-value="2"></i>
+                  <i class="fas fa-star qc-star" data-value="3"></i>
+                  <i class="fas fa-star qc-star" data-value="4"></i>
+                  <i class="fas fa-star qc-star" data-value="5"></i>
+                </div>
+                <input type="hidden" name="image_quality" id="image_quality" value="0" required>
+              </div>
+
+              <div class="qc-field">
+                <label class="qc-field-label">Emotional Intensity (0-10)</label>
+                <div class="qc-range-container">
+                  <input type="range" class="qc-range" name="emotional_intensity" id="emotional_intensity" min="0" max="10" value="5">
+                  <span class="qc-range-value" id="intensity-value">5</span>
+                </div>
+              </div>
+
+              <div class="qc-field">
+                <label class="qc-field-label">Emotional Valence</label>
+                <div class="qc-valence-scale">
+                  <div class="qc-valence-option">
+                    <input type="radio" name="emotional_valence" id="ev-vn" value="very_negative" required>
+                    <label for="ev-vn">Very Neg</label>
+                  </div>
+                  <div class="qc-valence-option">
+                    <input type="radio" name="emotional_valence" id="ev-n" value="negative">
+                    <label for="ev-n">Negative</label>
+                  </div>
+                  <div class="qc-valence-option">
+                    <input type="radio" name="emotional_valence" id="ev-neu" value="neutral">
+                    <label for="ev-neu">Neutral</label>
+                  </div>
+                  <div class="qc-valence-option">
+                    <input type="radio" name="emotional_valence" id="ev-p" value="positive">
+                    <label for="ev-p">Positive</label>
+                  </div>
+                  <div class="qc-valence-option">
+                    <input type="radio" name="emotional_valence" id="ev-vp" value="very_positive">
+                    <label for="ev-vp">Very Pos</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Notes -->
+            <div class="qc-form-section">
+              <div class="qc-form-section-title">Notes</div>
+              <textarea class="qc-notes" name="notes" id="qc-notes" placeholder="Any additional observations..."></textarea>
+            </div>
+
+            <!-- Submit -->
+            <button type="submit" class="qc-submit-btn" id="qc-submit-btn">
+              <i class="fas fa-check"></i> Submit & Next
+            </button>
+            <div class="qc-status" id="qc-status"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+
     <!-- RIGHT SIDEBAR - FILTERS -->
     <aside class="sidebar-right">
       <div class="search-box">
@@ -641,6 +1394,21 @@
           <div class="filter-info-text"><span id="visible-count">0</span> post(s) shown</div>
           <div class="filter-info-sub">Matching current filters</div>
         </div>
+
+        <div class="filter-group" style="border-top: 1px solid var(--x-gray);">
+          <div class="input-row">
+            <label class="input-label">Additional posts</label>
+            <input type="number" id="additional-posts" value="4" min="0" max="20" class="number-input">
+          </div>
+          <button class="generate-feed-btn" onclick="generateMixedFeed()">
+            <i class="fas fa-shuffle"></i> Generate Mixed Feed
+          </button>
+          <div class="toggle-row">
+            <button class="toggle-btn" id="toggle-ai-label" onclick="toggleAILabel()">
+              <i class="fas fa-tag"></i> Show AI Label
+            </button>
+          </div>
+        </div>
       </div>
 
       <div class="filter-card">
@@ -657,6 +1425,8 @@
   <script>
     let conditionsData = null;
     let choicesInstances = {};
+    let isMixedFeedMode = false;
+    let showAILabel = false;
 
     // Tweet templates
     const tweetTemplates = [
@@ -733,7 +1503,7 @@
 
     function createPost(cond, idx) {
       const post = document.createElement('article');
-      post.className = 'post';
+      post.className = 'post ai-post';
       post.dataset.age = cond.age_group;
       post.dataset.gender = cond.gender;
       post.dataset.policy = cond.policy_issue;
@@ -763,12 +1533,16 @@
         views: (Math.floor(Math.random() * 50) + 10) / 10 + 'K'
       };
       
+      // AI badge hidden by default unless showAILabel is true
+      const badgeClass = showAILabel ? 'ai-badge' : 'ai-badge hidden';
+      
       post.innerHTML = `
         <div class="post-avatar">${initials}</div>
         <div class="post-content">
           <div class="post-header">
             <span class="post-name">${name}</span>
             <i class="fas fa-circle-check post-verified"></i>
+            <span class="${badgeClass}">AI Generated</span>
             <span class="post-handle">${handle}</span>
             <span class="post-time">· ${time}</span>
             <div class="post-more"><i class="fas fa-ellipsis"></i></div>
@@ -795,6 +1569,12 @@
     }
 
     function applyFilters() {
+      // If in mixed feed mode, regenerate the feed with new filter selection
+      if (isMixedFeedMode) {
+        generateMixedFeed();
+        return;
+      }
+      
       const age = document.getElementById('filter-age').value;
       const gender = document.getElementById('filter-gender').value;
       const policy = document.getElementById('filter-policy').value;
@@ -844,7 +1624,560 @@
       });
     }
 
+    // ============================================
+    // MIXED FEED GENERATOR
+    // ============================================
+    
+    const placeholderNames = [
+      { name: 'Emma de Vries', handle: '@emma_dvries', initials: 'EV' },
+      { name: 'Thomas Bakker', handle: '@thomasbakker', initials: 'TB' },
+      { name: 'Sophie Jansen', handle: '@sophiejansen', initials: 'SJ' },
+      { name: 'Lars van Dijk', handle: '@larsvd', initials: 'LD' },
+      { name: 'Lisa Mulder', handle: '@lisamulder_nl', initials: 'LM' },
+      { name: 'Max Visser', handle: '@maxvisser', initials: 'MV' },
+      { name: 'Anna Smit', handle: '@annasmit', initials: 'AS' },
+      { name: 'Daan de Boer', handle: '@daandeboer', initials: 'DB' },
+      { name: 'Fleur Hendriks', handle: '@fleurh', initials: 'FH' },
+      { name: 'Bram Peters', handle: '@brampeters', initials: 'BP' }
+    ];
+
+    const placeholderTweets = [
+      "Net terug van een geweldige wandeling in het park. De natuur is prachtig deze tijd van het jaar! 🌳",
+      "Wie heeft er tips voor een goed restaurant in Amsterdam? Vieren dit weekend een verjaardag 🎂",
+      "Die nieuwe serie op Netflix is echt verslavend. Al 5 afleveringen gekeken vanavond 😅",
+      "Eindelijk vrijdag! Wat zijn jullie plannen voor het weekend? 🎉",
+      "Koffie is gezet, laptop open, laten we aan de slag gaan. Productieve dag iedereen! ☕",
+      "Mijn kat heeft weer iets kapot gemaakt. Dit is waarom we geen mooie dingen kunnen hebben 🐱",
+      "Wat een weer vandaag! Perfect voor een terrasje ☀️",
+      "Boek uitgelezen. Aanrader: 'De zeven zussen'. Iemand andere tips?",
+      "Update: de IKEA kast is EINDELIJK in elkaar gezet. Slechts 4 uur en 2 mentale breakdowns later 🔧",
+      "Thuiswerken dag 847: ik praat nu tegen mijn planten. Ze luisteren beter dan mijn collega's 🪴",
+      "PSA: de stroopwafels bij Albert Heijn zijn in de aanbieding. Je bent welkom.",
+      "Nog 3 maanden tot vakantie. Ik tel af. ✈️",
+      "Waarom is de NS altijd vertraagd als ik op tijd ben, maar op tijd als ik te laat ben? 🚂",
+      "Net ontdekt dat mijn buurman ook op Twitter zit. Awkward wave incoming 👋",
+      "Tip: nooit boodschappen doen als je honger hebt. Mijn rekening was €120 voor 'snacks' 🛒"
+    ];
+
+    function generateMixedFeed() {
+      isMixedFeedMode = true;
+      
+      const age = document.getElementById('filter-age').value;
+      const gender = document.getElementById('filter-gender').value;
+      const policy = document.getElementById('filter-policy').value;
+      const ideology = document.getElementById('filter-ideology').value;
+      
+      // Find matching AI condition
+      const aiCondition = conditionsData.conditions.find(c => 
+        c.age_group === age && 
+        c.gender === gender && 
+        c.policy_issue === policy && 
+        c.ideology === ideology
+      );
+      
+      if (!aiCondition) {
+        alert('No matching condition found. Please check your filter selection.');
+        return;
+      }
+      
+      const container = document.getElementById('posts-container');
+      container.innerHTML = '';
+      
+      // Add feed mode indicator
+      const indicator = document.createElement('div');
+      indicator.className = 'feed-mode-indicator';
+      indicator.innerHTML = `
+        <span><i class="fas fa-shuffle"></i> Mixed Feed Mode</span>
+        <button onclick="exitMixedFeed()"><i class="fas fa-times"></i> Exit</button>
+      `;
+      container.appendChild(indicator);
+      
+      // Create array of posts
+      const posts = [];
+      
+      // Get number of additional posts from input
+      const additionalPosts = parseInt(document.getElementById('additional-posts').value) || 4;
+      
+      // Add placeholder posts
+      for (let i = 0; i < additionalPosts; i++) {
+        posts.push(createPlaceholderPost(i));
+      }
+      
+      // Add the AI post
+      posts.push(createAIPost(aiCondition));
+      
+      // Shuffle the posts
+      shuffleArray(posts);
+      
+      // Append all posts
+      posts.forEach(post => container.appendChild(post));
+      
+      // Initialize carousels for the AI post
+      initCarousels();
+      
+      // Hide filter count and no-results
+      document.getElementById('no-results').classList.add('hidden');
+      document.getElementById('visible-count').textContent = `${additionalPosts + 1} (mixed)`;
+      
+      // Update toggle button state
+      updateToggleButtonState();
+    }
+    
+    function toggleAILabel() {
+      showAILabel = !showAILabel;
+      updateToggleButtonState();
+      
+      // Update all AI badges visibility
+      document.querySelectorAll('.ai-badge').forEach(badge => {
+        badge.classList.toggle('hidden', !showAILabel);
+      });
+    }
+    
+    function updateToggleButtonState() {
+      const btn = document.getElementById('toggle-ai-label');
+      if (btn) {
+        btn.classList.toggle('active', showAILabel);
+      }
+    }
+
+    function createPlaceholderPost(index) {
+      const post = document.createElement('article');
+      post.className = 'post placeholder-post';
+      
+      const person = placeholderNames[Math.floor(Math.random() * placeholderNames.length)];
+      const tweetText = placeholderTweets[Math.floor(Math.random() * placeholderTweets.length)];
+      const time = `${Math.floor(Math.random() * 23) + 1}h`;
+      
+      // Random placeholder image from picsum
+      const imageId = Math.floor(Math.random() * 1000);
+      const hasImage = Math.random() > 0.4; // 60% chance to have an image
+      
+      const imageHtml = hasImage ? `
+        <div class="post-media" style="border-radius: 16px; overflow: hidden; margin-top: 12px;">
+          <img src="https://picsum.photos/seed/${imageId}/600/400" loading="lazy" style="width: 100%; display: block;">
+        </div>
+      ` : '';
+      
+      const eng = {
+        replies: Math.floor(Math.random() * 30) + 2,
+        reposts: Math.floor(Math.random() * 100) + 5,
+        likes: Math.floor(Math.random() * 300) + 20,
+        views: (Math.floor(Math.random() * 30) + 5) / 10 + 'K'
+      };
+      
+      post.innerHTML = `
+        <div class="post-avatar">${person.initials}</div>
+        <div class="post-content">
+          <div class="post-header">
+            <span class="post-name">${person.name}</span>
+            <span class="post-handle">${person.handle}</span>
+            <span class="post-time">· ${time}</span>
+            <div class="post-more"><i class="fas fa-ellipsis"></i></div>
+          </div>
+          <div class="post-text">${tweetText}</div>
+          ${imageHtml}
+          <div class="post-actions">
+            <div class="post-action reply"><i class="far fa-comment"></i> ${eng.replies}</div>
+            <div class="post-action repost"><i class="fas fa-retweet"></i> ${eng.reposts}</div>
+            <div class="post-action like"><i class="far fa-heart"></i> ${eng.likes}</div>
+            <div class="post-action views"><i class="fas fa-chart-simple"></i> ${eng.views}</div>
+            <div class="post-action share"><i class="fas fa-arrow-up-from-bracket"></i></div>
+          </div>
+        </div>
+      `;
+      
+      return post;
+    }
+
+    function createAIPost(cond) {
+      const post = document.createElement('article');
+      post.className = 'post ai-post';
+      post.dataset.age = cond.age_group;
+      post.dataset.gender = cond.gender;
+      post.dataset.policy = cond.policy_issue;
+      post.dataset.ideology = cond.ideology;
+      
+      const name = `${cond.gender.charAt(0).toUpperCase() + cond.gender.slice(1)} ${cond.age_group}`;
+      const handle = `@${cond.ideology}_voter`;
+      const time = `${Math.floor(Math.random() * 23) + 1}h`;
+      const initials = cond.age_group.slice(0, 2) + cond.gender.charAt(0).toUpperCase();
+      
+      const hashtags = `#${cond.ideology} #${cond.policy_issue.replace(/_/g, '')}`;
+      const tweetText = tweetTemplates[Math.floor(Math.random() * tweetTemplates.length)]
+        .replace('{hashtags}', `<span class="post-hashtag">${hashtags}</span>`);
+      
+      // Pick a random single image from the condition
+      const randomImage = cond.images[Math.floor(Math.random() * cond.images.length)];
+      
+      const eng = {
+        replies: Math.floor(Math.random() * 80) + 20,
+        reposts: Math.floor(Math.random() * 400) + 50,
+        likes: Math.floor(Math.random() * 800) + 100,
+        views: (Math.floor(Math.random() * 80) + 20) / 10 + 'K'
+      };
+      
+      // AI badge hidden by default unless showAILabel is true
+      const badgeClass = showAILabel ? 'ai-badge' : 'ai-badge hidden';
+      
+      post.innerHTML = `
+        <div class="post-avatar">${initials}</div>
+        <div class="post-content">
+          <div class="post-header">
+            <span class="post-name">${name}</span>
+            <i class="fas fa-circle-check post-verified"></i>
+            <span class="${badgeClass}">AI Generated</span>
+            <span class="post-handle">${handle}</span>
+            <span class="post-time">· ${time}</span>
+            <div class="post-more"><i class="fas fa-ellipsis"></i></div>
+          </div>
+          <div class="post-text">${tweetText}</div>
+          <div class="post-media" style="border-radius: 16px; overflow: hidden; margin-top: 12px;">
+            <img src="generated_images/${cond.image_dir}/${randomImage}" loading="lazy" style="width: 100%; display: block;">
+          </div>
+          <div class="post-actions">
+            <div class="post-action reply"><i class="far fa-comment"></i> ${eng.replies}</div>
+            <div class="post-action repost"><i class="fas fa-retweet"></i> ${eng.reposts}</div>
+            <div class="post-action like"><i class="far fa-heart"></i> ${eng.likes}</div>
+            <div class="post-action views"><i class="fas fa-chart-simple"></i> ${eng.views}</div>
+            <div class="post-action share"><i class="fas fa-arrow-up-from-bracket"></i></div>
+          </div>
+        </div>
+      `;
+      
+      return post;
+    }
+
+    function exitMixedFeed() {
+      isMixedFeedMode = false;
+      renderPosts();
+      applyFilters();
+    }
+
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
     document.addEventListener('DOMContentLoaded', loadData);
+
+    // ============================================
+    // QUALITY CONTROL MODE
+    // ============================================
+    
+    // Configuration - Google Apps Script URL for QC data
+    const QC_CONFIG = {
+      googleScriptUrl: 'https://script.google.com/macros/s/AKfycbwOEk-02CPwCnSsovJh3n9F8TAIU0u8Sx1rBQ1ZAZroHOC6TWvlbYtJcu0j2Qk2O5vu9Q/exec'
+    };
+    
+    let qcMode = false;
+    let qcImages = [];
+    let qcCurrentIndex = 0;
+    let qcCodedImages = JSON.parse(localStorage.getItem('qc_coded_images') || '{}');
+    
+    // Mode switching
+    function switchMode(mode) {
+      const mainFeed = document.querySelector('.main-feed');
+      const qcContainer = document.getElementById('qc-container');
+      const sidebarRight = document.querySelector('.sidebar-right');
+      const navHome = document.getElementById('nav-home');
+      const navQc = document.getElementById('nav-qc');
+      
+      if (mode === 'qc') {
+        qcMode = true;
+        mainFeed.classList.add('hidden');
+        qcContainer.classList.add('active');
+        sidebarRight.classList.add('hidden');
+        navHome.classList.remove('active');
+        navQc.classList.add('active');
+        initQCMode();
+      } else {
+        qcMode = false;
+        mainFeed.classList.remove('hidden');
+        qcContainer.classList.remove('active');
+        sidebarRight.classList.remove('hidden');
+        navHome.classList.add('active');
+        navQc.classList.remove('active');
+      }
+    }
+    
+    function initQCMode() {
+      // Load coder ID from localStorage
+      const savedCoderId = localStorage.getItem('qc_coder_id') || '';
+      document.getElementById('qc-coder-id').value = savedCoderId;
+      
+      // Build flat list of all images
+      buildQCImageList();
+      
+      // Setup event listeners
+      setupQCEventListeners();
+      
+      // Show first image
+      showQCImage(0);
+    }
+    
+    function buildQCImageList() {
+      qcImages = [];
+      const showUncodedOnly = document.getElementById('qc-uncoded-only').checked;
+      
+      conditionsData.conditions.forEach(cond => {
+        cond.images.forEach(img => {
+          const imageId = `${cond.condition_id}/${img}`;
+          const isCoded = qcCodedImages[imageId];
+          
+          if (!showUncodedOnly || !isCoded) {
+            qcImages.push({
+              condition: cond,
+              image: img,
+              imageId: imageId,
+              isCoded: isCoded
+            });
+          }
+        });
+      });
+      
+      updateQCProgress();
+    }
+    
+    function setupQCEventListeners() {
+      // Coder ID save
+      document.getElementById('qc-coder-id').addEventListener('change', (e) => {
+        localStorage.setItem('qc_coder_id', e.target.value);
+      });
+      
+      // Uncoded only filter
+      document.getElementById('qc-uncoded-only').addEventListener('change', () => {
+        buildQCImageList();
+        showQCImage(0);
+      });
+      
+      // Star rating - click and hover
+      const starContainer = document.getElementById('qc-star-rating');
+      const stars = document.querySelectorAll('.qc-star');
+      
+      stars.forEach(star => {
+        star.addEventListener('click', (e) => {
+          const value = parseInt(e.target.dataset.value);
+          document.getElementById('image_quality').value = value;
+          updateStars(value);
+        });
+        
+        star.addEventListener('mouseenter', (e) => {
+          const hoverValue = parseInt(e.target.dataset.value);
+          highlightStars(hoverValue);
+        });
+      });
+      
+      starContainer.addEventListener('mouseleave', () => {
+        // Reset to current selected value
+        const currentValue = parseInt(document.getElementById('image_quality').value) || 0;
+        highlightStars(currentValue);
+      });
+      
+      // Intensity slider
+      document.getElementById('emotional_intensity').addEventListener('input', (e) => {
+        document.getElementById('intensity-value').textContent = e.target.value;
+      });
+      
+      // Keyboard navigation
+      document.addEventListener('keydown', (e) => {
+        if (!qcMode) return;
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+        
+        if (e.key === 'ArrowLeft') qcNavigate(-1);
+        if (e.key === 'ArrowRight') qcNavigate(1);
+      });
+    }
+    
+    function updateStars(value) {
+      document.querySelectorAll('.qc-star').forEach(star => {
+        const starValue = parseInt(star.dataset.value);
+        star.classList.toggle('active', starValue <= value);
+      });
+    }
+    
+    function highlightStars(value) {
+      document.querySelectorAll('.qc-star').forEach(star => {
+        const starValue = parseInt(star.dataset.value);
+        star.classList.toggle('hover', starValue <= value);
+        // Keep active state separate
+        const currentValue = parseInt(document.getElementById('image_quality').value) || 0;
+        star.classList.toggle('active', starValue <= currentValue);
+      });
+    }
+    
+    function showQCImage(index) {
+      if (qcImages.length === 0) {
+        document.getElementById('qc-image').src = '';
+        document.getElementById('qc-counter').textContent = 'No images';
+        document.getElementById('qc-condition-info').innerHTML = '<span class="qc-condition-tag">No images to display</span>';
+        return;
+      }
+      
+      qcCurrentIndex = Math.max(0, Math.min(index, qcImages.length - 1));
+      const item = qcImages[qcCurrentIndex];
+      
+      // Update image
+      document.getElementById('qc-image').src = `generated_images/${item.condition.image_dir}/${item.image}`;
+      
+      // Update counter
+      document.getElementById('qc-counter').textContent = `${qcCurrentIndex + 1} / ${qcImages.length}`;
+      
+      // Update condition info
+      const condInfo = document.getElementById('qc-condition-info');
+      condInfo.innerHTML = `
+        <span class="qc-condition-tag highlight">${item.condition.age_group}</span>
+        <span class="qc-condition-tag highlight">${item.condition.gender}</span>
+        <span class="qc-condition-tag">${item.condition.policy_issue.replace(/_/g, ' ')}</span>
+        <span class="qc-condition-tag">${item.condition.ideology}</span>
+        ${item.isCoded ? '<span class="qc-coded-badge"><i class="fas fa-check"></i> Coded</span>' : ''}
+      `;
+      
+      // Update nav buttons
+      document.getElementById('qc-prev').disabled = qcCurrentIndex === 0;
+      document.getElementById('qc-next').disabled = qcCurrentIndex === qcImages.length - 1;
+      
+      // Reset form
+      resetQCForm();
+      
+      // Update progress
+      updateQCProgress();
+    }
+    
+    function qcNavigate(direction) {
+      showQCImage(qcCurrentIndex + direction);
+    }
+    
+    function updateQCProgress() {
+      const totalImages = conditionsData ? 
+        conditionsData.conditions.reduce((sum, c) => sum + c.images.length, 0) : 0;
+      const codedCount = Object.keys(qcCodedImages).length;
+      
+      document.getElementById('qc-progress').textContent = 
+        `${codedCount} of ${totalImages} coded`;
+    }
+    
+    function resetQCForm() {
+      const form = document.getElementById('qc-form');
+      form.reset();
+      document.getElementById('image_quality').value = '0';
+      updateStars(0);
+      document.getElementById('intensity-value').textContent = '5';
+      document.getElementById('qc-status').textContent = '';
+      document.getElementById('qc-status').className = 'qc-status';
+    }
+    
+    async function submitQCForm(event) {
+      event.preventDefault();
+      
+      const coderId = document.getElementById('qc-coder-id').value.trim();
+      if (!coderId) {
+        showQCStatus('Please enter your Coder ID', 'error');
+        return;
+      }
+      
+      const imageQuality = parseInt(document.getElementById('image_quality').value);
+      if (imageQuality === 0) {
+        showQCStatus('Please rate the image quality (stars)', 'error');
+        return;
+      }
+      
+      const form = document.getElementById('qc-form');
+      const formData = new FormData(form);
+      const item = qcImages[qcCurrentIndex];
+      
+      const data = {
+        timestamp: new Date().toISOString(),
+        coder_id: coderId,
+        condition_id: item.condition.condition_id,
+        image_filename: item.image,
+        no_weird_text: formData.get('no_weird_text'),
+        outgroup_present: formData.get('outgroup_present'),
+        looks_authentic: formData.get('looks_authentic'),
+        age_accurate: formData.get('age_accurate'),
+        gender_accurate: formData.get('gender_accurate'),
+        suitable: formData.get('suitable'),
+        image_quality: imageQuality,
+        emotional_intensity: parseInt(formData.get('emotional_intensity')),
+        emotional_valence: formData.get('emotional_valence'),
+        notes: formData.get('notes') || ''
+      };
+      
+      // Disable submit button
+      const submitBtn = document.getElementById('qc-submit-btn');
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+      
+      try {
+        // Send to Google Sheets if URL is configured
+        if (QC_CONFIG.googleScriptUrl) {
+          const response = await fetch(QC_CONFIG.googleScriptUrl, {
+            method: 'POST',
+            mode: 'no-cors', // Required for Apps Script
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+          });
+          // Note: no-cors means we can't read the response, but it will still work
+        }
+        
+        // Mark as coded in localStorage
+        qcCodedImages[item.imageId] = {
+          coderId: coderId,
+          timestamp: data.timestamp
+        };
+        localStorage.setItem('qc_coded_images', JSON.stringify(qcCodedImages));
+        
+        // Update current item
+        item.isCoded = true;
+        
+        showQCStatus('Saved successfully!', 'success');
+        
+        // Move to next image after short delay
+        setTimeout(() => {
+          if (qcCurrentIndex < qcImages.length - 1) {
+            qcNavigate(1);
+          } else {
+            showQCStatus('All images in current set have been coded!', 'success');
+          }
+        }, 500);
+        
+      } catch (error) {
+        console.error('Error submitting:', error);
+        showQCStatus('Error saving. Data saved locally.', 'error');
+        
+        // Still save locally even if remote fails
+        qcCodedImages[item.imageId] = {
+          coderId: coderId,
+          timestamp: data.timestamp,
+          data: data
+        };
+        localStorage.setItem('qc_coded_images', JSON.stringify(qcCodedImages));
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-check"></i> Submit & Next';
+        updateQCProgress();
+      }
+    }
+    
+    function showQCStatus(message, type) {
+      const status = document.getElementById('qc-status');
+      status.textContent = message;
+      status.className = `qc-status ${type}`;
+    }
+    
+    // Export coded data (for backup)
+    function exportQCData() {
+      const data = JSON.stringify(qcCodedImages, null, 2);
+      const blob = new Blob([data], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `qc_data_${new Date().toISOString().split('T')[0]}.json`;
+      a.click();
+    }
   </script>
 </body>
 </html>
