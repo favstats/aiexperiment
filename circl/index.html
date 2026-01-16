@@ -1,0 +1,3178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Circl · Feed</title>
+  
+  <!-- Choices.js -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --circl-blue: #1877F2;
+      --circl-blue-hover: #166FE5;
+      --circl-teal: #00A3A3;
+      --circl-bg: #F0F2F5;
+      --circl-white: #FFFFFF;
+      --circl-gray-100: #F5F6F7;
+      --circl-gray-200: #E4E6EB;
+      --circl-gray-300: #B0B3B8;
+      --circl-gray-400: #8A8D91;
+      --circl-gray-500: #606770;
+      --circl-gray-600: #444950;
+      --circl-text-primary: #050505;
+      --circl-text-secondary: #65676B;
+      --circl-green: #42B72A;
+      --circl-red: #FA383E;
+      --circl-orange: #F5A623;
+      --circl-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+      --circl-shadow-lg: 0 2px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--circl-bg);
+      color: var(--circl-text-primary);
+      min-height: 100vh;
+    }
+
+    /* ============================================
+       TOP HEADER BAR (Facebook-style)
+       ============================================ */
+    .top-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 56px;
+      background: var(--circl-white);
+      box-shadow: var(--circl-shadow);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .circl-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+
+    .circl-logo-icon {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .circl-logo-icon svg {
+      width: 40px;
+      height: 40px;
+    }
+
+    .circl-logo-text {
+      font-size: 28px;
+      font-weight: 800;
+      background: linear-gradient(135deg, var(--circl-blue), var(--circl-teal));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: -0.5px;
+    }
+
+    .header-search {
+      position: relative;
+      width: 240px;
+    }
+
+    .header-search i {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--circl-gray-400);
+    }
+
+    .header-search input {
+      width: 100%;
+      background: var(--circl-gray-200);
+      border: none;
+      border-radius: 20px;
+      padding: 10px 16px 10px 40px;
+      font-size: 15px;
+      color: var(--circl-text-primary);
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .header-search input:focus {
+      background: var(--circl-white);
+      box-shadow: 0 0 0 2px var(--circl-blue);
+    }
+
+    .header-search input::placeholder {
+      color: var(--circl-gray-400);
+    }
+
+    .header-center {
+      display: flex;
+      gap: 8px;
+    }
+
+    .header-nav-item {
+      width: 110px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+      color: var(--circl-gray-400);
+      cursor: pointer;
+      transition: all 0.2s;
+      position: relative;
+    }
+
+    .header-nav-item i {
+      font-size: 24px;
+    }
+
+    .header-nav-item:hover {
+      background: var(--circl-gray-100);
+    }
+
+    .header-nav-item.active {
+      color: var(--circl-blue);
+    }
+
+    .header-nav-item.active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--circl-blue);
+      border-radius: 3px 3px 0 0;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .header-icon-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--circl-gray-200);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--circl-text-primary);
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+      font-size: 18px;
+    }
+
+    .header-icon-btn:hover {
+      background: var(--circl-gray-300);
+    }
+
+    .header-profile {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--circl-blue), var(--circl-teal));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    /* ============================================
+       THREE COLUMN LAYOUT
+       ============================================ */
+    .app-container {
+      display: flex;
+      width: 100%;
+      min-height: 100vh;
+      padding-top: 56px;
+    }
+
+    /* LEFT SIDEBAR */
+    .sidebar-left {
+      width: 280px;
+      flex-shrink: 0;
+      padding: 16px 8px;
+      position: sticky;
+      top: 56px;
+      height: calc(100vh - 56px);
+      overflow-y: auto;
+      background: var(--circl-bg);
+    }
+
+    .sidebar-nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 8px;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--circl-text-primary);
+      text-decoration: none;
+      transition: background 0.2s;
+      cursor: pointer;
+    }
+
+    .sidebar-nav-item:hover {
+      background: var(--circl-gray-200);
+    }
+
+    .sidebar-nav-item.active {
+      background: var(--circl-gray-200);
+      color: var(--circl-blue);
+    }
+
+    .sidebar-nav-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: var(--circl-gray-200);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+    }
+
+    .sidebar-nav-item.active .sidebar-nav-icon {
+      background: linear-gradient(135deg, var(--circl-blue), var(--circl-teal));
+      color: white;
+    }
+
+    .sidebar-divider {
+      height: 1px;
+      background: var(--circl-gray-200);
+      margin: 8px 0;
+    }
+
+    .sidebar-section-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--circl-text-secondary);
+      padding: 12px 8px 8px;
+    }
+
+    /* MAIN FEED */
+    .main-feed {
+      flex: 1;
+      max-width: 900px;
+      min-height: 100vh;
+      padding: 24px 16px;
+      margin: 0 auto;
+    }
+
+    /* Create Post Box */
+    .create-post-box {
+      background: var(--circl-white);
+      border-radius: 8px;
+      box-shadow: var(--circl-shadow);
+      padding: 12px 16px;
+      margin-bottom: 16px;
+    }
+
+    .create-post-top {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .create-post-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--circl-blue), var(--circl-teal));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .create-post-input {
+      flex: 1;
+      background: var(--circl-gray-100);
+      border: none;
+      border-radius: 20px;
+      padding: 10px 16px;
+      font-size: 17px;
+      color: var(--circl-text-secondary);
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .create-post-input:hover {
+      background: var(--circl-gray-200);
+    }
+
+    .create-post-divider {
+      height: 1px;
+      background: var(--circl-gray-200);
+      margin: 12px 0;
+    }
+
+    .create-post-actions {
+      display: flex;
+      justify-content: space-around;
+    }
+
+    .create-post-action {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 24px;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--circl-text-secondary);
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .create-post-action:hover {
+      background: var(--circl-gray-100);
+    }
+
+    .create-post-action i.fa-video {
+      color: #F02849;
+    }
+
+    .create-post-action i.fa-images {
+      color: #45BD62;
+    }
+
+    .create-post-action i.fa-face-smile {
+      color: #F7B928;
+    }
+
+    /* Post Card (Facebook Style) */
+    .post {
+      background: var(--circl-white);
+      border-radius: 8px;
+      box-shadow: var(--circl-shadow);
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+
+    .post:hover {
+      box-shadow: var(--circl-shadow-lg);
+    }
+
+    .post-header-section {
+      padding: 12px 16px 0;
+    }
+
+    .post-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+
+    .post-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--circl-blue), var(--circl-teal));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .post.placeholder-post .post-avatar {
+      background: linear-gradient(135deg, #6b7280, #4b5563);
+    }
+
+    .post-header-info {
+      flex: 1;
+    }
+
+    .post-name-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .post-name {
+      font-weight: 600;
+      font-size: 15px;
+      color: var(--circl-text-primary);
+    }
+
+    .post-verified {
+      color: var(--circl-blue);
+      font-size: 14px;
+    }
+
+    .ai-badge {
+      background: linear-gradient(135deg, var(--circl-blue), var(--circl-teal));
+      color: white;
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .ai-badge.hidden {
+      display: none;
+    }
+
+    .post-meta {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 13px;
+      color: var(--circl-text-secondary);
+      margin-top: 2px;
+    }
+
+    .post-meta i {
+      font-size: 12px;
+    }
+
+    .post-more {
+      color: var(--circl-gray-400);
+      padding: 8px;
+      margin: -8px;
+      border-radius: 50%;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .post-more:hover {
+      background: var(--circl-gray-100);
+      color: var(--circl-text-primary);
+    }
+
+    .post-content {
+      padding: 12px 16px;
+    }
+
+    .post-text {
+      font-size: 15px;
+      line-height: 1.5;
+      color: var(--circl-text-primary);
+      white-space: pre-wrap;
+    }
+
+    .post-hashtag {
+      color: var(--circl-blue);
+      font-weight: 500;
+    }
+
+    /* Image carousel */
+    .post-media {
+      position: relative;
+      background: var(--circl-gray-100);
+    }
+
+    .carousel-track {
+      display: flex;
+      transition: transform 0.3s ease;
+    }
+
+    .carousel-slide {
+      min-width: 100%;
+    }
+
+    .carousel-slide img {
+      width: 100%;
+      display: block;
+      object-fit: contain;
+    }
+
+    .carousel-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 40px;
+      height: 40px;
+      background: var(--circl-white);
+      box-shadow: var(--circl-shadow-lg);
+      border: none;
+      border-radius: 50%;
+      color: var(--circl-text-primary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      z-index: 10;
+    }
+
+    .carousel-nav:hover {
+      background: var(--circl-gray-100);
+      transform: translateY(-50%) scale(1.05);
+    }
+
+    .carousel-nav.prev { left: 12px; }
+    .carousel-nav.next { right: 12px; }
+
+    .carousel-counter {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(0, 0, 0, 0.6);
+      color: white;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 500;
+      z-index: 10;
+    }
+
+    .carousel-dots {
+      position: absolute;
+      bottom: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 6px;
+      padding: 6px 10px;
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 12px;
+    }
+
+    .carousel-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.5);
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .carousel-dot.active {
+      background: #fff;
+      transform: scale(1.2);
+    }
+
+    /* Post reactions bar */
+    .post-reactions-bar {
+      padding: 10px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--circl-gray-200);
+    }
+
+    .post-reactions-count {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 15px;
+      color: var(--circl-text-secondary);
+    }
+
+    .reaction-icons {
+      display: flex;
+      margin-right: 4px;
+    }
+
+    .reaction-icon {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      color: white;
+      margin-left: -4px;
+      border: 2px solid var(--circl-white);
+    }
+
+    .reaction-icon:first-child { margin-left: 0; }
+    .reaction-icon.like { background: var(--circl-blue); }
+    .reaction-icon.love { background: #F33E58; }
+    .reaction-icon.wow { background: #F7B928; }
+
+    .post-engagement-count {
+      font-size: 15px;
+      color: var(--circl-text-secondary);
+    }
+
+    /* Post Actions */
+    .post-actions {
+      display: flex;
+      padding: 4px 16px;
+    }
+
+    .post-action {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 4px;
+      border-radius: 4px;
+      color: var(--circl-text-secondary);
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .post-action i {
+      font-size: 20px;
+    }
+
+    .post-action:hover {
+      background: var(--circl-gray-100);
+    }
+
+    .post-action.liked {
+      color: var(--circl-blue);
+    }
+
+    .post-action.liked i.far.fa-thumbs-up::before {
+      content: "\f164";
+      font-family: "Font Awesome 6 Free";
+      font-weight: 900;
+    }
+
+    .post-action.shared {
+      color: var(--circl-teal);
+      animation: shareFlash 0.3s ease;
+    }
+
+    @keyframes shareFlash {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(1); }
+    }
+
+    /* RIGHT SIDEBAR - FILTERS */
+    .sidebar-right {
+      width: 360px;
+      flex-shrink: 0;
+      padding: 24px 16px;
+      position: sticky;
+      top: 56px;
+      height: calc(100vh - 56px);
+      overflow-y: auto;
+    }
+
+    .filter-card {
+      background: var(--circl-white);
+      border-radius: 8px;
+      box-shadow: var(--circl-shadow);
+      margin-bottom: 16px;
+      overflow: visible;
+    }
+
+    .filter-card-header {
+      padding: 16px;
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--circl-text-primary);
+      border-bottom: 1px solid var(--circl-gray-200);
+    }
+
+    .filter-group {
+      padding: 12px 16px;
+    }
+
+    .filter-label {
+      font-size: 13px;
+      color: var(--circl-text-secondary);
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    .filter-info {
+      padding: 12px 16px;
+      background: linear-gradient(135deg, rgba(24, 119, 242, 0.1), rgba(0, 163, 163, 0.1));
+      border-top: 1px solid var(--circl-gray-200);
+    }
+
+    .filter-info-text {
+      font-size: 15px;
+      color: var(--circl-blue);
+      font-weight: 600;
+    }
+
+    .filter-info-sub {
+      font-size: 13px;
+      color: var(--circl-text-secondary);
+      margin-top: 4px;
+    }
+
+    /* Choices.js overrides for light theme */
+    .choices {
+      margin-bottom: 0;
+    }
+
+    .choices__inner {
+      background: var(--circl-gray-100) !important;
+      border: 1px solid var(--circl-gray-200) !important;
+      border-radius: 8px !important;
+      min-height: 42px !important;
+      padding: 4px 8px !important;
+    }
+
+    .choices__input {
+      background: transparent !important;
+      color: var(--circl-text-primary) !important;
+    }
+
+    .choices__list--single .choices__item {
+      color: var(--circl-text-primary) !important;
+    }
+
+    .choices__list--dropdown {
+      background: var(--circl-white) !important;
+      border: 1px solid var(--circl-gray-200) !important;
+      border-radius: 8px !important;
+      box-shadow: var(--circl-shadow-lg) !important;
+      z-index: 9999 !important;
+    }
+
+    .choices__list--dropdown .choices__item {
+      color: var(--circl-text-primary) !important;
+      padding: 12px 16px !important;
+    }
+
+    .choices__list--dropdown .choices__item--selectable.is-highlighted {
+      background: var(--circl-gray-100) !important;
+    }
+
+    .choices[data-type*="select-one"]::after {
+      border-color: var(--circl-gray-400) transparent transparent transparent !important;
+    }
+
+    /* Generate Feed Button */
+    .generate-feed-btn {
+      width: 100%;
+      background: linear-gradient(135deg, var(--circl-blue), var(--circl-teal));
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 20px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .generate-feed-btn:hover {
+      transform: scale(1.02);
+      box-shadow: 0 4px 15px rgba(24, 119, 242, 0.4);
+    }
+
+    .generate-feed-btn:active {
+      transform: scale(0.98);
+    }
+
+    /* Mixed Feed Mode Indicator */
+    .feed-mode-indicator {
+      background: linear-gradient(135deg, var(--circl-blue), var(--circl-teal));
+      color: white;
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .feed-mode-indicator button {
+      background: rgba(255,255,255,0.2);
+      border: none;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 13px;
+      transition: background 0.2s;
+    }
+
+    .feed-mode-indicator button:hover {
+      background: rgba(255,255,255,0.3);
+    }
+
+    /* Toggle buttons row */
+    .toggle-row {
+      display: flex;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .toggle-btn {
+      flex: 1;
+      background: var(--circl-gray-100);
+      border: 1px solid var(--circl-gray-200);
+      color: var(--circl-text-secondary);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+    }
+
+    .toggle-btn:hover {
+      background: var(--circl-gray-200);
+      color: var(--circl-text-primary);
+    }
+
+    .toggle-btn.active {
+      background: var(--circl-blue);
+      border-color: var(--circl-blue);
+      color: white;
+    }
+
+    /* Number input row */
+    .input-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .input-label {
+      font-size: 14px;
+      color: var(--circl-text-primary);
+    }
+
+    .number-input {
+      width: 70px;
+      background: var(--circl-gray-100);
+      border: 1px solid var(--circl-gray-200);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 14px;
+      color: var(--circl-text-primary);
+      text-align: center;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .number-input:focus {
+      border-color: var(--circl-blue);
+    }
+
+    /* ============================================
+       STATES
+       ============================================ */
+    .hidden { display: none !important; }
+
+    .loading, .no-results {
+      padding: 60px;
+      text-align: center;
+      color: var(--circl-text-secondary);
+      background: var(--circl-white);
+      border-radius: 8px;
+      box-shadow: var(--circl-shadow);
+    }
+
+    .loading i {
+      font-size: 32px;
+      color: var(--circl-blue);
+      animation: spin 1s linear infinite;
+      margin-bottom: 16px;
+    }
+
+    .no-results i {
+      font-size: 48px;
+      margin-bottom: 16px;
+      opacity: 0.5;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Scrollbar for light theme */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: var(--circl-gray-100); }
+    ::-webkit-scrollbar-thumb { background: var(--circl-gray-300); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--circl-gray-400); }
+
+    /* ============================================
+       QUALITY CONTROL MODE
+       ============================================ */
+    .qc-container {
+      flex: 1;
+      max-width: 1400px;
+      min-height: 100vh;
+      padding: 24px;
+      margin: 0 auto;
+      display: none;
+    }
+
+    .qc-container.active {
+      display: block;
+    }
+
+    .main-feed.hidden {
+      display: none;
+    }
+
+    .sidebar-right.hidden {
+      display: none !important;
+    }
+
+    .qc-header {
+      background: var(--circl-white);
+      border-radius: 8px;
+      box-shadow: var(--circl-shadow);
+      padding: 16px 20px;
+      margin-bottom: 16px;
+    }
+
+    .qc-header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .qc-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--circl-text-primary);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .qc-title i {
+      color: var(--circl-blue);
+    }
+
+    .qc-progress {
+      font-size: 14px;
+      color: var(--circl-text-secondary);
+    }
+
+    .qc-coder-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .qc-coder-input {
+      background: var(--circl-gray-100);
+      border: 1px solid var(--circl-gray-200);
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 14px;
+      color: var(--circl-text-primary);
+      width: 150px;
+      outline: none;
+    }
+
+    .qc-coder-input:focus {
+      border-color: var(--circl-blue);
+    }
+
+    .qc-filter-toggle {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--circl-text-secondary);
+    }
+
+    .qc-filter-toggle input[type="checkbox"] {
+      accent-color: var(--circl-blue);
+    }
+
+    .qc-content {
+      display: flex;
+      gap: 16px;
+    }
+
+    .qc-image-panel {
+      flex: 1;
+      background: var(--circl-white);
+      border-radius: 8px;
+      box-shadow: var(--circl-shadow);
+      padding: 20px;
+    }
+
+    .qc-image-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .qc-nav-btn {
+      background: var(--circl-gray-100);
+      border: 1px solid var(--circl-gray-200);
+      color: var(--circl-text-primary);
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .qc-nav-btn:hover:not(:disabled) {
+      background: var(--circl-gray-200);
+    }
+
+    .qc-nav-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .qc-image-counter {
+      font-size: 14px;
+      color: var(--circl-text-secondary);
+    }
+
+    .qc-image-wrapper {
+      background: var(--circl-gray-100);
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+
+    .qc-image-wrapper img {
+      width: 100%;
+      display: block;
+    }
+
+    .qc-condition-info {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .qc-condition-tag {
+      background: var(--circl-gray-100);
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 13px;
+      color: var(--circl-text-secondary);
+    }
+
+    .qc-condition-tag.highlight {
+      background: linear-gradient(135deg, var(--circl-blue), var(--circl-teal));
+      color: white;
+    }
+
+    /* QC Form Panel */
+    .qc-form-panel {
+      width: 400px;
+      background: var(--circl-white);
+      border-radius: 8px;
+      box-shadow: var(--circl-shadow);
+      padding: 20px;
+      overflow-y: auto;
+      max-height: calc(100vh - 160px);
+    }
+
+    .qc-form-section {
+      margin-bottom: 24px;
+    }
+
+    .qc-form-section-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--circl-text-primary);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .qc-field {
+      margin-bottom: 16px;
+    }
+
+    .qc-field-label {
+      font-size: 14px;
+      color: var(--circl-text-primary);
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .qc-radio-group {
+      display: flex;
+      gap: 8px;
+    }
+
+    .qc-radio-option {
+      flex: 1;
+      position: relative;
+    }
+
+    .qc-radio-option input {
+      position: absolute;
+      opacity: 0;
+    }
+
+    .qc-radio-option label {
+      display: block;
+      text-align: center;
+      padding: 10px;
+      background: var(--circl-gray-100);
+      border: 1px solid var(--circl-gray-200);
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 13px;
+      transition: all 0.2s;
+    }
+
+    .qc-radio-option input:checked + label {
+      background: var(--circl-blue);
+      border-color: var(--circl-blue);
+      color: white;
+    }
+
+    .qc-radio-option label:hover {
+      border-color: var(--circl-blue);
+    }
+
+    /* Star Rating */
+    .qc-star-rating {
+      display: flex;
+      gap: 4px;
+    }
+
+    .qc-star {
+      font-size: 24px;
+      color: var(--circl-gray-300);
+      cursor: pointer;
+      transition: color 0.15s;
+    }
+
+    .qc-star.active,
+    .qc-star.hover {
+      color: var(--circl-orange);
+    }
+
+    /* Range Slider */
+    .qc-range-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .qc-range {
+      flex: 1;
+      -webkit-appearance: none;
+      background: var(--circl-gray-200);
+      height: 6px;
+      border-radius: 3px;
+      outline: none;
+    }
+
+    .qc-range::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--circl-blue);
+      cursor: pointer;
+    }
+
+    .qc-range-value {
+      min-width: 30px;
+      text-align: center;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--circl-text-primary);
+    }
+
+    /* Valence Scale */
+    .qc-valence-scale {
+      display: flex;
+      justify-content: space-between;
+      gap: 4px;
+    }
+
+    .qc-valence-option {
+      flex: 1;
+      position: relative;
+    }
+
+    .qc-valence-option input {
+      position: absolute;
+      opacity: 0;
+    }
+
+    .qc-valence-option label {
+      display: block;
+      text-align: center;
+      padding: 8px 4px;
+      background: var(--circl-gray-100);
+      border: 1px solid var(--circl-gray-200);
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 11px;
+      transition: all 0.2s;
+    }
+
+    .qc-valence-option:first-child input:checked + label { background: #dc2626; border-color: #dc2626; color: white; }
+    .qc-valence-option:nth-child(2) input:checked + label { background: #f97316; border-color: #f97316; color: white; }
+    .qc-valence-option:nth-child(3) input:checked + label { background: #6b7280; border-color: #6b7280; color: white; }
+    .qc-valence-option:nth-child(4) input:checked + label { background: #22c55e; border-color: #22c55e; color: white; }
+    .qc-valence-option:last-child input:checked + label { background: #16a34a; border-color: #16a34a; color: white; }
+
+    /* Notes */
+    .qc-notes {
+      width: 100%;
+      background: var(--circl-gray-100);
+      border: 1px solid var(--circl-gray-200);
+      border-radius: 8px;
+      padding: 12px;
+      font-size: 14px;
+      color: var(--circl-text-primary);
+      resize: vertical;
+      min-height: 80px;
+      font-family: inherit;
+      outline: none;
+    }
+
+    .qc-notes:focus {
+      border-color: var(--circl-blue);
+    }
+
+    /* Submit Button */
+    .qc-submit-btn {
+      width: 100%;
+      background: var(--circl-green);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 14px;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .qc-submit-btn:hover {
+      background: #3a9e24;
+    }
+
+    .qc-submit-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .qc-status {
+      text-align: center;
+      margin-top: 12px;
+      font-size: 14px;
+    }
+
+    .qc-status.success {
+      color: var(--circl-green);
+    }
+
+    .qc-status.error {
+      color: var(--circl-red);
+    }
+
+    /* Coded indicator */
+    .qc-coded-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--circl-green);
+      color: white;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    /* ============================================
+       COMMENT MODAL (Facebook-style Dialog)
+       ============================================ */
+    .comment-modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(4px);
+      z-index: 10000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .comment-modal-overlay.active {
+      display: flex;
+    }
+
+    .comment-modal {
+      background: var(--circl-white);
+      border-radius: 8px;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+      width: 90%;
+      max-width: 550px;
+      max-height: 90vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .comment-modal-header {
+      padding: 16px;
+      border-bottom: 1px solid var(--circl-gray-200);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .comment-modal-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--circl-text-primary);
+    }
+
+    .comment-modal-close {
+      position: absolute;
+      right: 16px;
+      background: var(--circl-gray-200);
+      border: none;
+      color: var(--circl-text-secondary);
+      font-size: 20px;
+      cursor: pointer;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .comment-modal-close:hover {
+      background: var(--circl-gray-300);
+      color: var(--circl-text-primary);
+    }
+
+    .comment-modal-content {
+      padding: 16px;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .comment-post-preview {
+      padding: 12px;
+      background: var(--circl-gray-100);
+      border-radius: 8px;
+      margin-bottom: 16px;
+    }
+
+    .comment-post-preview-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .comment-post-preview-name {
+      font-weight: 600;
+      font-size: 15px;
+      color: var(--circl-text-primary);
+    }
+
+    .comment-post-preview-handle {
+      color: var(--circl-text-secondary);
+      font-size: 15px;
+    }
+
+    .comment-post-preview-text {
+      font-size: 15px;
+      color: var(--circl-text-primary);
+      line-height: 1.4;
+    }
+
+    .comment-textarea {
+      width: 100%;
+      background: var(--circl-gray-100);
+      border: 1px solid var(--circl-gray-200);
+      border-radius: 8px;
+      padding: 12px;
+      font-size: 15px;
+      color: var(--circl-text-primary);
+      resize: vertical;
+      min-height: 120px;
+      font-family: inherit;
+      outline: none;
+      margin-bottom: 16px;
+    }
+
+    .comment-textarea:focus {
+      border-color: var(--circl-blue);
+    }
+
+    .comment-textarea::placeholder {
+      color: var(--circl-text-secondary);
+    }
+
+    .comment-modal-footer {
+      padding: 16px;
+      border-top: 1px solid var(--circl-gray-200);
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+    }
+
+    .comment-btn {
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+    }
+
+    .comment-btn-cancel {
+      background: var(--circl-gray-200);
+      color: var(--circl-text-primary);
+    }
+
+    .comment-btn-cancel:hover {
+      background: var(--circl-gray-300);
+    }
+
+    .comment-btn-submit {
+      background: var(--circl-blue);
+      color: white;
+    }
+
+    .comment-btn-submit:hover {
+      background: var(--circl-blue-hover);
+    }
+
+    .comment-btn-submit:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* Reaction status notification */
+    .reaction-status {
+      position: fixed;
+      top: 80px;
+      right: 20px;
+      background: var(--circl-white);
+      border-radius: 8px;
+      padding: 12px 20px;
+      font-size: 14px;
+      color: var(--circl-text-primary);
+      z-index: 10001;
+      display: none;
+      align-items: center;
+      gap: 8px;
+      box-shadow: var(--circl-shadow-lg);
+    }
+
+    .reaction-status.active {
+      display: flex;
+    }
+
+    .reaction-status.success {
+      border-left: 4px solid var(--circl-green);
+    }
+
+    .reaction-status.error {
+      border-left: 4px solid var(--circl-red);
+      color: var(--circl-red);
+    }
+
+    /* Responsive */
+    @media (max-width: 1400px) {
+      .sidebar-right { width: 320px; }
+    }
+
+    @media (max-width: 1200px) {
+      .sidebar-right { display: none; }
+      .main-feed { max-width: 100%; }
+    }
+
+    @media (max-width: 900px) {
+      .sidebar-left { width: 72px; padding: 8px 4px; }
+      .sidebar-nav-item { padding: 10px; justify-content: center; }
+      .sidebar-nav-item span { display: none; }
+      .sidebar-section-title { display: none; }
+      .header-center { display: none; }
+      .main-feed { padding: 16px 12px; }
+    }
+
+    @media (max-width: 768px) {
+      .sidebar-left { display: none; }
+      .header-search { width: 180px; }
+      .circl-logo-text { display: none; }
+      .main-feed { padding: 12px 8px; }
+      .create-post-box { padding: 10px 12px; }
+      .create-post-action span { display: none; }
+      .post-header-section { padding: 10px 12px 0; }
+      .post-content { padding: 10px 12px; }
+      .post-actions { padding: 4px 8px; }
+      .post-action { font-size: 14px; padding: 10px 4px; }
+      .post-action span { display: none; }
+      .post-reactions-bar { padding: 8px 12px; }
+      .qc-content { flex-direction: column; }
+      .qc-form-panel { width: 100%; max-height: none; }
+    }
+
+    @media (max-width: 480px) {
+      .header-search { display: none; }
+      .header-right { gap: 4px; }
+      .header-icon-btn { width: 36px; height: 36px; font-size: 16px; }
+      .header-profile { width: 36px; height: 36px; font-size: 12px; }
+      .circl-logo-icon { width: 36px; height: 36px; }
+      .top-header { height: 52px; padding: 0 8px; }
+      .app-container { padding-top: 52px; }
+      .main-feed { padding: 8px 4px; }
+      .create-post-box { border-radius: 0; margin-bottom: 8px; }
+      .post { border-radius: 0; margin-bottom: 8px; }
+      .post-avatar { width: 36px; height: 36px; font-size: 12px; }
+      .post-name { font-size: 14px; }
+      .post-meta { font-size: 12px; }
+      .post-text { font-size: 14px; }
+      .carousel-nav { width: 32px; height: 32px; }
+      .carousel-counter { font-size: 11px; padding: 3px 8px; }
+      .filter-card { border-radius: 0; }
+    }
+
+    /* Mobile bottom navigation */
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 56px;
+      background: var(--circl-white);
+      box-shadow: 0 -1px 4px rgba(0,0,0,0.1);
+      z-index: 1000;
+      justify-content: space-around;
+      align-items: center;
+      padding: 0 8px;
+    }
+
+    .mobile-nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 16px;
+      color: var(--circl-gray-400);
+      font-size: 10px;
+      text-decoration: none;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .mobile-nav-item i { font-size: 22px; margin-bottom: 2px; }
+    .mobile-nav-item.active { color: var(--circl-blue); }
+
+    @media (max-width: 768px) {
+      .mobile-nav { display: flex; }
+      .app-container { padding-bottom: 56px; }
+    }
+  </style>
+</head>
+<body>
+  <!-- TOP HEADER BAR -->
+  <header class="top-header">
+    <div class="header-left">
+      <a class="circl-logo" href="#">
+        <div class="circl-logo-icon">
+          <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#1877F2"/>
+                <stop offset="100%" style="stop-color:#00A3A3"/>
+              </linearGradient>
+            </defs>
+            <circle cx="20" cy="20" r="20" fill="url(#logoGrad)"/>
+            <circle cx="15" cy="16" r="7" stroke="white" stroke-width="2.5" fill="none"/>
+            <circle cx="25" cy="24" r="7" stroke="white" stroke-width="2.5" fill="none"/>
+          </svg>
+        </div>
+        <span class="circl-logo-text">Circl</span>
+      </a>
+      <div class="header-search">
+        <i class="fas fa-magnifying-glass"></i>
+        <input type="text" placeholder="Search Circl" disabled>
+      </div>
+    </div>
+    
+    <div class="header-center">
+      <div class="header-nav-item active" id="nav-home-top" onclick="switchMode('feed')">
+        <i class="fas fa-house"></i>
+      </div>
+      <div class="header-nav-item">
+        <i class="fas fa-user-group"></i>
+      </div>
+      <div class="header-nav-item">
+        <i class="fas fa-tv"></i>
+      </div>
+      <div class="header-nav-item">
+        <i class="fas fa-store"></i>
+      </div>
+      <div class="header-nav-item" id="nav-qc-top" onclick="switchMode('qc')">
+        <i class="fas fa-clipboard-check"></i>
+      </div>
+    </div>
+    
+    <div class="header-right">
+      <button class="header-icon-btn"><i class="fas fa-grip"></i></button>
+      <button class="header-icon-btn"><i class="fab fa-facebook-messenger"></i></button>
+      <button class="header-icon-btn"><i class="fas fa-bell"></i></button>
+      <div class="header-profile">U</div>
+    </div>
+  </header>
+
+  <div class="app-container">
+    <!-- LEFT SIDEBAR -->
+    <aside class="sidebar-left">
+      <a class="sidebar-nav-item active" id="nav-home" onclick="switchMode('feed')">
+        <div class="sidebar-nav-icon"><i class="fas fa-house"></i></div>
+        <span>Home</span>
+      </a>
+      <a class="sidebar-nav-item">
+        <div class="sidebar-nav-icon"><i class="fas fa-user-group"></i></div>
+        <span>Friends</span>
+      </a>
+      <a class="sidebar-nav-item">
+        <div class="sidebar-nav-icon"><i class="fas fa-tv"></i></div>
+        <span>Watch</span>
+      </a>
+      <a class="sidebar-nav-item">
+        <div class="sidebar-nav-icon"><i class="fas fa-store"></i></div>
+        <span>Marketplace</span>
+      </a>
+      <a class="sidebar-nav-item">
+        <div class="sidebar-nav-icon"><i class="fas fa-users"></i></div>
+        <span>Groups</span>
+      </a>
+      
+      <div class="sidebar-divider"></div>
+      
+      <a class="sidebar-nav-item" id="nav-qc" onclick="switchMode('qc')">
+        <div class="sidebar-nav-icon"><i class="fas fa-clipboard-check"></i></div>
+        <span>Quality Control</span>
+      </a>
+      <a class="sidebar-nav-item">
+        <div class="sidebar-nav-icon"><i class="fas fa-bookmark"></i></div>
+        <span>Saved</span>
+      </a>
+      <a class="sidebar-nav-item">
+        <div class="sidebar-nav-icon"><i class="fas fa-clock-rotate-left"></i></div>
+        <span>Memories</span>
+      </a>
+      
+      <div class="sidebar-divider"></div>
+      <div class="sidebar-section-title">Shortcuts</div>
+      
+      <a class="sidebar-nav-item">
+        <div class="sidebar-nav-icon" style="background: #4267B2;"><i class="fas fa-microscope" style="color: white; font-size: 16px;"></i></div>
+        <span>AI Experiment</span>
+      </a>
+    </aside>
+
+    <!-- MAIN FEED -->
+    <main class="main-feed">
+      <!-- Create Post Box -->
+      <div class="create-post-box">
+        <div class="create-post-top">
+          <div class="create-post-avatar">U</div>
+          <div class="create-post-input">What's on your mind?</div>
+        </div>
+        <div class="create-post-divider"></div>
+        <div class="create-post-actions">
+          <div class="create-post-action">
+            <i class="fas fa-video"></i>
+            <span>Live video</span>
+          </div>
+          <div class="create-post-action">
+            <i class="fas fa-images"></i>
+            <span>Photo/video</span>
+          </div>
+          <div class="create-post-action">
+            <i class="far fa-face-smile"></i>
+            <span>Feeling/activity</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Loading -->
+      <div class="loading" id="loading">
+        <i class="fas fa-spinner"></i>
+        <p>Loading posts...</p>
+      </div>
+
+      <!-- Posts Container -->
+      <div id="posts-container"></div>
+
+      <!-- No Results -->
+      <div class="no-results hidden" id="no-results">
+        <i class="far fa-face-frown"></i>
+        <h3>No posts found</h3>
+        <p>Try changing the filter combination</p>
+      </div>
+    </main>
+
+    <!-- QUALITY CONTROL MODE -->
+    <div class="qc-container" id="qc-container">
+      <div class="qc-header">
+        <div class="qc-header-top">
+          <div class="qc-title"><i class="fas fa-clipboard-check"></i> Quality Control</div>
+          <div class="qc-progress" id="qc-progress">Image 1 of 0</div>
+        </div>
+        <div class="qc-coder-row">
+          <label style="font-size: 14px; color: var(--circl-text-secondary);">Coder ID:</label>
+          <input type="text" class="qc-coder-input" id="qc-coder-id" placeholder="Enter your ID">
+          <div class="qc-filter-toggle">
+            <input type="checkbox" id="qc-uncoded-only">
+            <label for="qc-uncoded-only">Show uncoded only</label>
+          </div>
+        </div>
+      </div>
+
+      <div class="qc-content">
+        <div class="qc-image-panel">
+          <div class="qc-image-nav">
+            <button class="qc-nav-btn" id="qc-prev" onclick="qcNavigate(-1)">
+              <i class="fas fa-chevron-left"></i> Previous
+            </button>
+            <div class="qc-image-counter" id="qc-counter">1 / 0</div>
+            <button class="qc-nav-btn" id="qc-next" onclick="qcNavigate(1)">
+              Next <i class="fas fa-chevron-right"></i>
+            </button>
+          </div>
+
+          <div class="qc-image-wrapper">
+            <img id="qc-image" src="" alt="Image to rate">
+          </div>
+
+          <div class="qc-condition-info" id="qc-condition-info">
+            <!-- Condition tags will be inserted here -->
+          </div>
+        </div>
+
+        <div class="qc-form-panel">
+          <form id="qc-form" onsubmit="submitQCForm(event)">
+            <!-- Binary Criteria -->
+            <div class="qc-form-section">
+              <div class="qc-form-section-title">Quality Criteria</div>
+              
+              <div class="qc-field">
+                <label class="qc-field-label">No prominent weird/garbled text?</label>
+                <div class="qc-radio-group">
+                  <div class="qc-radio-option">
+                    <input type="radio" name="no_weird_text" id="nwt-yes" value="yes" required>
+                    <label for="nwt-yes">Yes</label>
+                  </div>
+                  <div class="qc-radio-option">
+                    <input type="radio" name="no_weird_text" id="nwt-no" value="no">
+                    <label for="nwt-no">No</label>
+                  </div>
+                  <div class="qc-radio-option">
+                    <input type="radio" name="no_weird_text" id="nwt-unclear" value="unclear">
+                    <label for="nwt-unclear">Unclear</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="qc-field">
+                <label class="qc-field-label">Outgroup member(s) present?</label>
+                <div class="qc-radio-group">
+                  <div class="qc-radio-option">
+                    <input type="radio" name="outgroup_present" id="op-yes" value="yes" required>
+                    <label for="op-yes">Yes</label>
+                  </div>
+                  <div class="qc-radio-option">
+                    <input type="radio" name="outgroup_present" id="op-no" value="no">
+                    <label for="op-no">No</label>
+                  </div>
+                  <div class="qc-radio-option">
+                    <input type="radio" name="outgroup_present" id="op-unclear" value="unclear">
+                    <label for="op-unclear">Unclear</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="qc-field">
+                <label class="qc-field-label">Looks authentic/realistic (not obviously AI)?</label>
+                <div class="qc-radio-group">
+                  <div class="qc-radio-option">
+                    <input type="radio" name="looks_authentic" id="la-yes" value="yes" required>
+                    <label for="la-yes">Yes</label>
+                  </div>
+                  <div class="qc-radio-option">
+                    <input type="radio" name="looks_authentic" id="la-no" value="no">
+                    <label for="la-no">No</label>
+                  </div>
+                  <div class="qc-radio-option">
+                    <input type="radio" name="looks_authentic" id="la-unclear" value="unclear">
+                    <label for="la-unclear">Unclear</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="qc-field">
+                <label class="qc-field-label">Age representation matches condition?</label>
+                <div class="qc-radio-group">
+                  <div class="qc-radio-option">
+                    <input type="radio" name="age_accurate" id="aa-yes" value="yes" required>
+                    <label for="aa-yes">Yes</label>
+                  </div>
+                  <div class="qc-radio-option">
+                    <input type="radio" name="age_accurate" id="aa-no" value="no">
+                    <label for="aa-no">No</label>
+                  </div>
+                  <div class="qc-radio-option">
+                    <input type="radio" name="age_accurate" id="aa-unclear" value="unclear">
+                    <label for="aa-unclear">Unclear</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="qc-field">
+                <label class="qc-field-label">Gender representation matches condition?</label>
+                <div class="qc-radio-group">
+                  <div class="qc-radio-option">
+                    <input type="radio" name="gender_accurate" id="ga-yes" value="yes" required>
+                    <label for="ga-yes">Yes</label>
+                  </div>
+                  <div class="qc-radio-option">
+                    <input type="radio" name="gender_accurate" id="ga-no" value="no">
+                    <label for="ga-no">No</label>
+                  </div>
+                  <div class="qc-radio-option">
+                    <input type="radio" name="gender_accurate" id="ga-unclear" value="unclear">
+                    <label for="ga-unclear">Unclear</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="qc-field">
+                <label class="qc-field-label">Suitable for experiment (overall)?</label>
+                <div class="qc-radio-group">
+                  <div class="qc-radio-option">
+                    <input type="radio" name="suitable" id="su-yes" value="yes" required>
+                    <label for="su-yes">Yes</label>
+                  </div>
+                  <div class="qc-radio-option">
+                    <input type="radio" name="suitable" id="su-no" value="no">
+                    <label for="su-no">No</label>
+                  </div>
+                  <div class="qc-radio-option">
+                    <input type="radio" name="suitable" id="su-unclear" value="unclear">
+                    <label for="su-unclear">Unclear</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Scales -->
+            <div class="qc-form-section">
+              <div class="qc-form-section-title">Ratings</div>
+
+              <div class="qc-field">
+                <label class="qc-field-label">Image Quality</label>
+                <div class="qc-star-rating" id="qc-star-rating">
+                  <i class="fas fa-star qc-star" data-value="1"></i>
+                  <i class="fas fa-star qc-star" data-value="2"></i>
+                  <i class="fas fa-star qc-star" data-value="3"></i>
+                  <i class="fas fa-star qc-star" data-value="4"></i>
+                  <i class="fas fa-star qc-star" data-value="5"></i>
+                </div>
+                <input type="hidden" name="image_quality" id="image_quality" value="0" required>
+              </div>
+
+              <div class="qc-field">
+                <label class="qc-field-label">Emotional Intensity (0-10)</label>
+                <div class="qc-range-container">
+                  <input type="range" class="qc-range" name="emotional_intensity" id="emotional_intensity" min="0" max="10" value="5">
+                  <span class="qc-range-value" id="intensity-value">5</span>
+                </div>
+              </div>
+
+              <div class="qc-field">
+                <label class="qc-field-label">Emotional Valence</label>
+                <div class="qc-valence-scale">
+                  <div class="qc-valence-option">
+                    <input type="radio" name="emotional_valence" id="ev-vn" value="very_negative" required>
+                    <label for="ev-vn">Very Neg</label>
+                  </div>
+                  <div class="qc-valence-option">
+                    <input type="radio" name="emotional_valence" id="ev-n" value="negative">
+                    <label for="ev-n">Negative</label>
+                  </div>
+                  <div class="qc-valence-option">
+                    <input type="radio" name="emotional_valence" id="ev-neu" value="neutral">
+                    <label for="ev-neu">Neutral</label>
+                  </div>
+                  <div class="qc-valence-option">
+                    <input type="radio" name="emotional_valence" id="ev-p" value="positive">
+                    <label for="ev-p">Positive</label>
+                  </div>
+                  <div class="qc-valence-option">
+                    <input type="radio" name="emotional_valence" id="ev-vp" value="very_positive">
+                    <label for="ev-vp">Very Pos</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Notes -->
+            <div class="qc-form-section">
+              <div class="qc-form-section-title">Notes</div>
+              <textarea class="qc-notes" name="notes" id="qc-notes" placeholder="Any additional observations..."></textarea>
+            </div>
+
+            <!-- Submit -->
+            <button type="submit" class="qc-submit-btn" id="qc-submit-btn">
+              <i class="fas fa-check"></i> Submit & Next
+            </button>
+            <div class="qc-status" id="qc-status"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT SIDEBAR - FILTERS -->
+    <aside class="sidebar-right">
+      <div class="filter-card">
+        <div class="filter-card-header">Filter Posts</div>
+        
+        <div class="filter-group">
+          <div class="filter-label">Age Group</div>
+          <select id="filter-age"></select>
+        </div>
+        
+        <div class="filter-group">
+          <div class="filter-label">Gender</div>
+          <select id="filter-gender"></select>
+        </div>
+        
+        <div class="filter-group">
+          <div class="filter-label">Policy Issue</div>
+          <select id="filter-policy"></select>
+        </div>
+        
+        <div class="filter-group">
+          <div class="filter-label">Ideology</div>
+          <select id="filter-ideology"></select>
+        </div>
+
+        <div class="filter-info">
+          <div class="filter-info-text"><span id="visible-count">0</span> post(s) shown</div>
+          <div class="filter-info-sub">Matching current filters</div>
+        </div>
+
+        <div class="filter-group">
+          <div class="input-row">
+            <label class="input-label">Additional posts</label>
+            <input type="number" id="additional-posts" value="4" min="0" max="20" class="number-input">
+          </div>
+          <button class="generate-feed-btn" onclick="generateMixedFeed()">
+            <i class="fas fa-shuffle"></i> Generate Mixed Feed
+          </button>
+          <div class="toggle-row">
+            <button class="toggle-btn" id="toggle-ai-label" onclick="toggleAILabel()">
+              <i class="fas fa-tag"></i> Show AI Label
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="filter-card">
+        <div class="filter-card-header">Keyboard Shortcuts</div>
+        <div class="filter-group" style="font-size: 13px; color: var(--circl-text-secondary);">
+          <p style="margin-bottom: 8px;"><kbd style="background: var(--circl-gray-200); padding: 2px 6px; border-radius: 4px;">←</kbd> <kbd style="background: var(--circl-gray-200); padding: 2px 6px; border-radius: 4px;">→</kbd> Navigate images</p>
+          <p>Click image carousel to focus</p>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- MOBILE BOTTOM NAVIGATION -->
+  <nav class="mobile-nav">
+    <a class="mobile-nav-item active" onclick="switchMode('feed')">
+      <i class="fas fa-house"></i>
+      <span>Home</span>
+    </a>
+    <a class="mobile-nav-item">
+      <i class="fas fa-user-group"></i>
+      <span>Friends</span>
+    </a>
+    <a class="mobile-nav-item">
+      <i class="fas fa-tv"></i>
+      <span>Watch</span>
+    </a>
+    <a class="mobile-nav-item" onclick="switchMode('qc')">
+      <i class="fas fa-clipboard-check"></i>
+      <span>QC</span>
+    </a>
+    <a class="mobile-nav-item">
+      <i class="fas fa-bars"></i>
+      <span>Menu</span>
+    </a>
+  </nav>
+
+  <!-- COMMENT MODAL -->
+  <div class="comment-modal-overlay" id="comment-modal-overlay">
+    <div class="comment-modal">
+      <div class="comment-modal-header">
+        <div class="comment-modal-title">Write a comment</div>
+        <button class="comment-modal-close" onclick="hideCommentModal()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="comment-modal-content">
+        <div class="comment-post-preview" id="comment-post-preview">
+          <!-- Post preview will be inserted here -->
+        </div>
+        <textarea 
+          class="comment-textarea" 
+          id="comment-textarea" 
+          placeholder="Write a comment..."
+          maxlength="500"
+        ></textarea>
+      </div>
+      <div class="comment-modal-footer">
+        <button class="comment-btn comment-btn-cancel" onclick="hideCommentModal()">Cancel</button>
+        <button class="comment-btn comment-btn-submit" onclick="submitComment()">
+          <i class="fas fa-paper-plane"></i> Comment
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- REACTION STATUS NOTIFICATION -->
+  <div class="reaction-status" id="reaction-status"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+  <script>
+    let conditionsData = null;
+    let choicesInstances = {};
+    let isMixedFeedMode = false;
+    let showAILabel = false;
+
+    // Post templates (Facebook style - more casual)
+    const postTemplates = [
+      "Dit is wat er echt speelt in onze samenleving. We moeten hier iets aan doen! 🏠 {hashtags}",
+      "Kijk naar dit beeld en vertel me dat dit acceptabel is. {hashtags}",
+      "De realiteit van vandaag. Wanneer gaan we eindelijk actie ondernemen? {hashtags}",
+      "Dit raakt miljoenen Nederlanders. Het is tijd voor verandering. 💪 {hashtags}",
+      "Herkenbaar? Dit is de werkelijkheid voor veel mensen in ons land. {hashtags}",
+      "We kunnen niet langer wegkijken. Dit moet anders! {hashtags}",
+      "Een beeld zegt meer dan duizend woorden. Dit is Nederland vandaag. {hashtags}",
+      "Hoelang blijven we dit nog accepteren? Er moet nu iets gebeuren. {hashtags}",
+      "Stem van de straat. Dit is wat mensen écht bezighoudt. {hashtags}",
+      "De feiten spreken voor zich. Tijd om te handelen! {hashtags}"
+    ];
+
+    async function loadData() {
+      try {
+        const response = await fetch('../conditions.json');
+        if (!response.ok) throw new Error('Failed to load');
+        conditionsData = await response.json();
+        initFilters();
+        renderPosts();
+        applyFilters();
+        document.getElementById('loading').classList.add('hidden');
+      } catch (error) {
+        document.getElementById('loading').innerHTML = `
+          <i class="fas fa-exclamation-triangle" style="animation:none; color: var(--circl-red);"></i>
+          <p style="margin-top:12px; color: var(--circl-text-primary);">Could not load posts</p>
+          <p style="font-size:13px; color: var(--circl-text-secondary); margin-top:8px">Run: python3 generate_conditions_json.py</p>
+        `;
+      }
+    }
+
+    function initFilters() {
+      const { filters } = conditionsData;
+      
+      populateSelect('filter-age', filters.age_groups);
+      populateSelect('filter-gender', filters.genders, v => v.charAt(0).toUpperCase() + v.slice(1));
+      populateSelect('filter-policy', filters.policy_issues, v => v.replace(/_/g, ' '));
+      populateSelect('filter-ideology', filters.ideologies, v => v.charAt(0).toUpperCase() + v.slice(1));
+      
+      ['filter-age', 'filter-gender', 'filter-policy', 'filter-ideology'].forEach(id => {
+        const el = document.getElementById(id);
+        choicesInstances[id] = new Choices(el, {
+          searchEnabled: false,
+          itemSelectText: '',
+          shouldSort: false
+        });
+        el.addEventListener('change', applyFilters);
+      });
+    }
+
+    function populateSelect(id, values, labelFn = v => v) {
+      const select = document.getElementById(id);
+      values.forEach((value, i) => {
+        const opt = document.createElement('option');
+        opt.value = value;
+        opt.textContent = labelFn(value);
+        if (i === 0) opt.selected = true;
+        select.appendChild(opt);
+      });
+    }
+
+    function renderPosts() {
+      const container = document.getElementById('posts-container');
+      container.innerHTML = '';
+      
+      conditionsData.conditions.forEach((cond, idx) => {
+        container.appendChild(createPost(cond, idx));
+      });
+      
+      initCarousels();
+      attachReactionListeners();
+    }
+
+    function createPost(cond, idx) {
+      const post = document.createElement('article');
+      post.className = 'post ai-post';
+      post.dataset.age = cond.age_group;
+      post.dataset.gender = cond.gender;
+      post.dataset.policy = cond.policy_issue;
+      post.dataset.ideology = cond.ideology;
+      
+      const postId = `post-${cond.condition_id}-${idx}`;
+      post.dataset.postId = postId;
+      
+      const name = `${cond.gender.charAt(0).toUpperCase() + cond.gender.slice(1)} ${cond.age_group}`;
+      const handle = `${cond.ideology.charAt(0).toUpperCase() + cond.ideology.slice(1)} voter`;
+      const time = `${Math.floor(Math.random() * 23) + 1}h`;
+      const initials = cond.age_group.slice(0, 2) + cond.gender.charAt(0).toUpperCase();
+      
+      const hashtags = `#${cond.ideology} #${cond.policy_issue.replace(/_/g, '')}`;
+      const postTextContent = postTemplates[Math.floor(Math.random() * postTemplates.length)]
+        .replace('{hashtags}', `<span class="post-hashtag">${hashtags}</span>`);
+      
+      const slidesHtml = cond.images.map(img => 
+        `<div class="carousel-slide"><img src="../generated_images/${cond.image_dir}/${img}" loading="lazy"></div>`
+      ).join('');
+      
+      const dotsHtml = cond.images.map((_, i) => 
+        `<button class="carousel-dot${i === 0 ? ' active' : ''}" data-index="${i}"></button>`
+      ).join('');
+      
+      const eng = {
+        likes: Math.floor(Math.random() * 500) + 50,
+        comments: Math.floor(Math.random() * 50) + 5,
+        shares: Math.floor(Math.random() * 200) + 20
+      };
+      
+      const badgeClass = showAILabel ? 'ai-badge' : 'ai-badge hidden';
+      
+      post.innerHTML = `
+        <div class="post-header-section">
+          <div class="post-header">
+            <div class="post-avatar">${initials}</div>
+            <div class="post-header-info">
+              <div class="post-name-row">
+                <span class="post-name">${name}</span>
+                <i class="fas fa-circle-check post-verified"></i>
+                <span class="${badgeClass}">AI Generated</span>
+              </div>
+              <div class="post-meta">
+                <span>${handle}</span>
+                <span>·</span>
+                <span>${time}</span>
+                <span>·</span>
+                <i class="fas fa-earth-americas"></i>
+              </div>
+            </div>
+            <div class="post-more"><i class="fas fa-ellipsis"></i></div>
+          </div>
+        </div>
+        <div class="post-content">
+          <div class="post-text">${postTextContent}</div>
+        </div>
+        <div class="post-media" data-carousel="${idx}">
+          <div class="carousel-counter"><span class="current">1</span>/${cond.images.length}</div>
+          <div class="carousel-track">${slidesHtml}</div>
+          <button class="carousel-nav prev"><i class="fas fa-chevron-left"></i></button>
+          <button class="carousel-nav next"><i class="fas fa-chevron-right"></i></button>
+          <div class="carousel-dots">${dotsHtml}</div>
+        </div>
+        <div class="post-reactions-bar">
+          <div class="post-reactions-count">
+            <div class="reaction-icons">
+              <div class="reaction-icon like"><i class="fas fa-thumbs-up"></i></div>
+            </div>
+            <span class="like-count">${eng.likes}</span>
+          </div>
+          <div class="post-engagement-count"><span class="comment-count">${eng.comments}</span> comments · <span class="share-count">${eng.shares}</span> shares</div>
+        </div>
+        <div class="post-actions">
+          <div class="post-action like" data-action="like"><i class="far fa-thumbs-up"></i> <span>Like</span></div>
+          <div class="post-action reply" data-action="comment"><i class="far fa-comment"></i> <span>Comment</span></div>
+          <div class="post-action repost" data-action="share"><i class="fas fa-share"></i> <span>Share</span></div>
+        </div>
+      `;
+      
+      // Store post data for interactions
+      post._postData = {
+        postId: postId,
+        postType: 'ai',
+        conditionId: cond.condition_id,
+        name: name,
+        handle: handle,
+        text: postTextContent.replace(/<[^>]*>/g, ''),
+        likes: eng.likes,
+        comments: eng.comments,
+        shares: eng.shares
+      };
+      
+      return post;
+    }
+
+    function applyFilters() {
+      if (isMixedFeedMode) {
+        generateMixedFeed();
+        return;
+      }
+      
+      const age = document.getElementById('filter-age').value;
+      const gender = document.getElementById('filter-gender').value;
+      const policy = document.getElementById('filter-policy').value;
+      const ideology = document.getElementById('filter-ideology').value;
+      
+      let count = 0;
+      document.querySelectorAll('.post').forEach(post => {
+        const match = post.dataset.age === age && 
+                      post.dataset.gender === gender && 
+                      post.dataset.policy === policy && 
+                      post.dataset.ideology === ideology;
+        post.classList.toggle('hidden', !match);
+        if (match) count++;
+      });
+      
+      document.getElementById('visible-count').textContent = count;
+      document.getElementById('no-results').classList.toggle('hidden', count > 0);
+      document.getElementById('posts-container').classList.toggle('hidden', count === 0);
+    }
+
+    function initCarousels() {
+      document.querySelectorAll('[data-carousel]').forEach(carousel => {
+        const track = carousel.querySelector('.carousel-track');
+        const slides = carousel.querySelectorAll('.carousel-slide');
+        const dots = carousel.querySelectorAll('.carousel-dot');
+        const counter = carousel.querySelector('.current');
+        let current = 0;
+        
+        const go = (i) => {
+          if (i < 0) i = slides.length - 1;
+          if (i >= slides.length) i = 0;
+          current = i;
+          track.style.transform = `translateX(-${current * 100}%)`;
+          dots.forEach((d, j) => d.classList.toggle('active', j === current));
+          if (counter) counter.textContent = current + 1;
+        };
+        
+        carousel.querySelector('.prev')?.addEventListener('click', e => { e.stopPropagation(); go(current - 1); });
+        carousel.querySelector('.next')?.addEventListener('click', e => { e.stopPropagation(); go(current + 1); });
+        dots.forEach((d, i) => d.addEventListener('click', e => { e.stopPropagation(); go(i); }));
+        
+        carousel.addEventListener('keydown', e => {
+          if (e.key === 'ArrowLeft') go(current - 1);
+          if (e.key === 'ArrowRight') go(current + 1);
+        });
+        carousel.tabIndex = 0;
+      });
+    }
+
+    // ============================================
+    // MIXED FEED GENERATOR
+    // ============================================
+    
+    const placeholderNames = [
+      { name: 'Emma de Vries', handle: 'Friend', initials: 'EV' },
+      { name: 'Thomas Bakker', handle: 'Friend', initials: 'TB' },
+      { name: 'Sophie Jansen', handle: 'Friend', initials: 'SJ' },
+      { name: 'Lars van Dijk', handle: 'Friend', initials: 'LD' },
+      { name: 'Lisa Mulder', handle: 'Friend', initials: 'LM' },
+      { name: 'Max Visser', handle: 'Suggested for you', initials: 'MV' },
+      { name: 'Anna Smit', handle: 'Friend', initials: 'AS' },
+      { name: 'Daan de Boer', handle: 'Suggested for you', initials: 'DB' },
+      { name: 'Fleur Hendriks', handle: 'Friend', initials: 'FH' },
+      { name: 'Bram Peters', handle: 'Friend', initials: 'BP' }
+    ];
+
+    const placeholderPosts = [
+      "Net terug van een geweldige wandeling in het park. De natuur is prachtig deze tijd van het jaar! 🌳",
+      "Wie heeft er tips voor een goed restaurant in Amsterdam? Vieren dit weekend een verjaardag 🎂",
+      "Die nieuwe serie op Netflix is echt verslavend. Al 5 afleveringen gekeken vanavond 😅",
+      "Eindelijk vrijdag! Wat zijn jullie plannen voor het weekend? 🎉",
+      "Koffie is gezet, laptop open, laten we aan de slag gaan. Productieve dag iedereen! ☕",
+      "Mijn kat heeft weer iets kapot gemaakt. Dit is waarom we geen mooie dingen kunnen hebben 🐱",
+      "Wat een weer vandaag! Perfect voor een terrasje ☀️",
+      "Boek uitgelezen. Aanrader: 'De zeven zussen'. Iemand andere tips?",
+      "Update: de IKEA kast is EINDELIJK in elkaar gezet. Slechts 4 uur en 2 mentale breakdowns later 🔧",
+      "Thuiswerken dag 847: ik praat nu tegen mijn planten. Ze luisteren beter dan mijn collega's 🪴",
+      "PSA: de stroopwafels bij Albert Heijn zijn in de aanbieding. Je bent welkom.",
+      "Nog 3 maanden tot vakantie. Ik tel af. ✈️",
+      "Waarom is de NS altijd vertraagd als ik op tijd ben, maar op tijd als ik te laat ben? 🚂",
+      "Net ontdekt dat mijn buurman ook op Circl zit. Awkward wave incoming 👋",
+      "Tip: nooit boodschappen doen als je honger hebt. Mijn rekening was €120 voor 'snacks' 🛒"
+    ];
+
+    function generateMixedFeed() {
+      isMixedFeedMode = true;
+      
+      const age = document.getElementById('filter-age').value;
+      const gender = document.getElementById('filter-gender').value;
+      const policy = document.getElementById('filter-policy').value;
+      const ideology = document.getElementById('filter-ideology').value;
+      
+      const aiCondition = conditionsData.conditions.find(c => 
+        c.age_group === age && 
+        c.gender === gender && 
+        c.policy_issue === policy && 
+        c.ideology === ideology
+      );
+      
+      if (!aiCondition) {
+        alert('No matching condition found. Please check your filter selection.');
+        return;
+      }
+      
+      const container = document.getElementById('posts-container');
+      container.innerHTML = '';
+      
+      const indicator = document.createElement('div');
+      indicator.className = 'feed-mode-indicator';
+      indicator.innerHTML = `
+        <span><i class="fas fa-shuffle"></i> Mixed Feed Mode</span>
+        <button onclick="exitMixedFeed()"><i class="fas fa-times"></i> Exit</button>
+      `;
+      container.appendChild(indicator);
+      
+      const posts = [];
+      const additionalPosts = parseInt(document.getElementById('additional-posts').value) || 4;
+      
+      for (let i = 0; i < additionalPosts; i++) {
+        posts.push(createPlaceholderPost(i));
+      }
+      
+      posts.push(createAIPost(aiCondition));
+      shuffleArray(posts);
+      
+      posts.forEach(post => container.appendChild(post));
+      initCarousels();
+      attachReactionListeners();
+      
+      document.getElementById('no-results').classList.add('hidden');
+      document.getElementById('visible-count').textContent = `${additionalPosts + 1} (mixed)`;
+      updateToggleButtonState();
+    }
+    
+    function toggleAILabel() {
+      showAILabel = !showAILabel;
+      updateToggleButtonState();
+      
+      document.querySelectorAll('.ai-badge').forEach(badge => {
+        badge.classList.toggle('hidden', !showAILabel);
+      });
+    }
+    
+    function updateToggleButtonState() {
+      const btn = document.getElementById('toggle-ai-label');
+      if (btn) {
+        btn.classList.toggle('active', showAILabel);
+      }
+    }
+
+    function createPlaceholderPost(index) {
+      const post = document.createElement('article');
+      post.className = 'post placeholder-post';
+      
+      const postId = `placeholder-${index}-${Date.now()}`;
+      post.dataset.postId = postId;
+      
+      const person = placeholderNames[Math.floor(Math.random() * placeholderNames.length)];
+      const postText = placeholderPosts[Math.floor(Math.random() * placeholderPosts.length)];
+      const time = `${Math.floor(Math.random() * 23) + 1}h`;
+      
+      const imageId = Math.floor(Math.random() * 1000);
+      const hasImage = Math.random() > 0.4;
+      
+      const imageHtml = hasImage ? `
+        <div class="post-media" style="border-radius: 0;">
+          <img src="https://picsum.photos/seed/${imageId}/600/400" loading="lazy" style="width: 100%; display: block;">
+        </div>
+      ` : '';
+      
+      const eng = {
+        likes: Math.floor(Math.random() * 300) + 20,
+        comments: Math.floor(Math.random() * 30) + 2,
+        shares: Math.floor(Math.random() * 100) + 5
+      };
+      
+      post.innerHTML = `
+        <div class="post-header-section">
+          <div class="post-header">
+            <div class="post-avatar">${person.initials}</div>
+            <div class="post-header-info">
+              <div class="post-name-row">
+                <span class="post-name">${person.name}</span>
+              </div>
+              <div class="post-meta">
+                <span>${person.handle}</span>
+                <span>·</span>
+                <span>${time}</span>
+                <span>·</span>
+                <i class="fas fa-earth-americas"></i>
+              </div>
+            </div>
+            <div class="post-more"><i class="fas fa-ellipsis"></i></div>
+          </div>
+        </div>
+        <div class="post-content">
+          <div class="post-text">${postText}</div>
+        </div>
+        ${imageHtml}
+        <div class="post-reactions-bar">
+          <div class="post-reactions-count">
+            <div class="reaction-icons">
+              <div class="reaction-icon like"><i class="fas fa-thumbs-up"></i></div>
+            </div>
+            <span class="like-count">${eng.likes}</span>
+          </div>
+          <div class="post-engagement-count"><span class="comment-count">${eng.comments}</span> comments · <span class="share-count">${eng.shares}</span> shares</div>
+        </div>
+        <div class="post-actions">
+          <div class="post-action like" data-action="like"><i class="far fa-thumbs-up"></i> <span>Like</span></div>
+          <div class="post-action reply" data-action="comment"><i class="far fa-comment"></i> <span>Comment</span></div>
+          <div class="post-action repost" data-action="share"><i class="fas fa-share"></i> <span>Share</span></div>
+        </div>
+      `;
+      
+      post._postData = {
+        postId: postId,
+        postType: 'placeholder',
+        name: person.name,
+        handle: person.handle,
+        likes: eng.likes,
+        comments: eng.comments,
+        shares: eng.shares,
+        text: postText
+      };
+      
+      return post;
+    }
+
+    function createAIPost(cond) {
+      const post = document.createElement('article');
+      post.className = 'post ai-post';
+      post.dataset.age = cond.age_group;
+      post.dataset.gender = cond.gender;
+      post.dataset.policy = cond.policy_issue;
+      post.dataset.ideology = cond.ideology;
+      
+      const postId = `ai-${cond.condition_id}-${Date.now()}`;
+      post.dataset.postId = postId;
+      
+      const name = `${cond.gender.charAt(0).toUpperCase() + cond.gender.slice(1)} ${cond.age_group}`;
+      const handle = `${cond.ideology.charAt(0).toUpperCase() + cond.ideology.slice(1)} voter`;
+      const time = `${Math.floor(Math.random() * 23) + 1}h`;
+      const initials = cond.age_group.slice(0, 2) + cond.gender.charAt(0).toUpperCase();
+      
+      const hashtags = `#${cond.ideology} #${cond.policy_issue.replace(/_/g, '')}`;
+      const postText = postTemplates[Math.floor(Math.random() * postTemplates.length)]
+        .replace('{hashtags}', `<span class="post-hashtag">${hashtags}</span>`);
+      
+      const randomImage = cond.images[Math.floor(Math.random() * cond.images.length)];
+      
+      const eng = {
+        likes: Math.floor(Math.random() * 800) + 100,
+        comments: Math.floor(Math.random() * 80) + 20,
+        shares: Math.floor(Math.random() * 400) + 50
+      };
+      
+      const badgeClass = showAILabel ? 'ai-badge' : 'ai-badge hidden';
+      
+      post.innerHTML = `
+        <div class="post-header-section">
+          <div class="post-header">
+            <div class="post-avatar">${initials}</div>
+            <div class="post-header-info">
+              <div class="post-name-row">
+                <span class="post-name">${name}</span>
+                <i class="fas fa-circle-check post-verified"></i>
+                <span class="${badgeClass}">AI Generated</span>
+              </div>
+              <div class="post-meta">
+                <span>${handle}</span>
+                <span>·</span>
+                <span>${time}</span>
+                <span>·</span>
+                <i class="fas fa-earth-americas"></i>
+              </div>
+            </div>
+            <div class="post-more"><i class="fas fa-ellipsis"></i></div>
+          </div>
+        </div>
+        <div class="post-content">
+          <div class="post-text">${postText}</div>
+        </div>
+        <div class="post-media" style="border-radius: 0;">
+          <img src="../generated_images/${cond.image_dir}/${randomImage}" loading="lazy" style="width: 100%; display: block;">
+        </div>
+        <div class="post-reactions-bar">
+          <div class="post-reactions-count">
+            <div class="reaction-icons">
+              <div class="reaction-icon like"><i class="fas fa-thumbs-up"></i></div>
+            </div>
+            <span class="like-count">${eng.likes}</span>
+          </div>
+          <div class="post-engagement-count"><span class="comment-count">${eng.comments}</span> comments · <span class="share-count">${eng.shares}</span> shares</div>
+        </div>
+        <div class="post-actions">
+          <div class="post-action like" data-action="like"><i class="far fa-thumbs-up"></i> <span>Like</span></div>
+          <div class="post-action reply" data-action="comment"><i class="far fa-comment"></i> <span>Comment</span></div>
+          <div class="post-action repost" data-action="share"><i class="fas fa-share"></i> <span>Share</span></div>
+        </div>
+      `;
+      
+      post._postData = {
+        postId: postId,
+        postType: 'ai',
+        conditionId: cond.condition_id,
+        ageGroup: cond.age_group,
+        gender: cond.gender,
+        likes: eng.likes,
+        comments: eng.comments,
+        shares: eng.shares,
+        policyIssue: cond.policy_issue,
+        ideology: cond.ideology,
+        name: name,
+        handle: handle,
+        text: postText.replace(/<[^>]*>/g, '')
+      };
+      
+      return post;
+    }
+
+    function exitMixedFeed() {
+      isMixedFeedMode = false;
+      renderPosts();
+      applyFilters();
+    }
+
+    function shuffleArray(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadData);
+
+    // ============================================
+    // QUALITY CONTROL MODE
+    // ============================================
+    
+    const QC_CONFIG = {
+      googleScriptUrl: 'https://script.google.com/macros/s/AKfycbwOEk-02CPwCnSsovJh3n9F8TAIU0u8Sx1rBQ1ZAZroHOC6TWvlbYtJcu0j2Qk2O5vu9Q/exec'
+    };
+    
+    const REACTIONS_CONFIG = {
+      googleScriptUrl: ''
+    };
+    
+    let qcMode = false;
+    let qcImages = [];
+    let qcCurrentIndex = 0;
+    let qcCodedImages = JSON.parse(localStorage.getItem('qc_coded_images') || '{}');
+    
+    function switchMode(mode) {
+      const mainFeed = document.querySelector('.main-feed');
+      const qcContainer = document.getElementById('qc-container');
+      const sidebarRight = document.querySelector('.sidebar-right');
+      const navHome = document.getElementById('nav-home');
+      const navQc = document.getElementById('nav-qc');
+      const navHomeTop = document.getElementById('nav-home-top');
+      const navQcTop = document.getElementById('nav-qc-top');
+      const mobileNavItems = document.querySelectorAll('.mobile-nav-item');
+      
+      if (mode === 'qc') {
+        qcMode = true;
+        mainFeed.classList.add('hidden');
+        qcContainer.classList.add('active');
+        sidebarRight.classList.add('hidden');
+        navHome?.classList.remove('active');
+        navQc?.classList.add('active');
+        navHomeTop?.classList.remove('active');
+        navQcTop?.classList.add('active');
+        // Update mobile nav
+        mobileNavItems.forEach((item, i) => {
+          item.classList.toggle('active', i === 3); // QC is 4th item
+        });
+        initQCMode();
+      } else {
+        qcMode = false;
+        mainFeed.classList.remove('hidden');
+        qcContainer.classList.remove('active');
+        sidebarRight.classList.remove('hidden');
+        navHome?.classList.add('active');
+        navQc?.classList.remove('active');
+        navHomeTop?.classList.add('active');
+        navQcTop?.classList.remove('active');
+        // Update mobile nav
+        mobileNavItems.forEach((item, i) => {
+          item.classList.toggle('active', i === 0); // Home is 1st item
+        });
+      }
+    }
+    
+    function initQCMode() {
+      const savedCoderId = localStorage.getItem('qc_coder_id') || '';
+      document.getElementById('qc-coder-id').value = savedCoderId;
+      buildQCImageList();
+      setupQCEventListeners();
+      showQCImage(0);
+    }
+    
+    function buildQCImageList() {
+      qcImages = [];
+      const showUncodedOnly = document.getElementById('qc-uncoded-only').checked;
+      
+      conditionsData.conditions.forEach(cond => {
+        cond.images.forEach(img => {
+          const imageId = `${cond.condition_id}/${img}`;
+          const isCoded = qcCodedImages[imageId];
+          
+          if (!showUncodedOnly || !isCoded) {
+            qcImages.push({
+              condition: cond,
+              image: img,
+              imageId: imageId,
+              isCoded: isCoded
+            });
+          }
+        });
+      });
+      
+      updateQCProgress();
+    }
+    
+    function setupQCEventListeners() {
+      document.getElementById('qc-coder-id').addEventListener('change', (e) => {
+        localStorage.setItem('qc_coder_id', e.target.value);
+      });
+      
+      document.getElementById('qc-uncoded-only').addEventListener('change', () => {
+        buildQCImageList();
+        showQCImage(0);
+      });
+      
+      const starContainer = document.getElementById('qc-star-rating');
+      const stars = document.querySelectorAll('.qc-star');
+      
+      stars.forEach(star => {
+        star.addEventListener('click', (e) => {
+          const value = parseInt(e.target.dataset.value);
+          document.getElementById('image_quality').value = value;
+          updateStars(value);
+        });
+        
+        star.addEventListener('mouseenter', (e) => {
+          const hoverValue = parseInt(e.target.dataset.value);
+          highlightStars(hoverValue);
+        });
+      });
+      
+      starContainer.addEventListener('mouseleave', () => {
+        const currentValue = parseInt(document.getElementById('image_quality').value) || 0;
+        highlightStars(currentValue);
+      });
+      
+      document.getElementById('emotional_intensity').addEventListener('input', (e) => {
+        document.getElementById('intensity-value').textContent = e.target.value;
+      });
+      
+      document.addEventListener('keydown', (e) => {
+        if (!qcMode) return;
+        if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+        
+        if (e.key === 'ArrowLeft') qcNavigate(-1);
+        if (e.key === 'ArrowRight') qcNavigate(1);
+      });
+    }
+    
+    function updateStars(value) {
+      document.querySelectorAll('.qc-star').forEach(star => {
+        const starValue = parseInt(star.dataset.value);
+        star.classList.toggle('active', starValue <= value);
+      });
+    }
+    
+    function highlightStars(value) {
+      document.querySelectorAll('.qc-star').forEach(star => {
+        const starValue = parseInt(star.dataset.value);
+        star.classList.toggle('hover', starValue <= value);
+        const currentValue = parseInt(document.getElementById('image_quality').value) || 0;
+        star.classList.toggle('active', starValue <= currentValue);
+      });
+    }
+    
+    function showQCImage(index) {
+      if (qcImages.length === 0) {
+        document.getElementById('qc-image').src = '';
+        document.getElementById('qc-counter').textContent = 'No images';
+        document.getElementById('qc-condition-info').innerHTML = '<span class="qc-condition-tag">No images to display</span>';
+        return;
+      }
+      
+      qcCurrentIndex = Math.max(0, Math.min(index, qcImages.length - 1));
+      const item = qcImages[qcCurrentIndex];
+      
+      document.getElementById('qc-image').src = `../generated_images/${item.condition.image_dir}/${item.image}`;
+      document.getElementById('qc-counter').textContent = `${qcCurrentIndex + 1} / ${qcImages.length}`;
+      
+      const condInfo = document.getElementById('qc-condition-info');
+      condInfo.innerHTML = `
+        <span class="qc-condition-tag highlight">${item.condition.age_group}</span>
+        <span class="qc-condition-tag highlight">${item.condition.gender}</span>
+        <span class="qc-condition-tag">${item.condition.policy_issue.replace(/_/g, ' ')}</span>
+        <span class="qc-condition-tag">${item.condition.ideology}</span>
+        ${item.isCoded ? '<span class="qc-coded-badge"><i class="fas fa-check"></i> Coded</span>' : ''}
+      `;
+      
+      document.getElementById('qc-prev').disabled = qcCurrentIndex === 0;
+      document.getElementById('qc-next').disabled = qcCurrentIndex === qcImages.length - 1;
+      
+      resetQCForm();
+      updateQCProgress();
+    }
+    
+    function qcNavigate(direction) {
+      showQCImage(qcCurrentIndex + direction);
+    }
+    
+    function updateQCProgress() {
+      const totalImages = conditionsData ? 
+        conditionsData.conditions.reduce((sum, c) => sum + c.images.length, 0) : 0;
+      const codedCount = Object.keys(qcCodedImages).length;
+      
+      document.getElementById('qc-progress').textContent = 
+        `${codedCount} of ${totalImages} coded`;
+    }
+    
+    function resetQCForm() {
+      const form = document.getElementById('qc-form');
+      form.reset();
+      document.getElementById('image_quality').value = '0';
+      updateStars(0);
+      document.getElementById('intensity-value').textContent = '5';
+      document.getElementById('qc-status').textContent = '';
+      document.getElementById('qc-status').className = 'qc-status';
+    }
+    
+    async function submitQCForm(event) {
+      event.preventDefault();
+      
+      const coderId = document.getElementById('qc-coder-id').value.trim();
+      if (!coderId) {
+        showQCStatus('Please enter your Coder ID', 'error');
+        return;
+      }
+      
+      const imageQuality = parseInt(document.getElementById('image_quality').value);
+      if (imageQuality === 0) {
+        showQCStatus('Please rate the image quality (stars)', 'error');
+        return;
+      }
+      
+      const form = document.getElementById('qc-form');
+      const formData = new FormData(form);
+      const item = qcImages[qcCurrentIndex];
+      
+      const data = {
+        timestamp: new Date().toISOString(),
+        coder_id: coderId,
+        condition_id: item.condition.condition_id,
+        image_filename: item.image,
+        no_weird_text: formData.get('no_weird_text'),
+        outgroup_present: formData.get('outgroup_present'),
+        looks_authentic: formData.get('looks_authentic'),
+        age_accurate: formData.get('age_accurate'),
+        gender_accurate: formData.get('gender_accurate'),
+        suitable: formData.get('suitable'),
+        image_quality: imageQuality,
+        emotional_intensity: parseInt(formData.get('emotional_intensity')),
+        emotional_valence: formData.get('emotional_valence'),
+        notes: formData.get('notes') || ''
+      };
+      
+      const submitBtn = document.getElementById('qc-submit-btn');
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
+      
+      try {
+        if (QC_CONFIG.googleScriptUrl) {
+          await fetch(QC_CONFIG.googleScriptUrl, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+          });
+        }
+        
+        qcCodedImages[item.imageId] = {
+          coderId: coderId,
+          timestamp: data.timestamp
+        };
+        localStorage.setItem('qc_coded_images', JSON.stringify(qcCodedImages));
+        
+        item.isCoded = true;
+        
+        showQCStatus('Saved successfully!', 'success');
+        
+        setTimeout(() => {
+          if (qcCurrentIndex < qcImages.length - 1) {
+            qcNavigate(1);
+          } else {
+            showQCStatus('All images in current set have been coded!', 'success');
+          }
+        }, 500);
+        
+      } catch (error) {
+        console.error('Error submitting:', error);
+        showQCStatus('Error saving. Data saved locally.', 'error');
+        
+        qcCodedImages[item.imageId] = {
+          coderId: coderId,
+          timestamp: data.timestamp,
+          data: data
+        };
+        localStorage.setItem('qc_coded_images', JSON.stringify(qcCodedImages));
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<i class="fas fa-check"></i> Submit & Next';
+        updateQCProgress();
+      }
+    }
+    
+    function showQCStatus(message, type) {
+      const status = document.getElementById('qc-status');
+      status.textContent = message;
+      status.className = `qc-status ${type}`;
+    }
+    
+    function exportQCData() {
+      const data = JSON.stringify(qcCodedImages, null, 2);
+      const blob = new Blob([data], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `qc_data_${new Date().toISOString().split('T')[0]}.json`;
+      a.click();
+    }
+
+    // ============================================
+    // REACTION TRACKING (MIXED FEED MODE)
+    // ============================================
+    
+    let currentCommentPostId = null;
+    let currentCommentPostData = null;
+    
+    function attachReactionListeners() {
+      document.querySelectorAll('.post-action[data-action]').forEach(actionBtn => {
+        const action = actionBtn.dataset.action;
+        const post = actionBtn.closest('.post');
+        
+        if (!post || !post._postData) return;
+        
+        // Remove existing listeners by cloning
+        const newBtn = actionBtn.cloneNode(true);
+        actionBtn.parentNode.replaceChild(newBtn, actionBtn);
+        
+        newBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          handleReaction(post, action, newBtn);
+        });
+      });
+    }
+    
+    function handleReaction(post, reactionType, btn) {
+      if (!post._postData) return;
+      
+      const postData = post._postData;
+      
+      if (reactionType === 'comment') {
+        showCommentModal(postData.postId, postData);
+      } else if (reactionType === 'like') {
+        updateButtonState(post, 'like');
+        updateLikeCount(post);
+      } else if (reactionType === 'share') {
+        updateButtonState(post, 'share');
+        updateShareCount(post);
+        showReactionStatus('Post shared!', 'success');
+      }
+    }
+    
+    function updateLikeCount(post) {
+      const likeCountEl = post.querySelector('.like-count');
+      const actionBtn = post.querySelector('[data-action="like"]');
+      if (likeCountEl && post._postData) {
+        if (actionBtn.classList.contains('liked')) {
+          post._postData.likes++;
+        } else {
+          post._postData.likes--;
+        }
+        likeCountEl.textContent = post._postData.likes;
+      }
+    }
+    
+    function updateShareCount(post) {
+      const shareCountEl = post.querySelector('.share-count');
+      if (shareCountEl && post._postData) {
+        post._postData.shares++;
+        shareCountEl.textContent = post._postData.shares;
+      }
+    }
+    
+    function updateButtonState(post, reactionType) {
+      const actionBtn = post.querySelector(`[data-action="${reactionType}"]`);
+      if (!actionBtn) return;
+      
+      if (reactionType === 'like') {
+        actionBtn.classList.toggle('liked');
+        const icon = actionBtn.querySelector('i');
+        if (actionBtn.classList.contains('liked')) {
+          icon.classList.remove('far');
+          icon.classList.add('fas');
+        } else {
+          icon.classList.remove('fas');
+          icon.classList.add('far');
+        }
+      } else if (reactionType === 'share') {
+        actionBtn.classList.add('shared');
+        setTimeout(() => actionBtn.classList.remove('shared'), 500);
+      }
+    }
+    
+    function showCommentModal(postId, postData) {
+      currentCommentPostId = postId;
+      currentCommentPostData = postData;
+      
+      const modal = document.getElementById('comment-modal-overlay');
+      const preview = document.getElementById('comment-post-preview');
+      const textarea = document.getElementById('comment-textarea');
+      
+      const escapeHtml = (text) => {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+      };
+      
+      const previewHtml = `
+        <div class="comment-post-preview-header">
+          <span class="comment-post-preview-name">${escapeHtml(postData.name)}</span>
+          <span class="comment-post-preview-handle">${escapeHtml(postData.handle)}</span>
+        </div>
+        <div class="comment-post-preview-text">${escapeHtml(postData.text)}</div>
+      `;
+      
+      preview.innerHTML = previewHtml;
+      textarea.value = '';
+      
+      modal.classList.add('active');
+      textarea.focus();
+      
+      const overlayClickHandler = function(e) {
+        if (e.target === modal) {
+          hideCommentModal();
+          modal.removeEventListener('click', overlayClickHandler);
+        }
+      };
+      modal.addEventListener('click', overlayClickHandler);
+      
+      const keyboardHandler = function(e) {
+        if (e.key === 'Escape') {
+          hideCommentModal();
+          document.removeEventListener('keydown', keyboardHandler);
+        } else if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+          submitComment();
+        }
+      };
+      document.addEventListener('keydown', keyboardHandler);
+    }
+    
+    function hideCommentModal() {
+      const modal = document.getElementById('comment-modal-overlay');
+      modal.classList.remove('active');
+      currentCommentPostId = null;
+      currentCommentPostData = null;
+      
+      const textarea = document.getElementById('comment-textarea');
+      if (textarea) textarea.value = '';
+    }
+    
+    function submitComment() {
+      const textarea = document.getElementById('comment-textarea');
+      const commentText = textarea.value.trim();
+      const submitBtn = document.querySelector('.comment-btn-submit');
+      
+      if (!commentText) {
+        showReactionStatus('Please enter a comment', 'error');
+        return;
+      }
+      
+      if (!currentCommentPostId || !currentCommentPostData) {
+        showReactionStatus('Error: Post data not found', 'error');
+        return;
+      }
+      
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Posting...';
+      
+      // Update comment count on the post
+      const post = document.querySelector(`[data-post-id="${currentCommentPostId}"]`);
+      if (post && post._postData) {
+        post._postData.comments++;
+        const commentCountEl = post.querySelector('.comment-count');
+        if (commentCountEl) {
+          commentCountEl.textContent = post._postData.comments;
+        }
+      }
+      
+      hideCommentModal();
+      showReactionStatus('Comment posted!', 'success');
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Comment';
+    }
+    
+    function trackReaction(postId, reactionType, commentText) {
+      if (!isMixedFeedMode) {
+        console.warn('Reaction tracking only works in mixed feed mode');
+        return Promise.resolve();
+      }
+      
+      const post = document.querySelector(`[data-post-id="${postId}"]`);
+      if (!post || !post._postData) {
+        console.error('Post not found:', postId);
+        return Promise.reject('Post not found');
+      }
+      
+      const postData = post._postData;
+      
+      const reactionData = {
+        timestamp: new Date().toISOString(),
+        post_id: postId,
+        post_type: postData.postType,
+        reaction_type: reactionType,
+        comment_text: commentText || ''
+      };
+      
+      if (postData.postType === 'ai') {
+        reactionData.condition_id = postData.conditionId;
+        reactionData.age_group = postData.ageGroup;
+        reactionData.gender = postData.gender;
+        reactionData.policy_issue = postData.policyIssue;
+        reactionData.ideology = postData.ideology;
+      }
+      
+      return sendReactionToSheets(reactionData);
+    }
+    
+    async function sendReactionToSheets(reactionData) {
+      if (!REACTIONS_CONFIG.googleScriptUrl) {
+        console.warn('Google Sheets URL not configured for reactions');
+        return Promise.resolve();
+      }
+      
+      try {
+        await fetch(REACTIONS_CONFIG.googleScriptUrl, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(reactionData)
+        });
+        return Promise.resolve();
+      } catch (error) {
+        console.error('Error sending reaction to Google Sheets:', error);
+        return Promise.resolve();
+      }
+    }
+    
+    function showReactionStatus(message, type = 'success') {
+      const status = document.getElementById('reaction-status');
+      status.textContent = message;
+      status.className = `reaction-status active ${type}`;
+      
+      setTimeout(() => {
+        status.classList.remove('active');
+      }, 3000);
+    }
+  </script>
+</body>
+</html>
