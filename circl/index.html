@@ -294,7 +294,7 @@
     /* MAIN FEED */
     .main-feed {
       flex: 1;
-      max-width: 900px;
+      max-width: 680px;
       min-height: 100vh;
       padding: 24px 16px;
       margin: 0 auto;
@@ -876,6 +876,120 @@
       color: white;
     }
 
+    /* Sponsored Section */
+    .sponsored-item {
+      display: flex;
+      gap: 12px;
+      padding: 12px 16px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .sponsored-item:hover {
+      background: var(--circl-gray-100);
+    }
+
+    .sponsored-item img {
+      width: 120px;
+      height: 80px;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+
+    .sponsored-info {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .sponsored-title {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--circl-text-primary);
+      margin-bottom: 4px;
+    }
+
+    .sponsored-site {
+      font-size: 12px;
+      color: var(--circl-text-secondary);
+    }
+
+    /* Contacts Section */
+    .contacts-header-icons {
+      display: flex;
+      gap: 16px;
+      color: var(--circl-text-secondary);
+      font-size: 14px;
+    }
+
+    .contacts-header-icons i {
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .contacts-header-icons i:hover {
+      color: var(--circl-blue);
+    }
+
+    .contacts-card .filter-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .contact-list {
+      padding: 8px 0;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px 16px;
+      cursor: pointer;
+      transition: background 0.2s;
+      position: relative;
+    }
+
+    .contact-item:hover {
+      background: var(--circl-gray-100);
+    }
+
+    .contact-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+      color: white;
+    }
+
+    .contact-name {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--circl-text-primary);
+      flex: 1;
+    }
+
+    .online-dot {
+      width: 10px;
+      height: 10px;
+      background: var(--circl-green);
+      border-radius: 50%;
+      border: 2px solid var(--circl-white);
+    }
+
+    .away-dot {
+      width: 10px;
+      height: 10px;
+      background: var(--circl-orange);
+      border-radius: 50%;
+      border: 2px solid var(--circl-white);
+    }
+
     /* Number input row */
     .input-row {
       display: flex;
@@ -1111,6 +1225,35 @@
     .qc-condition-tag.highlight {
       background: linear-gradient(135deg, var(--circl-blue), var(--circl-teal));
       color: white;
+    }
+
+    .qc-condition-tag.ideology-tag {
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 11px;
+      letter-spacing: 0.5px;
+    }
+
+    .qc-condition-tag.ideology-tag.left {
+      background: #E53935;
+      color: white;
+    }
+
+    .qc-condition-tag.ideology-tag.right {
+      background: #1E88E5;
+      color: white;
+    }
+
+    .qc-condition-tag.ideology-tag.neutral {
+      background: #9E9E9E;
+      color: white;
+    }
+
+    .qc-condition-tag.outgroup-tag {
+      background: #FFE0B2;
+      color: #E65100;
+      font-weight: 500;
+      border: 1px solid #FFCC80;
     }
 
     /* QC Form Panel */
@@ -1916,6 +2059,42 @@
               </div>
 
               <div class="qc-field">
+                <label class="qc-field-label">Ideology representation matches condition?</label>
+                <div class="qc-radio-group">
+                  <div class="qc-radio-option">
+                    <input type="radio" name="ideology_accurate" id="ia-yes" value="yes" required>
+                    <label for="ia-yes">Yes</label>
+                  </div>
+                  <div class="qc-radio-option">
+                    <input type="radio" name="ideology_accurate" id="ia-no" value="no">
+                    <label for="ia-no">No</label>
+                  </div>
+                  <div class="qc-radio-option">
+                    <input type="radio" name="ideology_accurate" id="ia-unclear" value="unclear">
+                    <label for="ia-unclear">Unclear</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="qc-field">
+                <label class="qc-field-label">Issue representation matches condition?</label>
+                <div class="qc-radio-group">
+                  <div class="qc-radio-option">
+                    <input type="radio" name="issue_accurate" id="isa-yes" value="yes" required>
+                    <label for="isa-yes">Yes</label>
+                  </div>
+                  <div class="qc-radio-option">
+                    <input type="radio" name="issue_accurate" id="isa-no" value="no">
+                    <label for="isa-no">No</label>
+                  </div>
+                  <div class="qc-radio-option">
+                    <input type="radio" name="issue_accurate" id="isa-unclear" value="unclear">
+                    <label for="isa-unclear">Unclear</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="qc-field">
                 <label class="qc-field-label">Suitable for experiment (overall)?</label>
                 <div class="qc-radio-group">
                   <div class="qc-radio-option">
@@ -2052,6 +2231,64 @@
         <div class="filter-group" style="font-size: 13px; color: var(--circl-text-secondary);">
           <p style="margin-bottom: 8px;"><kbd style="background: var(--circl-gray-200); padding: 2px 6px; border-radius: 4px;">←</kbd> <kbd style="background: var(--circl-gray-200); padding: 2px 6px; border-radius: 4px;">→</kbd> Navigate images</p>
           <p>Click image carousel to focus</p>
+        </div>
+      </div>
+
+      <!-- Simulated Sponsored Section -->
+      <div class="filter-card sponsored-card">
+        <div class="filter-card-header">Sponsored</div>
+        <div class="sponsored-item" onclick="showReactionStatus('This is a simulated sponsored post', 'success')">
+          <img src="https://picsum.photos/seed/sponsored1/80/80" alt="Sponsored">
+          <div class="sponsored-info">
+            <div class="sponsored-title">Discover New Horizons</div>
+            <div class="sponsored-site">horizons.example.com</div>
+          </div>
+        </div>
+        <div class="sponsored-item" onclick="showReactionStatus('This is a simulated sponsored post', 'success')">
+          <img src="https://picsum.photos/seed/sponsored2/80/80" alt="Sponsored">
+          <div class="sponsored-info">
+            <div class="sponsored-title">Tech Solutions Pro</div>
+            <div class="sponsored-site">techsolutions.example.com</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Simulated Contacts Section -->
+      <div class="filter-card contacts-card">
+        <div class="filter-card-header">
+          Contacts
+          <div class="contacts-header-icons">
+            <i class="fas fa-video"></i>
+            <i class="fas fa-search"></i>
+            <i class="fas fa-ellipsis"></i>
+          </div>
+        </div>
+        <div class="contact-list">
+          <div class="contact-item" onclick="showReactionStatus('Chat simulation - Maria is online', 'success')">
+            <div class="contact-avatar" style="background: linear-gradient(135deg, #FF6B6B, #FF8E53);">MR</div>
+            <span class="contact-name">Maria Rodriguez</span>
+            <span class="online-dot"></span>
+          </div>
+          <div class="contact-item" onclick="showReactionStatus('Chat simulation - Jan is online', 'success')">
+            <div class="contact-avatar" style="background: linear-gradient(135deg, #4ECDC4, #45B7D1);">JV</div>
+            <span class="contact-name">Jan Vermeer</span>
+            <span class="online-dot"></span>
+          </div>
+          <div class="contact-item" onclick="showReactionStatus('Chat simulation - Sophie is online', 'success')">
+            <div class="contact-avatar" style="background: linear-gradient(135deg, #A8E6CF, #88D8B0);">SD</div>
+            <span class="contact-name">Sophie de Vries</span>
+            <span class="online-dot"></span>
+          </div>
+          <div class="contact-item" onclick="showReactionStatus('Chat simulation - Pieter is away', 'success')">
+            <div class="contact-avatar" style="background: linear-gradient(135deg, #FFD93D, #FF6B6B);">PJ</div>
+            <span class="contact-name">Pieter Jansen</span>
+            <span class="away-dot"></span>
+          </div>
+          <div class="contact-item" onclick="showReactionStatus('Chat simulation - Emma is online', 'success')">
+            <div class="contact-avatar" style="background: linear-gradient(135deg, #C9B1FF, #A78BFA);">EB</div>
+            <span class="contact-name">Emma Bakker</span>
+            <span class="online-dot"></span>
+          </div>
         </div>
       </div>
     </aside>
@@ -2783,6 +3020,15 @@
       });
     }
     
+    function getOutgroup(ideology) {
+      const outgroupMap = {
+        'left': 'Right-Wingers',
+        'right': 'Left-Wingers',
+        'neutral': 'Extremists'
+      };
+      return outgroupMap[ideology] || 'Unknown';
+    }
+
     function showQCImage(index) {
       if (qcImages.length === 0) {
         document.getElementById('qc-image').src = '';
@@ -2797,12 +3043,15 @@
       document.getElementById('qc-image').src = `../generated_images/${item.condition.image_dir}/${item.image}`;
       document.getElementById('qc-counter').textContent = `${qcCurrentIndex + 1} / ${qcImages.length}`;
       
+      const outgroup = getOutgroup(item.condition.ideology);
+      
       const condInfo = document.getElementById('qc-condition-info');
       condInfo.innerHTML = `
         <span class="qc-condition-tag highlight">${item.condition.age_group}</span>
         <span class="qc-condition-tag highlight">${item.condition.gender}</span>
         <span class="qc-condition-tag">${item.condition.policy_issue.replace(/_/g, ' ')}</span>
-        <span class="qc-condition-tag">${item.condition.ideology}</span>
+        <span class="qc-condition-tag ideology-tag ${item.condition.ideology}">${item.condition.ideology}</span>
+        <span class="qc-condition-tag outgroup-tag">Outgroup: ${outgroup}</span>
         ${item.isCoded ? '<span class="qc-coded-badge"><i class="fas fa-check"></i> Coded</span>' : ''}
       `;
       
@@ -2975,7 +3224,6 @@
       } else if (reactionType === 'share') {
         updateButtonState(post, 'share');
         updateShareCount(post);
-        showReactionStatus('Post shared!', 'success');
       }
     }
     
@@ -2994,8 +3242,15 @@
     
     function updateShareCount(post) {
       const shareCountEl = post.querySelector('.share-count');
+      const actionBtn = post.querySelector('[data-action="share"]');
       if (shareCountEl && post._postData) {
-        post._postData.shares++;
+        if (actionBtn.classList.contains('shared')) {
+          post._postData.shares++;
+          showReactionStatus('Post shared!', 'success');
+        } else {
+          post._postData.shares--;
+          showReactionStatus('Share removed', 'success');
+        }
         shareCountEl.textContent = post._postData.shares;
       }
     }
@@ -3015,8 +3270,7 @@
           icon.classList.add('far');
         }
       } else if (reactionType === 'share') {
-        actionBtn.classList.add('shared');
-        setTimeout(() => actionBtn.classList.remove('shared'), 500);
+        actionBtn.classList.toggle('shared');
       }
     }
     
