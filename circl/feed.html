@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Circl</title>
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Circl Styles -->
+  <link rel="stylesheet" href="css/circl.css">
+  
+  <style>
+    /* Participant-specific overrides */
+    .sidebar-divider,
+    #nav-qc, #nav-exp,
+    #nav-qc-top, #nav-exp-top {
+      display: none !important;
+    }
+    
+    .main-feed {
+      display: none;
+    }
+    
+    /* Feed container for participant */
+    #participant-feed {
+      flex: 1;
+      max-width: 680px;
+      padding: 0;
+      margin: 0 auto;
+      background: var(--circl-bg);
+    }
+
+    #participant-feed .experience-posts-container {
+      padding: 16px 0 100px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    /* Post base styling */
+    #participant-feed .post {
+      background: var(--circl-white);
+      border-radius: 8px;
+      box-shadow: var(--circl-shadow);
+      overflow: hidden;
+    }
+
+    /* Post header */
+    #participant-feed .post-header {
+      display: flex;
+      align-items: center;
+      padding: 12px 16px;
+      gap: 10px;
+    }
+
+    #participant-feed .avatar-wrapper {
+      width: 40px;
+      height: 40px;
+      flex-shrink: 0;
+    }
+
+    #participant-feed .post-avatar-img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    #participant-feed .post-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    #participant-feed .org-avatar {
+      background: linear-gradient(135deg, var(--circl-blue), var(--circl-teal));
+    }
+
+    #participant-feed .org-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: contain;
+      background: white;
+      padding: 4px;
+      border: 1px solid var(--circl-gray-200);
+    }
+
+    #participant-feed .post-header-info {
+      flex: 1;
+      min-width: 0;
+    }
+
+    #participant-feed .post-name-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    #participant-feed .post-author {
+      font-weight: 600;
+      font-size: 15px;
+      color: var(--circl-text-primary);
+    }
+
+    #participant-feed .post-meta {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 13px;
+      color: var(--circl-text-secondary);
+      margin-top: 2px;
+    }
+
+    #participant-feed .post-meta i {
+      font-size: 12px;
+    }
+
+    #participant-feed .post-more {
+      color: var(--circl-gray-400);
+      padding: 8px;
+      margin: -8px;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    /* Post content */
+    #participant-feed .post-content {
+      padding: 0 16px 12px;
+    }
+
+    #participant-feed .post-text {
+      font-size: 15px;
+      line-height: 1.5;
+      color: var(--circl-text-primary);
+    }
+
+    #participant-feed .post-hashtag {
+      color: var(--circl-blue);
+      font-weight: 500;
+    }
+
+    /* Post media/carousel */
+    #participant-feed .post-media {
+      position: relative;
+      background: var(--circl-gray-100);
+    }
+
+    #participant-feed .carousel-track {
+      display: flex;
+      transition: transform 0.3s ease;
+    }
+
+    #participant-feed .carousel-slide {
+      min-width: 100%;
+    }
+
+    #participant-feed .carousel-slide img {
+      width: 100%;
+      display: block;
+      object-fit: contain;
+      max-height: 500px;
+    }
+
+    #participant-feed .carousel-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.9);
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+      z-index: 10;
+    }
+
+    #participant-feed .carousel-prev { left: 12px; }
+    #participant-feed .carousel-next { right: 12px; }
+
+    #participant-feed .carousel-counter {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(0, 0, 0, 0.6);
+      color: white;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 12px;
+    }
+
+    #participant-feed .post-single-image {
+      width: 100%;
+      display: block;
+      max-height: 500px;
+      object-fit: contain;
+      background: var(--circl-gray-100);
+    }
+
+    /* Post engagement */
+    #participant-feed .post-engagement {
+      padding: 8px 16px;
+      border-top: 1px solid var(--circl-gray-200);
+    }
+
+    #participant-feed .engagement-counts {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+      color: var(--circl-text-secondary);
+    }
+
+    #participant-feed .like-count {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    #participant-feed .comment-share-count {
+      color: var(--circl-text-secondary);
+    }
+
+    /* Post actions */
+    #participant-feed .post-actions {
+      display: flex;
+      padding: 4px 8px;
+      border-top: 1px solid var(--circl-gray-200);
+    }
+
+    #participant-feed .post-action-btn {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px;
+      background: none;
+      border: none;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--circl-gray-500);
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    #participant-feed .post-action-btn:hover {
+      background: var(--circl-gray-100);
+    }
+
+    #participant-feed .post-action-btn i {
+      font-size: 18px;
+    }
+
+    #participant-feed .post-action-btn.liked {
+      color: var(--circl-blue);
+    }
+
+    #participant-feed .post-action-btn.shared {
+      color: var(--circl-green);
+    }
+
+    /* Debug info styling */
+    #participant-feed .ai-debug-info {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 16px;
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      border-top: 1px dashed var(--circl-gray-300);
+      border-bottom: 1px dashed var(--circl-gray-300);
+      font-size: 12px;
+    }
+
+    #participant-feed .debug-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    #participant-feed .debug-badge.tailored {
+      background: linear-gradient(135deg, var(--circl-blue), #0d47a1);
+      color: white;
+      box-shadow: 0 2px 4px rgba(24, 119, 242, 0.3);
+    }
+
+    #participant-feed .debug-badge.random {
+      background: linear-gradient(135deg, var(--circl-orange), #e65100);
+      color: white;
+      box-shadow: 0 2px 4px rgba(245, 166, 35, 0.3);
+    }
+
+    #participant-feed .debug-details {
+      color: var(--circl-text-secondary);
+      font-size: 12px;
+    }
+
+    /* Results button - fixed at bottom center */
+    #experience-results-btn {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1000;
+      background: linear-gradient(135deg, #10B981, #059669);
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 25px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+      transition: all 0.3s;
+      display: none;
+      align-items: center;
+      gap: 8px;
+    }
+
+    #experience-results-btn:hover {
+      transform: translateX(-50%) translateY(-2px);
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.5);
+    }
+
+    /* Results modal */
+    .results-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .results-modal.active {
+      display: flex;
+    }
+
+    .results-card {
+      background: var(--circl-white);
+      border-radius: 16px;
+      max-width: 500px;
+      width: 100%;
+      max-height: 80vh;
+      overflow: auto;
+      animation: slideUp 0.3s ease-out;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .results-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--circl-gray-200);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .results-header h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--circl-text-primary);
+    }
+
+    .results-close {
+      background: none;
+      border: none;
+      font-size: 24px;
+      color: var(--circl-gray-400);
+      cursor: pointer;
+      padding: 4px;
+      line-height: 1;
+    }
+
+    .results-close:hover {
+      color: var(--circl-text-primary);
+    }
+
+    .results-content {
+      padding: 16px 24px 24px;
+    }
+
+    .results-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--circl-gray-100);
+    }
+
+    .results-item:last-child {
+      border-bottom: none;
+    }
+
+    .results-rank {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--circl-blue), var(--circl-teal));
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .results-info {
+      flex: 1;
+    }
+
+    .results-author {
+      font-weight: 600;
+      font-size: 15px;
+      color: var(--circl-text-primary);
+    }
+
+    .results-type {
+      font-size: 13px;
+      color: var(--circl-text-secondary);
+      margin-top: 2px;
+    }
+
+    .results-time {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--circl-teal);
+    }
+
+    .results-time small {
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--circl-text-secondary);
+    }
+
+    /* Comment section */
+    #participant-feed .post-comment-section {
+      padding: 8px 16px 12px;
+      border-top: 1px solid var(--circl-gray-200);
+    }
+
+    #participant-feed .post-comment-input {
+      width: 100%;
+      padding: 10px 14px;
+      border: none;
+      border-radius: 20px;
+      background: var(--circl-gray-100);
+      font-size: 14px;
+      color: var(--circl-text-primary);
+      outline: none;
+    }
+
+    #participant-feed .post-comment-input::placeholder {
+      color: var(--circl-text-secondary);
+    }
+
+    /* View timer (debug mode) */
+    #participant-feed .view-timer {
+      text-align: center;
+      font-size: 12px;
+      color: var(--circl-text-secondary);
+      padding: 4px;
+      background: var(--circl-gray-100);
+    }
+
+    /* Debug label */
+    #participant-feed .debug-label {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    #participant-feed .debug-label.tailored {
+      background: var(--circl-blue);
+      color: white;
+    }
+
+    #participant-feed .debug-label.random {
+      background: var(--circl-orange);
+      color: white;
+    }
+    
+    /* Hide filter functionality in right sidebar */
+    .sidebar-right .filter-card {
+      pointer-events: none;
+      opacity: 0.7;
+    }
+    
+    .sidebar-right select,
+    .sidebar-right button,
+    .sidebar-right input {
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- Coming Soon Tooltip -->
+  <div id="coming-soon-tooltip" class="coming-soon-tooltip">Feature coming soon!</div>
+
+  <!-- Loading Screen -->
+  <div id="survey-loader" class="survey-loader">
+    <div class="survey-loader-content">
+      <div class="survey-loader-logo">
+        <svg viewBox="0 0 100 100">
+          <defs>
+            <linearGradient id="loaderGradFeed" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#1877F2"/>
+              <stop offset="100%" style="stop-color:#00A3A3"/>
+            </linearGradient>
+          </defs>
+          <circle cx="50" cy="50" r="45" fill="url(#loaderGradFeed)"/>
+          <circle cx="50" cy="50" r="28" fill="none" stroke="white" stroke-width="4"/>
+          <circle cx="50" cy="50" r="12" fill="white"/>
+        </svg>
+      </div>
+      <h1 class="survey-loader-title">Welcome to Circl</h1>
+      <div class="survey-loader-text" id="loading-message">Preparing something amazing...</div>
+      <div class="survey-loader-dots">
+        <span></span><span></span><span></span>
+      </div>
+      <div class="survey-loader-progress">
+        <div class="survey-loader-progress-bar"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOP HEADER BAR -->
+  <header class="top-header">
+    <div class="header-left">
+      <a class="circl-logo" href="#">
+        <div class="circl-logo-icon">
+          <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" style="stop-color:#1877F2"/>
+                <stop offset="100%" style="stop-color:#00A3A3"/>
+              </linearGradient>
+            </defs>
+            <circle cx="20" cy="20" r="20" fill="url(#logoGrad)"/>
+            <circle cx="15" cy="16" r="7" stroke="white" stroke-width="2.5" fill="none"/>
+            <circle cx="25" cy="24" r="7" stroke="white" stroke-width="2.5" fill="none"/>
+          </svg>
+        </div>
+        <span class="circl-logo-text">Circl</span>
+      </a>
+      <div class="header-search">
+        <i class="fas fa-magnifying-glass"></i>
+        <input type="text" placeholder="Search Circl" disabled>
+      </div>
+    </div>
+    
+    <div class="header-center">
+      <div class="header-nav-item active" id="nav-home-top">
+        <i class="fas fa-house"></i>
+      </div>
+      <div class="header-nav-item">
+        <i class="fas fa-user-group"></i>
+      </div>
+      <div class="header-nav-item">
+        <i class="fas fa-tv"></i>
+      </div>
+      <div class="header-nav-item">
+        <i class="fas fa-store"></i>
+      </div>
+    </div>
+    
+    <div class="header-right">
+      <button class="header-icon-btn"><i class="fas fa-grip"></i></button>
+      <button class="header-icon-btn"><i class="fab fa-facebook-messenger"></i></button>
+      <button class="header-icon-btn"><i class="fas fa-bell"></i></button>
+      <div class="header-profile">U</div>
+    </div>
+  </header>
+
+  <div class="app-container">
+    <!-- LEFT SIDEBAR -->
+    <aside class="sidebar-left">
+      <a class="sidebar-nav-item active" id="nav-home">
+        <div class="sidebar-nav-icon"><i class="fas fa-house"></i></div>
+        <span>Home</span>
+      </a>
+      <a class="sidebar-nav-item">
+        <div class="sidebar-nav-icon"><i class="fas fa-user-group"></i></div>
+        <span>Friends</span>
+      </a>
+      <a class="sidebar-nav-item">
+        <div class="sidebar-nav-icon"><i class="fas fa-tv"></i></div>
+        <span>Watch</span>
+      </a>
+      <a class="sidebar-nav-item">
+        <div class="sidebar-nav-icon"><i class="fas fa-store"></i></div>
+        <span>Marketplace</span>
+      </a>
+      <a class="sidebar-nav-item">
+        <div class="sidebar-nav-icon"><i class="fas fa-users"></i></div>
+        <span>Groups</span>
+      </a>
+      <a class="sidebar-nav-item">
+        <div class="sidebar-nav-icon"><i class="fas fa-bookmark"></i></div>
+        <span>Saved</span>
+      </a>
+      <a class="sidebar-nav-item">
+        <div class="sidebar-nav-icon"><i class="fas fa-clock-rotate-left"></i></div>
+        <span>Memories</span>
+      </a>
+    </aside>
+
+    <!-- PARTICIPANT FEED -->
+    <main id="participant-feed">
+      <!-- Posts Container -->
+      <div id="experience-posts" class="experience-posts-container"></div>
+    </main>
+
+    <!-- RIGHT SIDEBAR -->
+    <aside class="sidebar-right">
+      <div class="filter-card">
+        <div class="filter-card-header">Trending Topics</div>
+        <div style="padding: 12px; color: var(--circl-text-secondary); font-size: 14px;">
+          <div style="margin-bottom: 12px;">
+            <span style="color: var(--circl-blue);">#Politiek</span>
+            <span style="font-size: 12px; color: var(--circl-gray-400);"> · Trending</span>
+          </div>
+          <div style="margin-bottom: 12px;">
+            <span style="color: var(--circl-blue);">#Nederland</span>
+            <span style="font-size: 12px; color: var(--circl-gray-400);"> · 2.4K posts</span>
+          </div>
+          <div style="margin-bottom: 12px;">
+            <span style="color: var(--circl-blue);">#Klimaat</span>
+            <span style="font-size: 12px; color: var(--circl-gray-400);"> · 1.8K posts</span>
+          </div>
+          <div style="margin-bottom: 12px;">
+            <span style="color: var(--circl-blue);">#Woningmarkt</span>
+            <span style="font-size: 12px; color: var(--circl-gray-400);"> · 956 posts</span>
+          </div>
+          <div>
+            <span style="color: var(--circl-blue);">#Inflatie</span>
+            <span style="font-size: 12px; color: var(--circl-gray-400);"> · 724 posts</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="filter-card" style="margin-top: 16px;">
+        <div class="filter-card-header">Suggested Friends</div>
+        <div style="padding: 12px;">
+          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+            <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #1877F2, #00A3A3); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">JV</div>
+            <div style="flex: 1;">
+              <div style="font-weight: 500; font-size: 14px;">Jan Vermeer</div>
+              <div style="font-size: 12px; color: var(--circl-gray-400);">12 mutual friends</div>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+            <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #42B72A, #00A3A3); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">MB</div>
+            <div style="flex: 1;">
+              <div style="font-weight: 500; font-size: 14px;">Marieke Bakker</div>
+              <div style="font-size: 12px; color: var(--circl-gray-400);">8 mutual friends</div>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(135deg, #F5A623, #FA383E); display: flex; align-items: center; justify-content: center; color: white; font-weight: 600;">PJ</div>
+            <div style="flex: 1;">
+              <div style="font-weight: 500; font-size: 14px;">Pieter Jansen</div>
+              <div style="font-size: 12px; color: var(--circl-gray-400);">5 mutual friends</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Results Modal -->
+  <div class="results-modal" id="results-modal">
+    <div class="results-card">
+      <div class="results-header">
+        <h2 class="results-title">📊 Top 5 Most Viewed Posts</h2>
+        <button class="results-close" onclick="closeResults()"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="results-content" id="results-content">
+        <!-- Results will be inserted here -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Debug Results Button (shown only in debug mode) -->
+  <button class="experience-results-btn" id="experience-results-btn" style="display: none;" onclick="showResults()">
+    <i class="fas fa-chart-bar"></i> View Attention Results
+  </button>
+
+  <!-- Core JS -->
+  <script src="js/circl-core.js"></script>
+  <!-- Feed JS -->
+  <script src="js/circl-feed.js"></script>
+</body>
+</html>

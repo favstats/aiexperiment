@@ -14,7 +14,11 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   
+  <!-- Circl Styles -->
+  <link rel="stylesheet" href="css/circl.css">
+  
   <style>
+    /* Admin-specific overrides can go here */
     :root {
       --circl-blue: #1877F2;
       --circl-blue-hover: #166FE5;
@@ -47,6 +51,248 @@
       background: var(--circl-bg);
       color: var(--circl-text-primary);
       min-height: 100vh;
+    }
+
+    /* ============================================
+       SURVEY PARTICIPANT MODE - Full-screen loader
+       ============================================ */
+    .survey-loader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(145deg, #ffffff 0%, #f0f2f5 50%, #e4e6eb 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 99999;
+      opacity: 1;
+      transition: opacity 0.6s ease-out;
+    }
+
+    .survey-loader.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .survey-loader-content {
+      text-align: center;
+      animation: fadeInUp 0.8s ease-out;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .survey-loader-logo {
+      width: 100px;
+      height: 100px;
+      margin: 0 auto 28px;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    .survey-loader-logo svg {
+      width: 100%;
+      height: 100%;
+      filter: drop-shadow(0 4px 12px rgba(24, 119, 242, 0.3));
+    }
+
+    .survey-loader-title {
+      font-size: 32px;
+      font-weight: 700;
+      color: #1877F2;
+      margin-bottom: 12px;
+      letter-spacing: -0.5px;
+    }
+
+    .survey-loader-text {
+      font-size: 16px;
+      font-weight: 400;
+      color: #65676B;
+      margin-bottom: 24px;
+    }
+
+    .survey-loader-dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 32px;
+    }
+
+    .survey-loader-dots span {
+      width: 10px;
+      height: 10px;
+      background: #1877F2;
+      border-radius: 50%;
+      animation: dotBounce 1.4s ease-in-out infinite both;
+    }
+
+    .survey-loader-dots span:nth-child(1) { animation-delay: 0s; }
+    .survey-loader-dots span:nth-child(2) { animation-delay: 0.2s; }
+    .survey-loader-dots span:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes dotBounce {
+      0%, 80%, 100% { 
+        transform: scale(0.6);
+        opacity: 0.4;
+      }
+      40% { 
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    .survey-loader-progress {
+      width: 280px;
+      height: 6px;
+      background: #e4e6eb;
+      border-radius: 3px;
+      overflow: hidden;
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+    }
+
+    .survey-loader-progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #1877F2, #00A3A3, #1877F2);
+      background-size: 200% 100%;
+      width: 0%;
+      animation: loadProgress 3s ease-out forwards, shimmer 1.5s linear infinite;
+      border-radius: 3px;
+    }
+
+    @keyframes loadProgress {
+      0% { width: 0%; }
+      15% { width: 20%; }
+      35% { width: 45%; }
+      55% { width: 65%; }
+      75% { width: 80%; }
+      90% { width: 92%; }
+      100% { width: 100%; }
+    }
+
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    /* Survey participant mode - keep full FB-like UI, just hide mode switchers */
+    body.survey-participant-mode .main-feed,
+    body.survey-participant-mode .qc-container,
+    body.survey-participant-mode .experience-back-btn,
+    body.survey-participant-mode .experience-feed-info,
+    body.survey-participant-mode .experience-toggle-labels,
+    body.survey-participant-mode .debug-toggle-field,
+    body.survey-participant-mode .experience-survey,
+    body.survey-participant-mode .experience-feed-header,
+    body.survey-participant-mode #experience-results-btn,
+    body.survey-participant-mode #nav-qc,
+    body.survey-participant-mode #nav-exp,
+    body.survey-participant-mode #nav-qc-top,
+    body.survey-participant-mode #nav-exp-top,
+    body.survey-participant-mode .sidebar-divider,
+    body.survey-participant-mode .mobile-nav-item:nth-child(4),
+    body.survey-participant-mode .mobile-nav-item:nth-child(5) {
+      display: none !important;
+    }
+
+    body.survey-participant-mode {
+      background: var(--circl-bg);
+    }
+
+    /* Rearrange app container layout for survey mode */
+    body.survey-participant-mode .app-container {
+      display: flex;
+      flex-direction: row;
+    }
+
+    /* Experience container takes place of main-feed */
+    body.survey-participant-mode .experience-container {
+      display: flex !important;
+      flex: 1;
+      max-width: 680px;
+      padding: 24px 16px;
+      margin: 0;
+      order: 2; /* Between left sidebar (1) and right sidebar (3) */
+      position: relative;
+    }
+
+    body.survey-participant-mode .experience-container.active {
+      display: flex !important;
+    }
+
+    body.survey-participant-mode .experience-feed {
+      display: block !important;
+      padding: 0;
+      width: 100%;
+    }
+
+    body.survey-participant-mode .experience-posts-container {
+      max-width: 100%;
+      margin: 0;
+      padding: 0 0 100px;
+    }
+
+    /* Keep sidebars visible and in order */
+    body.survey-participant-mode .sidebar-left {
+      display: flex !important;
+      order: 1;
+    }
+
+    body.survey-participant-mode .sidebar-right {
+      display: flex !important;
+      order: 3;
+    }
+
+    /* Show results button at bottom in survey mode when debug is on */
+    body.survey-participant-mode.survey-debug-mode #experience-results-btn {
+      display: flex !important;
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 1000;
+      background: linear-gradient(135deg, #1877F2, #00A3A3);
+      color: white;
+      padding: 14px 28px;
+      border-radius: 25px;
+      font-weight: 600;
+      box-shadow: 0 4px 15px rgba(24, 119, 242, 0.4);
+    }
+
+    /* Coming soon tooltip */
+    .coming-soon-tooltip {
+      position: fixed;
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      padding: 10px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      z-index: 10000;
+      pointer-events: none;
+      opacity: 0;
+      transform: translateY(5px);
+      transition: opacity 0.2s, transform 0.2s;
+      white-space: nowrap;
+    }
+
+    .coming-soon-tooltip.show {
+      opacity: 1;
+      transform: translateY(0);
     }
 
     /* ============================================
@@ -2681,6 +2927,36 @@
   </style>
 </head>
 <body>
+  <!-- Coming Soon Tooltip -->
+  <div id="coming-soon-tooltip" class="coming-soon-tooltip">Feature coming soon!</div>
+
+  <!-- SURVEY PARTICIPANT LOADER (hidden by default) -->
+  <div id="survey-loader" class="survey-loader" style="display: none;">
+    <div class="survey-loader-content">
+      <div class="survey-loader-logo">
+        <svg viewBox="0 0 100 100">
+          <defs>
+            <linearGradient id="loaderGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#1877F2"/>
+              <stop offset="100%" style="stop-color:#00A3A3"/>
+            </linearGradient>
+          </defs>
+          <circle cx="50" cy="50" r="45" fill="url(#loaderGrad)"/>
+          <circle cx="50" cy="50" r="28" fill="none" stroke="white" stroke-width="4"/>
+          <circle cx="50" cy="50" r="12" fill="white"/>
+        </svg>
+      </div>
+      <h1 class="survey-loader-title">Welcome to Circl</h1>
+      <div class="survey-loader-text">Loading your feed</div>
+      <div class="survey-loader-dots">
+        <span></span><span></span><span></span>
+      </div>
+      <div class="survey-loader-progress">
+        <div class="survey-loader-progress-bar"></div>
+      </div>
+    </div>
+  </div>
+
   <!-- TOP HEADER BAR -->
   <header class="top-header">
     <div class="header-left">
@@ -3414,7 +3690,11 @@
   <div class="reaction-status" id="reaction-status"></div>
 
   <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
+  <!-- Circl Scripts -->
+  <script src="js/circl-core.js"></script>
+  <script src="js/circl-admin.js"></script>
   <script>
+    /* Any page-specific overrides can go here */
     let conditionsData = null;
     let choicesInstances = {};
     let isMixedFeedMode = false;
@@ -3434,6 +3714,61 @@
       "De feiten spreken voor zich. Tijd om te handelen! {hashtags}"
     ];
 
+    // Check for survey participant URL parameters
+    function getSurveyParams() {
+      const params = new URLSearchParams(window.location.search);
+      const age = params.get('age');
+      const gender = params.get('gender');
+      const issue = params.get('issue');
+      const politics = params.get('politics');
+      const debug = params.get('debug');
+      const totalPosts = params.get('total_posts');
+
+      // Validate age
+      const validAges = ['18-29', '30-44', '45-59', '60+'];
+      const validGenders = ['male', 'female'];
+      const validIssues = [
+        'Affordable_childcare_access',
+        'Build_more_homes_accelerate_construction',
+        'CO2_levy_for_industry_climate',
+        'purchasing_power',
+        'stop_weapon_ship_to_israel'
+      ];
+
+      if (age && gender && issue && politics !== null) {
+        const politicsNum = parseInt(politics);
+        if (
+          validAges.includes(age) &&
+          validGenders.includes(gender) &&
+          validIssues.includes(issue) &&
+          !isNaN(politicsNum) &&
+          politicsNum >= 0 &&
+          politicsNum <= 10
+        ) {
+          // Parse total_posts, default to 40, min 10, max 100
+          let postsCount = 40;
+          if (totalPosts) {
+            const parsed = parseInt(totalPosts);
+            if (!isNaN(parsed) && parsed >= 10 && parsed <= 100) {
+              postsCount = parsed;
+            }
+          }
+
+          return {
+            age,
+            gender,
+            issue,
+            politics: politicsNum,
+            debug: debug === 'T' || debug === 'true' || debug === '1',
+            totalPosts: postsCount
+          };
+        }
+      }
+      return null;
+    }
+
+    let isSurveyParticipantMode = false;
+
     async function loadData() {
       try {
         const response = await fetch('../conditions.json');
@@ -3443,12 +3778,145 @@
         renderPosts();
         applyFilters();
         document.getElementById('loading').classList.add('hidden');
+
+        // Check for survey participant mode
+        const surveyParams = getSurveyParams();
+        if (surveyParams) {
+          initSurveyParticipantMode(surveyParams);
+        }
       } catch (error) {
         document.getElementById('loading').innerHTML = `
           <i class="fas fa-exclamation-triangle" style="animation:none; color: var(--circl-red);"></i>
           <p style="margin-top:12px; color: var(--circl-text-primary);">Could not load posts</p>
           <p style="font-size:13px; color: var(--circl-text-secondary); margin-top:8px">Run: python3 generate_conditions_json.py</p>
         `;
+      }
+    }
+
+    async function initSurveyParticipantMode(params) {
+      isSurveyParticipantMode = true;
+
+      // Show loading screen immediately
+      const loader = document.getElementById('survey-loader');
+      loader.style.display = 'flex';
+
+      // Add survey participant mode class to body right away to hide everything
+      document.body.classList.add('survey-participant-mode');
+
+      // If debug mode, add that class too
+      if (params.debug) {
+        document.body.classList.add('survey-debug-mode');
+      }
+
+      // Set experience data
+      experienceData = {
+        gender: params.gender,
+        age: params.age,
+        political: params.politics,
+        issue: params.issue
+      };
+
+      // Set debug mode
+      debugMode = params.debug;
+
+      // Convert political score to ideology
+      let ideology;
+      if (params.politics <= 4) {
+        ideology = 'left';
+      } else if (params.politics >= 6) {
+        ideology = 'right';
+      } else {
+        ideology = 'neutral';
+      }
+
+      // Wait for the nice loading animation (3.5 seconds)
+      await new Promise(resolve => setTimeout(resolve, 3500));
+
+      // Ensure experience container is active and visible
+      const expContainer = document.getElementById('experience-container');
+      expContainer.classList.add('active');
+      expContainer.style.display = 'block';
+
+      // Hide survey, show feed directly
+      document.getElementById('experience-survey').style.display = 'none';
+      const feedEl = document.getElementById('experience-feed');
+      feedEl.classList.remove('hidden');
+      feedEl.style.display = 'block';
+
+      // Generate the personalized feed with custom post count
+      generateExperienceFeed(params.gender, params.age, ideology, params.issue, params.totalPosts);
+
+      // Start view tracking if debug mode
+      if (params.debug) {
+        feedEl.classList.add('debug-mode');
+        startViewTracking();
+      }
+
+      // Scroll to top
+      window.scrollTo(0, 0);
+      document.body.scrollTop = 0;
+      document.documentElement.scrollTop = 0;
+
+      // Clear URL parameters so participant can't mess with them
+      if (window.history && window.history.replaceState) {
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
+
+      // Fade out loader
+      loader.classList.add('fade-out');
+      setTimeout(() => {
+        loader.style.display = 'none';
+        loader.remove(); // Remove from DOM completely
+      }, 600);
+
+      // Set up "coming soon" tooltips for interactive elements
+      setupComingSoonTooltips();
+    }
+
+    function setupComingSoonTooltips() {
+      const tooltip = document.getElementById('coming-soon-tooltip');
+      let hideTimeout;
+
+      // Elements that should show "coming soon" tooltip
+      const selectors = [
+        '.sidebar-left .sidebar-item',
+        '.sidebar-right .filter-group',
+        '.sidebar-right button',
+        '.sidebar-right select',
+        '.header-right .header-icon',
+        '.header-search',
+        '.post-composer',
+        '.stories-card',
+        '.sponsored-label',
+        '#nav-home',
+        '#nav-home-top'
+      ];
+
+      selectors.forEach(selector => {
+        document.querySelectorAll(selector).forEach(el => {
+          el.addEventListener('click', (e) => {
+            if (!isSurveyParticipantMode) return;
+            e.preventDefault();
+            e.stopPropagation();
+            showComingSoonTooltip(e.clientX, e.clientY);
+          });
+
+          el.addEventListener('mouseenter', (e) => {
+            if (!isSurveyParticipantMode) return;
+            el.style.cursor = 'pointer';
+          });
+        });
+      });
+
+      function showComingSoonTooltip(x, y) {
+        clearTimeout(hideTimeout);
+        tooltip.style.left = `${x + 10}px`;
+        tooltip.style.top = `${y - 40}px`;
+        tooltip.classList.add('show');
+
+        hideTimeout = setTimeout(() => {
+          tooltip.classList.remove('show');
+        }, 1500);
       }
     }
 
@@ -4339,7 +4807,7 @@
       return org;
     }
 
-    function generateExperienceFeed(gender, age, ideology, issue) {
+    function generateExperienceFeed(gender, age, ideology, issue, customTotalPosts = 40) {
       const container = document.getElementById('experience-posts');
       container.innerHTML = '';
       
@@ -4348,7 +4816,7 @@
       usedNames = new Set();
       
       const posts = [];
-      const totalPosts = 40;
+      const totalPosts = customTotalPosts;
       const aiPostCount = 4;
       
       // Find the tailored condition
