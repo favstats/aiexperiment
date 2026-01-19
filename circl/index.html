@@ -1780,6 +1780,904 @@
       .mobile-nav { display: flex; }
       .app-container { padding-bottom: 56px; }
     }
+
+    /* ============================================
+       EXPERIENCE MODE STYLES
+       ============================================ */
+    .experience-container {
+      display: none;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .experience-container.active {
+      display: block;
+    }
+
+    .experience-survey {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: calc(100vh - 120px);
+      padding: 20px;
+    }
+
+    .experience-survey-card {
+      background: var(--circl-white);
+      border-radius: 16px;
+      box-shadow: var(--circl-shadow-lg);
+      padding: 40px;
+      max-width: 600px;
+      width: 100%;
+      animation: slideUp 0.4s ease-out;
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .experience-survey-header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .experience-logo {
+      margin-bottom: 16px;
+    }
+
+    .experience-title {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--circl-text-primary);
+      margin-bottom: 8px;
+    }
+
+    .experience-subtitle {
+      font-size: 15px;
+      color: var(--circl-text-secondary);
+    }
+
+    .experience-form {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    .experience-field {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .experience-label {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--circl-text-primary);
+    }
+
+    .experience-options {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .experience-option {
+      flex: 1;
+      min-width: 80px;
+      padding: 14px 16px;
+      border: 2px solid var(--circl-gray-200);
+      border-radius: 12px;
+      background: var(--circl-white);
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--circl-text-primary);
+    }
+
+    .experience-option i {
+      font-size: 20px;
+      color: var(--circl-gray-400);
+      transition: color 0.2s;
+    }
+
+    .experience-option:hover {
+      border-color: var(--circl-blue);
+      background: rgba(24, 119, 242, 0.05);
+    }
+
+    .experience-option:hover i {
+      color: var(--circl-blue);
+    }
+
+    .experience-option.selected {
+      border-color: var(--circl-blue);
+      background: rgba(24, 119, 242, 0.1);
+    }
+
+    .experience-option.selected i {
+      color: var(--circl-blue);
+    }
+
+    .issue-options {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      gap: 10px;
+    }
+
+    .issue-btn {
+      padding: 12px 10px;
+    }
+
+    .experience-slider-container {
+      padding: 10px 0;
+    }
+
+    .experience-slider-labels {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 8px;
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .slider-label-left { color: #E74C3C; }
+    .slider-label-center { color: var(--circl-gray-500); }
+    .slider-label-right { color: #3498DB; }
+
+    .experience-slider {
+      width: 100%;
+      height: 8px;
+      -webkit-appearance: none;
+      appearance: none;
+      background: linear-gradient(to right, #E74C3C 0%, #E74C3C 40%, #95A5A6 40%, #95A5A6 60%, #3498DB 60%, #3498DB 100%);
+      border-radius: 4px;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .experience-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--circl-white);
+      border: 3px solid var(--circl-blue);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .experience-slider::-webkit-slider-thumb:hover {
+      transform: scale(1.1);
+    }
+
+    .experience-slider::-moz-range-thumb {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: var(--circl-white);
+      border: 3px solid var(--circl-blue);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      cursor: pointer;
+    }
+
+    .experience-slider-ticks {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 6px;
+      font-size: 11px;
+      color: var(--circl-gray-400);
+      padding: 0 2px;
+    }
+
+    .experience-slider-value {
+      text-align: center;
+      margin-top: 12px;
+    }
+
+    .ideology-badge {
+      display: inline-block;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .ideology-badge.left {
+      background: rgba(231, 76, 60, 0.15);
+      color: #C0392B;
+    }
+
+    .ideology-badge.neutral {
+      background: rgba(149, 165, 166, 0.2);
+      color: #7F8C8D;
+    }
+
+    .ideology-badge.right {
+      background: rgba(52, 152, 219, 0.15);
+      color: #2980B9;
+    }
+
+    .experience-submit {
+      margin-top: 8px;
+      padding: 16px 32px;
+      background: linear-gradient(135deg, var(--circl-blue), var(--circl-teal));
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: all 0.3s;
+      opacity: 0.5;
+    }
+
+    .experience-submit:not(:disabled) {
+      opacity: 1;
+    }
+
+    .experience-submit:not(:disabled):hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(24, 119, 242, 0.35);
+    }
+
+    .experience-submit:disabled {
+      cursor: not-allowed;
+    }
+
+    /* Experience Feed */
+    .experience-feed {
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    .experience-feed.hidden {
+      display: none;
+    }
+
+    .experience-feed-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      padding: 16px 20px;
+      background: var(--circl-white);
+      border-radius: 12px;
+      box-shadow: var(--circl-shadow);
+    }
+
+    .experience-back-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      background: var(--circl-gray-100);
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--circl-text-primary);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .experience-back-btn:hover {
+      background: var(--circl-gray-200);
+    }
+
+    .experience-feed-info {
+      font-size: 13px;
+      color: var(--circl-text-secondary);
+    }
+
+    .experience-toggle-labels {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      background: var(--circl-gray-100);
+      border: none;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--circl-text-secondary);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .experience-toggle-labels:hover {
+      background: var(--circl-gray-200);
+    }
+
+    .experience-toggle-labels.active {
+      background: var(--circl-blue);
+      color: white;
+    }
+
+    .experience-posts-container {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .experience-posts-container .post {
+      background: var(--circl-white);
+      border-radius: 8px;
+      box-shadow: var(--circl-shadow);
+      overflow: hidden;
+    }
+
+    .experience-posts-container .post-header {
+      display: flex;
+      align-items: center;
+      padding: 12px 16px;
+      gap: 10px;
+    }
+
+    .experience-posts-container .post-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .experience-posts-container .post-meta {
+      flex: 1;
+    }
+
+    .experience-posts-container .post-author {
+      font-weight: 600;
+      font-size: 15px;
+      color: var(--circl-text-primary);
+    }
+
+    .experience-posts-container .post-info {
+      font-size: 13px;
+      color: var(--circl-text-secondary);
+    }
+
+    .experience-posts-container .post-options {
+      background: none;
+      border: none;
+      color: var(--circl-gray-400);
+      cursor: pointer;
+      padding: 8px;
+      border-radius: 50%;
+      transition: background 0.2s;
+    }
+
+    .experience-posts-container .post-options:hover {
+      background: var(--circl-gray-100);
+    }
+
+    .experience-posts-container .post-content {
+      padding: 0 16px 12px;
+      font-size: 15px;
+      line-height: 1.5;
+      color: var(--circl-text-primary);
+    }
+
+    .experience-posts-container .post-image-container {
+      position: relative;
+      width: 100%;
+    }
+
+    .experience-posts-container .post-single-image {
+      width: 100%;
+      display: block;
+    }
+
+    .experience-posts-container .post-stats {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 16px;
+      font-size: 14px;
+      color: var(--circl-text-secondary);
+    }
+
+    .experience-posts-container .post-reactions-count {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .experience-posts-container .reaction-icons {
+      display: flex;
+    }
+
+    .experience-posts-container .reaction-icons i {
+      font-size: 16px;
+    }
+
+    .experience-posts-container .reaction-icons i.fa-thumbs-up {
+      color: var(--circl-blue);
+    }
+
+    .experience-posts-container .reaction-icons i.fa-heart {
+      color: #E74C3C;
+      margin-left: -4px;
+    }
+
+    .experience-posts-container .post-divider {
+      height: 1px;
+      background: var(--circl-gray-200);
+      margin: 0 16px;
+    }
+
+    .experience-posts-container .post-actions {
+      display: flex;
+      padding: 4px 8px;
+    }
+
+    .experience-posts-container .post-action {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px;
+      background: none;
+      border: none;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--circl-text-secondary);
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .experience-posts-container .post-action:hover {
+      background: var(--circl-gray-100);
+    }
+
+    .experience-posts-container .post-action i {
+      font-size: 18px;
+    }
+
+    .experience-posts-container .post-action.liked {
+      color: var(--circl-blue);
+    }
+
+    .experience-posts-container .post-action.liked i {
+      color: var(--circl-blue);
+    }
+
+    .experience-posts-container .post-action.shared {
+      color: var(--circl-teal);
+    }
+
+    .experience-posts-container .avatar-wrapper {
+      width: 40px;
+      height: 40px;
+      flex-shrink: 0;
+    }
+
+    .experience-posts-container .post-avatar-img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .experience-posts-container .post-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .experience-posts-container .org-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--circl-blue), var(--circl-teal));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .experience-posts-container .org-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: contain;
+      background: white;
+      padding: 4px;
+      border: 1px solid var(--circl-gray-200);
+      flex-shrink: 0;
+    }
+
+    .comment-input-box {
+      padding: 12px 16px;
+      border-top: 1px solid var(--circl-gray-200);
+    }
+
+    .comment-input-wrapper {
+      display: flex;
+      gap: 8px;
+    }
+
+    .comment-input {
+      flex: 1;
+      padding: 10px 14px;
+      border: none;
+      background: var(--circl-gray-100);
+      border-radius: 20px;
+      font-size: 14px;
+      outline: none;
+      color: var(--circl-text-primary);
+    }
+
+    .comment-input::placeholder {
+      color: var(--circl-gray-400);
+    }
+
+    .comment-input:focus {
+      background: var(--circl-white);
+      box-shadow: 0 0 0 2px var(--circl-blue);
+      color: var(--circl-text-primary);
+    }
+
+    .comment-send {
+      width: 36px;
+      height: 36px;
+      border: none;
+      background: var(--circl-blue);
+      color: white;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+
+    .comment-send:hover {
+      background: var(--circl-blue-hover);
+    }
+
+    .comment-posted {
+      text-align: center;
+      color: var(--circl-green);
+      font-size: 14px;
+      font-weight: 500;
+      padding: 8px;
+    }
+
+    .share-feedback {
+      position: absolute;
+      bottom: 60px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.8);
+      color: white;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      animation: fadeInOut 2s ease;
+      z-index: 10;
+    }
+
+    @keyframes fadeInOut {
+      0% { opacity: 0; transform: translateX(-50%) translateY(10px); }
+      15% { opacity: 1; transform: translateX(-50%) translateY(0); }
+      85% { opacity: 1; transform: translateX(-50%) translateY(0); }
+      100% { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+    }
+
+    /* Experience post indicator */
+    .experience-ai-indicator {
+      display: none;
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(0,0,0,0.85);
+      color: white;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      z-index: 10;
+      line-height: 1.4;
+      text-align: right;
+    }
+
+    .experience-ai-indicator small {
+      font-weight: 400;
+      font-size: 10px;
+      opacity: 0.85;
+    }
+
+    .experience-ai-indicator.tailored {
+      background: linear-gradient(135deg, var(--circl-blue), var(--circl-teal));
+    }
+
+    .show-ai-labels .experience-ai-indicator {
+      display: block;
+    }
+
+    @media (max-width: 768px) {
+      .experience-survey-card {
+        padding: 24px;
+        margin: 10px;
+      }
+      
+      .experience-title {
+        font-size: 22px;
+      }
+      
+      .experience-options {
+        flex-direction: column;
+      }
+      
+      .issue-options {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    /* Debug Mode Toggle */
+    .debug-toggle-field {
+      padding-top: 8px;
+      border-top: 1px solid var(--circl-gray-200);
+    }
+
+    .debug-toggle-label {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      cursor: pointer;
+    }
+
+    .debug-toggle-label input {
+      display: none;
+    }
+
+    .debug-toggle-switch {
+      width: 44px;
+      height: 24px;
+      background: var(--circl-gray-300);
+      border-radius: 12px;
+      position: relative;
+      transition: background 0.3s;
+    }
+
+    .debug-toggle-switch::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: white;
+      border-radius: 50%;
+      top: 2px;
+      left: 2px;
+      transition: transform 0.3s;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+
+    .debug-toggle-label input:checked + .debug-toggle-switch {
+      background: var(--circl-blue);
+    }
+
+    .debug-toggle-label input:checked + .debug-toggle-switch::after {
+      transform: translateX(20px);
+    }
+
+    .debug-toggle-text {
+      font-weight: 500;
+      color: var(--circl-text-primary);
+    }
+
+    .debug-toggle-hint {
+      font-size: 12px;
+      color: var(--circl-text-secondary);
+      margin-top: 6px;
+      margin-left: 56px;
+    }
+
+    /* Debug Mode Indicators */
+    .debug-mode .experience-ai-indicator {
+      display: block !important;
+    }
+
+    .debug-mode .post-view-timer {
+      display: block !important;
+    }
+
+    .debug-mode .experience-results-btn {
+      display: block !important;
+    }
+
+    .post-view-timer {
+      display: none;
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: rgba(0,0,0,0.8);
+      color: #4ADE80;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-family: monospace;
+      z-index: 10;
+    }
+
+    /* Results Button */
+    .experience-results-btn {
+      display: none;
+      margin: 30px auto;
+      padding: 16px 32px;
+      background: linear-gradient(135deg, #10B981, #059669);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .debug-mode .experience-results-btn {
+      display: block;
+    }
+
+    .experience-results-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(16, 185, 129, 0.35);
+    }
+
+    /* Results Modal */
+    .results-modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .results-modal.active {
+      display: flex;
+    }
+
+    .results-card {
+      background: var(--circl-white);
+      border-radius: 16px;
+      max-width: 600px;
+      width: 100%;
+      max-height: 80vh;
+      overflow: auto;
+      animation: slideUp 0.3s ease-out;
+    }
+
+    .results-header {
+      padding: 24px;
+      border-bottom: 1px solid var(--circl-gray-200);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .results-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--circl-text-primary);
+    }
+
+    .results-close {
+      width: 36px;
+      height: 36px;
+      border: none;
+      background: var(--circl-gray-100);
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: var(--circl-text-secondary);
+    }
+
+    .results-close:hover {
+      background: var(--circl-gray-200);
+    }
+
+    .results-content {
+      padding: 24px;
+    }
+
+    .results-item {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 16px;
+      background: var(--circl-gray-100);
+      border-radius: 12px;
+      margin-bottom: 12px;
+    }
+
+    .results-rank {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--circl-blue), var(--circl-teal));
+      color: white;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+    }
+
+    .results-item:nth-child(1) .results-rank { background: linear-gradient(135deg, #F59E0B, #D97706); }
+    .results-item:nth-child(2) .results-rank { background: linear-gradient(135deg, #9CA3AF, #6B7280); }
+    .results-item:nth-child(3) .results-rank { background: linear-gradient(135deg, #CD7F32, #A0522D); }
+
+    .results-info {
+      flex: 1;
+    }
+
+    .results-author {
+      font-weight: 600;
+      color: var(--circl-text-primary);
+      margin-bottom: 4px;
+    }
+
+    .results-type {
+      font-size: 12px;
+      color: var(--circl-text-secondary);
+    }
+
+    .results-type.ai-tailored {
+      color: var(--circl-blue);
+      font-weight: 500;
+    }
+
+    .results-type.ai-random {
+      color: var(--circl-teal);
+    }
+
+    .results-time {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--circl-text-primary);
+      font-family: monospace;
+    }
+
+    .results-time small {
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--circl-text-secondary);
+    }
   </style>
 </head>
 <body>
@@ -1824,6 +2722,9 @@
       <div class="header-nav-item" id="nav-qc-top" onclick="switchMode('qc')">
         <i class="fas fa-clipboard-check"></i>
       </div>
+      <div class="header-nav-item" id="nav-exp-top" onclick="switchMode('experience')">
+        <i class="fas fa-flask"></i>
+      </div>
     </div>
     
     <div class="header-right">
@@ -1863,6 +2764,10 @@
       <a class="sidebar-nav-item" id="nav-qc" onclick="switchMode('qc')">
         <div class="sidebar-nav-icon"><i class="fas fa-clipboard-check"></i></div>
         <span>Quality Control</span>
+      </a>
+      <a class="sidebar-nav-item" id="nav-exp" onclick="switchMode('experience')">
+        <div class="sidebar-nav-icon"><i class="fas fa-flask"></i></div>
+        <span>Experience</span>
       </a>
       <a class="sidebar-nav-item">
         <div class="sidebar-nav-icon"><i class="fas fa-bookmark"></i></div>
@@ -2176,6 +3081,164 @@
             </button>
             <div class="qc-status" id="qc-status"></div>
           </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- EXPERIENCE MODE CONTAINER -->
+    <div id="experience-container" class="experience-container">
+      <!-- Survey Screen -->
+      <div id="experience-survey" class="experience-survey">
+        <div class="experience-survey-card">
+          <div class="experience-survey-header">
+            <div class="experience-logo">
+              <svg viewBox="0 0 48 48" width="48" height="48">
+                <defs>
+                  <linearGradient id="expGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#1877F2"/>
+                    <stop offset="100%" style="stop-color:#00A3A3"/>
+                  </linearGradient>
+                </defs>
+                <circle cx="24" cy="24" r="22" fill="url(#expGrad)"/>
+                <circle cx="24" cy="24" r="14" fill="none" stroke="white" stroke-width="3"/>
+                <circle cx="24" cy="24" r="6" fill="white"/>
+              </svg>
+            </div>
+            <h1 class="experience-title">Personalize Your Feed</h1>
+            <p class="experience-subtitle">Help us tailor your experience by answering a few quick questions</p>
+          </div>
+
+          <div class="experience-form">
+            <!-- Gender -->
+            <div class="experience-field">
+              <label class="experience-label">What is your gender?</label>
+              <div class="experience-options gender-options">
+                <button type="button" class="experience-option" data-field="gender" data-value="female">
+                  <i class="fas fa-venus"></i>
+                  <span>Female</span>
+                </button>
+                <button type="button" class="experience-option" data-field="gender" data-value="male">
+                  <i class="fas fa-mars"></i>
+                  <span>Male</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Age -->
+            <div class="experience-field">
+              <label class="experience-label">What is your age group?</label>
+              <div class="experience-options age-options">
+                <button type="button" class="experience-option" data-field="age" data-value="18-29">
+                  <span>18-29</span>
+                </button>
+                <button type="button" class="experience-option" data-field="age" data-value="30-44">
+                  <span>30-44</span>
+                </button>
+                <button type="button" class="experience-option" data-field="age" data-value="45-59">
+                  <span>45-59</span>
+                </button>
+                <button type="button" class="experience-option" data-field="age" data-value="60+">
+                  <span>60+</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Political Leaning -->
+            <div class="experience-field">
+              <label class="experience-label">Where do you place yourself politically?</label>
+              <div class="experience-slider-container">
+                <div class="experience-slider-labels">
+                  <span class="slider-label-left">Left</span>
+                  <span class="slider-label-center">Center</span>
+                  <span class="slider-label-right">Right</span>
+                </div>
+                <input type="range" id="political-slider" class="experience-slider" min="0" max="10" value="5" step="1">
+                <div class="experience-slider-ticks">
+                  <span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span>
+                </div>
+                <div class="experience-slider-value" id="political-value">
+                  <span class="ideology-badge neutral">Center (5)</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Issue -->
+            <div class="experience-field">
+              <label class="experience-label">Which issue matters most to you?</label>
+              <div class="experience-options issue-options">
+                <button type="button" class="experience-option issue-btn" data-field="issue" data-value="Affordable_childcare_access">
+                  <i class="fas fa-baby"></i>
+                  <span>Childcare</span>
+                </button>
+                <button type="button" class="experience-option issue-btn" data-field="issue" data-value="Build_more_homes_accelerate_construction">
+                  <i class="fas fa-house"></i>
+                  <span>Housing</span>
+                </button>
+                <button type="button" class="experience-option issue-btn" data-field="issue" data-value="CO2_levy_for_industry_climate">
+                  <i class="fas fa-leaf"></i>
+                  <span>Climate</span>
+                </button>
+                <button type="button" class="experience-option issue-btn" data-field="issue" data-value="purchasing_power">
+                  <i class="fas fa-wallet"></i>
+                  <span>Cost of Living</span>
+                </button>
+                <button type="button" class="experience-option issue-btn" data-field="issue" data-value="stop_weapon_ship_to_israel">
+                  <i class="fas fa-dove"></i>
+                  <span>Israel/Peace</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Debug Mode Toggle -->
+            <div class="experience-field debug-toggle-field">
+              <label class="debug-toggle-label">
+                <input type="checkbox" id="debug-mode-toggle">
+                <span class="debug-toggle-switch"></span>
+                <span class="debug-toggle-text">Enable Debug Mode</span>
+              </label>
+              <p class="debug-toggle-hint">Shows AI post reasons and tracks viewing time</p>
+            </div>
+
+            <!-- Submit -->
+            <button type="button" class="experience-submit" id="experience-submit" disabled>
+              <span>Show My Feed</span>
+              <i class="fas fa-arrow-right"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Experience Feed -->
+      <div id="experience-feed" class="experience-feed hidden">
+        <div class="experience-feed-header">
+          <button class="experience-back-btn" onclick="resetExperience()">
+            <i class="fas fa-arrow-left"></i>
+            <span>Start Over</span>
+          </button>
+          <div class="experience-feed-info">
+            <span id="experience-profile-summary"></span>
+          </div>
+          <button class="experience-toggle-labels" id="experience-toggle-labels" onclick="toggleExperienceLabels()">
+            <i class="fas fa-eye"></i>
+            <span>Show AI</span>
+          </button>
+        </div>
+        <div class="experience-posts-container" id="experience-posts"></div>
+        <button class="experience-results-btn" id="experience-results-btn" onclick="showResults()">
+          <i class="fas fa-chart-bar"></i> View Attention Results
+        </button>
+      </div>
+    </div>
+
+    <!-- Results Modal -->
+    <div class="results-modal" id="results-modal">
+      <div class="results-card">
+        <div class="results-header">
+          <h2 class="results-title">📊 Top 5 Most Viewed Posts</h2>
+          <button class="results-close" onclick="closeResults()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="results-content" id="results-content">
+          <!-- Results will be inserted here -->
         </div>
       </div>
     </div>
@@ -2912,41 +3975,891 @@
     function switchMode(mode) {
       const mainFeed = document.querySelector('.main-feed');
       const qcContainer = document.getElementById('qc-container');
+      const expContainer = document.getElementById('experience-container');
       const sidebarRight = document.querySelector('.sidebar-right');
+      const sidebarLeft = document.querySelector('.sidebar-left');
       const navHome = document.getElementById('nav-home');
       const navQc = document.getElementById('nav-qc');
+      const navExp = document.getElementById('nav-exp');
       const navHomeTop = document.getElementById('nav-home-top');
       const navQcTop = document.getElementById('nav-qc-top');
+      const navExpTop = document.getElementById('nav-exp-top');
       const mobileNavItems = document.querySelectorAll('.mobile-nav-item');
+      
+      // Reset all modes
+      qcMode = false;
+      mainFeed.classList.add('hidden');
+      qcContainer.classList.remove('active');
+      expContainer.classList.remove('active');
+      sidebarRight.classList.add('hidden');
+      sidebarLeft.classList.remove('hidden');
+      navHome?.classList.remove('active');
+      navQc?.classList.remove('active');
+      navExp?.classList.remove('active');
+      navHomeTop?.classList.remove('active');
+      navQcTop?.classList.remove('active');
+      navExpTop?.classList.remove('active');
       
       if (mode === 'qc') {
         qcMode = true;
-        mainFeed.classList.add('hidden');
         qcContainer.classList.add('active');
-        sidebarRight.classList.add('hidden');
-        navHome?.classList.remove('active');
         navQc?.classList.add('active');
-        navHomeTop?.classList.remove('active');
         navQcTop?.classList.add('active');
-        // Update mobile nav
         mobileNavItems.forEach((item, i) => {
-          item.classList.toggle('active', i === 3); // QC is 4th item
+          item.classList.toggle('active', i === 3);
         });
         initQCMode();
+      } else if (mode === 'experience') {
+        expContainer.classList.add('active');
+        sidebarLeft.classList.add('hidden');
+        navExp?.classList.add('active');
+        navExpTop?.classList.add('active');
+        mobileNavItems.forEach((item, i) => {
+          item.classList.toggle('active', i === 4);
+        });
+        initExperienceMode();
       } else {
-        qcMode = false;
+        // Feed mode
         mainFeed.classList.remove('hidden');
-        qcContainer.classList.remove('active');
         sidebarRight.classList.remove('hidden');
         navHome?.classList.add('active');
-        navQc?.classList.remove('active');
         navHomeTop?.classList.add('active');
-        navQcTop?.classList.remove('active');
-        // Update mobile nav
         mobileNavItems.forEach((item, i) => {
-          item.classList.toggle('active', i === 0); // Home is 1st item
+          item.classList.toggle('active', i === 0);
         });
       }
+    }
+
+    // ============================================
+    // EXPERIENCE MODE
+    // ============================================
+    
+    let experienceData = {
+      gender: null,
+      age: null,
+      political: 5,
+      issue: null
+    };
+
+    let debugMode = false;
+    let postViewTimes = {}; // { postId: { totalTime, lastEnterTime, author, type } }
+    let viewTrackingObserver = null;
+
+    function initExperienceMode() {
+      // Reset form
+      experienceData = { gender: null, age: null, political: 5, issue: null };
+      debugMode = false;
+      postViewTimes = {};
+      
+      document.querySelectorAll('.experience-option').forEach(opt => opt.classList.remove('selected'));
+      document.getElementById('political-slider').value = 5;
+      updatePoliticalDisplay(5);
+      document.getElementById('experience-submit').disabled = true;
+      document.getElementById('debug-mode-toggle').checked = false;
+      
+      // Show survey, hide feed
+      document.getElementById('experience-survey').classList.remove('hidden');
+      document.getElementById('experience-feed').classList.add('hidden');
+      
+      // Remove debug mode class
+      document.getElementById('experience-feed').classList.remove('debug-mode');
+      
+      // Stop any existing observer and interval
+      if (viewTrackingObserver) {
+        viewTrackingObserver.disconnect();
+        viewTrackingObserver = null;
+      }
+      if (viewTimerInterval) {
+        clearInterval(viewTimerInterval);
+        viewTimerInterval = null;
+      }
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('blur', handleWindowBlur);
+      window.removeEventListener('focus', handleWindowFocus);
+      isPageVisible = true;
+      
+      // Setup event listeners
+      setupExperienceListeners();
+    }
+
+    function setupExperienceListeners() {
+      // Option buttons
+      document.querySelectorAll('.experience-option').forEach(btn => {
+        btn.onclick = () => {
+          const field = btn.dataset.field;
+          const value = btn.dataset.value;
+          
+          // Deselect siblings
+          btn.parentElement.querySelectorAll('.experience-option').forEach(s => s.classList.remove('selected'));
+          btn.classList.add('selected');
+          
+          experienceData[field] = value;
+          checkExperienceComplete();
+        };
+      });
+      
+      // Political slider
+      const slider = document.getElementById('political-slider');
+      slider.oninput = () => {
+        const val = parseInt(slider.value);
+        experienceData.political = val;
+        updatePoliticalDisplay(val);
+      };
+      
+      // Submit button
+      document.getElementById('experience-submit').onclick = startExperienceFeed;
+    }
+
+    function updatePoliticalDisplay(val) {
+      const display = document.getElementById('political-value');
+      let ideology, label;
+      
+      if (val <= 4) {
+        ideology = 'left';
+        label = `Left (${val})`;
+      } else if (val >= 6) {
+        ideology = 'right';
+        label = `Right (${val})`;
+      } else {
+        ideology = 'neutral';
+        label = `Center (${val})`;
+      }
+      
+      display.innerHTML = `<span class="ideology-badge ${ideology}">${label}</span>`;
+    }
+
+    function checkExperienceComplete() {
+      const complete = experienceData.gender && experienceData.age && experienceData.issue;
+      document.getElementById('experience-submit').disabled = !complete;
+    }
+
+    function getIdeologyFromPolitical(val) {
+      if (val <= 4) return 'left';
+      if (val >= 6) return 'right';
+      return 'neutral';
+    }
+
+    function startExperienceFeed() {
+      const ideology = getIdeologyFromPolitical(experienceData.political);
+      
+      // Check debug mode
+      debugMode = document.getElementById('debug-mode-toggle').checked;
+      postViewTimes = {};
+      
+      // Hide survey, show feed
+      document.getElementById('experience-survey').classList.add('hidden');
+      document.getElementById('experience-feed').classList.remove('hidden');
+      
+      // Apply debug mode class to feed container (includes button)
+      const feedContainer = document.getElementById('experience-feed');
+      feedContainer.classList.toggle('debug-mode', debugMode);
+      
+      // Update profile summary
+      const ideologyLabel = ideology === 'left' ? 'Left' : ideology === 'right' ? 'Right' : 'Center';
+      const issueLabel = policyDisplayNames[experienceData.issue] || experienceData.issue;
+      document.getElementById('experience-profile-summary').textContent = 
+        `${experienceData.age} · ${experienceData.gender} · ${ideologyLabel} · ${issueLabel}`;
+      
+      // Generate feed
+      generateExperienceFeed(experienceData.gender, experienceData.age, ideology, experienceData.issue);
+      
+      // Always start view tracking (display only shows in debug mode)
+      startViewTracking();
+      
+      // Scroll to top of feed
+      window.scrollTo({ top: 0, behavior: 'instant' });
+      document.getElementById('experience-container').scrollTop = 0;
+    }
+
+    // Name pools by age and gender
+    const namesByDemo = {
+      'female_young': [
+        'Emma de Vries', 'Sophie Jansen', 'Lisa Mulder', 'Fleur Hendriks', 'Anna Smit',
+        'Julia Bakker', 'Lotte van Dijk', 'Sanne Peters', 'Iris Visser', 'Eva de Boer',
+        'Noor Vermeer', 'Luna Meijer', 'Femke Bos', 'Roos de Graaf', 'Amber Willems',
+        'Tessa Hoekstra', 'Nina Schouten', 'Merel Dekker', 'Lieke van der Berg', 'Esmee Prins'
+      ],
+      'female_old': [
+        'Johanna van Dijk', 'Maria Bakker', 'Anneke Jansen', 'Gerda Smit', 'Wilhelmina de Vries',
+        'Hendrika Peters', 'Cornelia Mulder', 'Geertje Visser', 'Klasina de Boer', 'Dina Meijer',
+        'Aaltje Hendriks', 'Grietje van der Berg', 'Jantje Bos', 'Neeltje Dekker', 'Pietje Prins'
+      ],
+      'male_young': [
+        'Thomas Bakker', 'Lars van Dijk', 'Max Visser', 'Daan de Boer', 'Bram Peters',
+        'Luuk Jansen', 'Sem Mulder', 'Jesse Hendriks', 'Ruben Smit', 'Tim de Vries',
+        'Niels Meijer', 'Stijn van der Berg', 'Rick Bos', 'Thijs Dekker', 'Kevin Prins',
+        'Joost Vermeer', 'Martijn Schouten', 'Wouter Hoekstra', 'Bas Willems', 'Jeroen de Graaf'
+      ],
+      'male_old': [
+        'Jan van Dijk', 'Piet Bakker', 'Klaas Jansen', 'Hendrik Smit', 'Willem de Vries',
+        'Cornelis Peters', 'Gerrit Mulder', 'Johannes Visser', 'Jacobus de Boer', 'Dirk Meijer',
+        'Arie Hendriks', 'Bernardus van der Berg', 'Frederik Bos', 'Albertus Dekker', 'Theodorus Prins'
+      ]
+    };
+
+    const organizations = [
+      { name: 'NOS Nieuws', logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/NOS_logo.svg/200px-NOS_logo.svg.png', fallbackIcon: 'newspaper', posts: [
+        'LIVE: Kamerdebat over de begroting voor volgend jaar. Volg het hier.',
+        'Nieuwe cijfers CBS: werkloosheid daalt naar laagste punt in 10 jaar.',
+        'Weerbericht: komende dagen wisselvallig met kans op buien.'
+      ]},
+      { name: 'De Volkskrant', logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/De_Volkskrant_logo.svg/200px-De_Volkskrant_logo.svg.png', fallbackIcon: 'newspaper', posts: [
+        'Analyse: Wat betekenen de nieuwe klimaatplannen voor Nederlandse huishoudens?',
+        'Interview met de nieuwe burgemeester: "We moeten de stad groener maken"',
+        'Recensie: Het nieuwe boek van Arnon Grunberg is een meesterwerk.'
+      ]},
+      { name: 'RTL Nieuws', logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/RTL_Nederland_logo.svg/200px-RTL_Nederland_logo.svg.png', fallbackIcon: 'tv', posts: [
+        'BREAKING: Kabinet presenteert nieuwe maatregelen voor de woningmarkt.',
+        'Vanavond in RTL Late Night: gesprek over de toekomst van werk.',
+        'Video: Zo ziet de nieuwe snelweg eruit na jaren van verbouwing.'
+      ]},
+      { name: 'NU.nl', logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Nu.nl_logo.svg/200px-Nu.nl_logo.svg.png', fallbackIcon: 'globe', posts: [
+        'Liveblog: Volg hier het laatste nieuws over de stakingen.',
+        'Dit zijn de belangrijkste nieuwsfeiten van vandaag.',
+        'Quiz: Hoeveel weet jij over de Nederlandse geschiedenis?'
+      ]},
+      { name: 'NRC', logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/7/71/NRC_logo.svg', fallbackIcon: 'newspaper', posts: [
+        'Analyse: De gevolgen van het nieuwe regeringsbeleid voor de middenklasse.',
+        'Opinie: Waarom we het klimaatdebat anders moeten voeren.',
+        'Boekrecensie: Een verrassende kijk op de Nederlandse geschiedenis.'
+      ]},
+      { name: 'Gemeente Amsterdam', logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Coat_of_arms_of_Amsterdam.svg/200px-Coat_of_arms_of_Amsterdam.svg.png', fallbackIcon: 'landmark', posts: [
+        'Reminder: Morgen start de afsluiting van de Amstelveenseweg voor werkzaamheden.',
+        'Nieuw initiatief: gratis sportlessen voor jongeren in de zomervakantie.',
+        'Doe mee met de buurtschoonmaak dit weekend! Aanmelden via de link.'
+      ]},
+      { name: 'Rijksoverheid', logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Logo_rijksoverheid.svg/200px-Logo_rijksoverheid.svg.png', fallbackIcon: 'building-columns', posts: [
+        'Nieuwe regeling: zo vraag je de energietoeslag aan.',
+        'Vanaf 1 januari gelden nieuwe regels voor thuiswerken. Lees meer →',
+        'Campagne gestart: samen maken we Nederland verkeersveiliger.'
+      ]},
+      { name: 'Milieudefensie', logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Milieudefensie_logo.svg/200px-Milieudefensie_logo.svg.png', fallbackIcon: 'leaf', posts: [
+        'Grote overwinning! Shell moet sneller verduurzamen van de rechter.',
+        'Doe mee met onze actie voor schonere lucht in de stad.',
+        'Nieuw rapport: zo kunnen we Nederland klimaatneutraal maken.'
+      ]},
+      { name: 'Woonbond', logoUrl: null, fallbackIcon: 'house', posts: [
+        'Petitie: Stop de huurverhogingen! Al 50.000 handtekeningen verzameld.',
+        'Tips: Dit zijn je rechten als huurder bij achterstallig onderhoud.',
+        'Woondebat in de Tweede Kamer: dit zijn de belangrijkste punten.'
+      ]},
+      { name: 'FNV', logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/FNV_logo.svg/200px-FNV_logo.svg.png', fallbackIcon: 'users', posts: [
+        'Stakingsoproep: Morgen leggen medewerkers in de zorg het werk neer.',
+        'Onderhandelingen CAO vastgelopen. Werkgevers moeten bewegen!',
+        'Succesvol: 5% loonsverhoging bereikt na lange onderhandelingen.'
+      ]},
+      { name: 'Amnesty Nederland', logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Amnesty_International_logo.svg/200px-Amnesty_International_logo.svg.png', fallbackIcon: 'hand-fist', posts: [
+        'Urgent: Schrijf een brief voor vrijlating van politieke gevangenen.',
+        'Nieuw rapport over mensenrechtenschendingen gepubliceerd.',
+        'Bedankt voor jullie steun! Samen vechten we voor rechtvaardigheid.'
+      ]},
+      { name: 'Consumentenbond', logoUrl: 'https://logo.clearbit.com/consumentenbond.nl', fallbackIcon: 'shield', posts: [
+        'Test: Dit is de beste zorgverzekering voor 2024.',
+        'Waarschuwing: Let op voor deze phishing-mails!',
+        'Vergelijk en bespaar: de beste energieleveranciers van dit moment.'
+      ]},
+      { name: 'ANWB', logoUrl: 'https://logo.clearbit.com/anwb.nl', fallbackIcon: 'car', posts: [
+        'Filevoorspelling: verwacht druk verkeer richting vakantiebestemmingen.',
+        'Tip: Zo bereid je je auto voor op de winter.',
+        'Nieuwe laadpalen geopend langs de A2. Elektrisch rijden wordt makkelijker!'
+      ]},
+      { name: 'Greenpeace NL', logoUrl: 'https://logo.clearbit.com/greenpeace.nl', fallbackIcon: 'leaf', posts: [
+        'Actie op de Noordzee: bescherm onze oceanen tegen olieboringen!',
+        'Goed nieuws: supermarkten stoppen met plastic verpakkingen.',
+        'Doe mee: plantdag in het Vondelpark dit weekend.'
+      ]},
+      { name: 'NRC', logoUrl: 'https://logo.clearbit.com/nrc.nl', fallbackIcon: 'newspaper', posts: [
+        'Podcast: Luister naar onze nieuwe serie over de klimaatcrisis.',
+        'Opinie: Waarom we het debat over migratie anders moeten voeren.',
+        'Fotoserie: De mooiste plekken van Nederland in de herfst.'
+      ]},
+      { name: 'Trouw', logoUrl: 'https://logo.clearbit.com/trouw.nl', fallbackIcon: 'newspaper', posts: [
+        'Duurzaam leven: 10 tips om je ecologische voetafdruk te verkleinen.',
+        'Interview: "Geloof speelt nog steeds een belangrijke rol in Nederland"',
+        'Reportage: Een dag in het leven van een huisarts op het platteland.'
+      ]}
+    ];
+
+    let usedAvatarIds = new Set();
+    let usedNames = new Set();
+
+    // Avatar ID ranges that tend to have appropriate ages in randomuser.me
+    // These are approximate - randomuser.me doesn't guarantee age but certain ranges tend to have older/younger faces
+    const avatarRanges = {
+      'young': { min: 1, max: 50 },   // IDs 1-50 tend to have younger faces
+      'old': { min: 51, max: 99 }      // IDs 51-99 tend to have older faces
+    };
+
+    function getUniqueAvatarId() {
+      let id;
+      do {
+        id = Math.floor(Math.random() * 99) + 1;
+      } while (usedAvatarIds.has(id) && usedAvatarIds.size < 99);
+      usedAvatarIds.add(id);
+      return id;
+    }
+
+    function getAgeAppropriateAvatarId(age) {
+      const isOld = age === '45-59' || age === '60+';
+      const range = isOld ? avatarRanges.old : avatarRanges.young;
+      
+      let id;
+      let attempts = 0;
+      do {
+        id = Math.floor(Math.random() * (range.max - range.min + 1)) + range.min;
+        attempts++;
+      } while (usedAvatarIds.has(id) && attempts < 50);
+      
+      usedAvatarIds.add(id);
+      return id;
+    }
+
+    function getUniqueName(gender, age) {
+      const isOld = age === '45-59' || age === '60+';
+      const key = `${gender}_${isOld ? 'old' : 'young'}`;
+      const pool = namesByDemo[key] || namesByDemo['male_young'];
+      
+      const available = pool.filter(n => !usedNames.has(n));
+      if (available.length === 0) {
+        // All used, generate a unique one
+        return pool[Math.floor(Math.random() * pool.length)] + ' ' + Math.floor(Math.random() * 100);
+      }
+      const name = available[Math.floor(Math.random() * available.length)];
+      usedNames.add(name);
+      return name;
+    }
+
+    function getUniqueOrg() {
+      const available = organizations.filter(o => !usedNames.has(o.name));
+      if (available.length === 0) {
+        return organizations[Math.floor(Math.random() * organizations.length)];
+      }
+      const org = available[Math.floor(Math.random() * available.length)];
+      usedNames.add(org.name);
+      return org;
+    }
+
+    function generateExperienceFeed(gender, age, ideology, issue) {
+      const container = document.getElementById('experience-posts');
+      container.innerHTML = '';
+      
+      // Reset used trackers
+      usedAvatarIds = new Set();
+      usedNames = new Set();
+      
+      const posts = [];
+      const totalPosts = 40;
+      const aiPostCount = 4;
+      
+      // Find the tailored condition
+      const tailoredCondition = conditionsData.conditions.find(c => 
+        c.gender === gender && 
+        c.age_group === age && 
+        c.ideology === ideology && 
+        c.policy_issue === issue
+      );
+      
+      // Get random conditions for the other 3 AI posts (different from tailored)
+      const otherConditions = conditionsData.conditions.filter(c => 
+        c.images && c.images.length > 0 &&
+        !(c.gender === gender && c.age_group === age && c.ideology === ideology && c.policy_issue === issue)
+      );
+      shuffleArray(otherConditions);
+      const randomConditions = otherConditions.slice(0, 3);
+      
+      // Create placeholder posts
+      for (let i = 0; i < totalPosts - aiPostCount; i++) {
+        posts.push(createExperiencePlaceholderPost(i, gender, age));
+      }
+      
+      // Create AI posts
+      if (tailoredCondition && tailoredCondition.images && tailoredCondition.images.length > 0) {
+        posts.push(createExperienceAIPost(tailoredCondition, true, gender, age));
+      }
+      
+      randomConditions.forEach(cond => {
+        if (cond.images && cond.images.length > 0) {
+          posts.push(createExperienceAIPost(cond, false, gender, age));
+        }
+      });
+      
+      // Shuffle posts
+      shuffleArray(posts);
+      
+      // Add to container
+      posts.forEach(post => container.appendChild(post));
+      
+      // Initialize carousels and interactions
+      initExperienceCarousels();
+      attachExperienceInteractions();
+    }
+
+    function createExperiencePlaceholderPost(index, userGender, userAge) {
+      const post = document.createElement('article');
+      post.className = 'post placeholder-post';
+      post.dataset.postId = `placeholder-${index}-${Date.now()}`;
+      
+      const time = `${Math.floor(Math.random() * 23) + 1}h`;
+      
+      const hasImage = Math.random() > 0.4;
+      const imageId = Math.floor(Math.random() * 1000);
+      const likes = Math.floor(Math.random() * 200) + 5;
+      const comments = Math.floor(Math.random() * 30);
+      const shares = Math.floor(Math.random() * 15);
+      
+      // Decide if this is a person or organization (20% chance org)
+      const isOrg = Math.random() < 0.2;
+      
+      let avatarHtml, authorName, authorSub, postText;
+      
+      if (isOrg) {
+        const org = getUniqueOrg();
+        authorName = org.name;
+        authorSub = '';
+        // Use organization-specific post content
+        postText = org.posts[Math.floor(Math.random() * org.posts.length)];
+        if (org.logoUrl) {
+          avatarHtml = `<div class="avatar-wrapper"><img class="post-avatar-img org-logo" src="${org.logoUrl}" alt="${org.name}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div class="post-avatar org-avatar" style="display:none;"><i class="fas fa-${org.fallbackIcon}"></i></div></div>`;
+        } else {
+          avatarHtml = `<div class="avatar-wrapper"><div class="post-avatar org-avatar"><i class="fas fa-${org.fallbackIcon}"></i></div></div>`;
+        }
+      } else {
+        // Mix of genders for realistic feed
+        const postGender = Math.random() > 0.5 ? 'female' : 'male';
+        const postAge = ['18-29', '30-44', '45-59', '60+'][Math.floor(Math.random() * 4)];
+        authorName = getUniqueName(postGender, postAge);
+        authorSub = '';
+        // Use personal placeholder posts
+        postText = placeholderPosts[Math.floor(Math.random() * placeholderPosts.length)];
+        
+        const avatarId = getAgeAppropriateAvatarId(postAge);
+        const avatarGender = postGender === 'female' ? 'women' : 'men';
+        const initials = authorName.split(' ').map(n=>n[0]).join('');
+        const fallbackColor = `hsl(${Math.floor(Math.random()*360)}, 70%, 60%)`;
+        avatarHtml = `<div class="avatar-wrapper"><img class="post-avatar-img" src="https://randomuser.me/api/portraits/${avatarGender}/${avatarId}.jpg" alt="${authorName}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div class="post-avatar" style="display:none; background:${fallbackColor};">${initials}</div></div>`;
+      }
+      
+      post.innerHTML = `
+        <div class="post-header">
+          ${avatarHtml}
+          <div class="post-meta">
+            <div class="post-author">${authorName}</div>
+            <div class="post-info">${time} · <i class="fas fa-earth-americas"></i></div>
+          </div>
+          <button class="post-options"><i class="fas fa-ellipsis"></i></button>
+        </div>
+        <div class="post-content">${postText}</div>
+        ${hasImage ? `
+          <div class="post-image-container" style="position: relative;">
+            <div class="post-view-timer">⏱ 0s</div>
+            <img src="https://picsum.photos/seed/${imageId}/600/400" alt="Post image" class="post-single-image">
+          </div>
+        ` : '<div style="position: relative;"><div class="post-view-timer">⏱ 0s</div></div>'}
+        <div class="post-stats">
+          <div class="post-reactions-count">
+            <span class="reaction-icons"><i class="fas fa-thumbs-up"></i></span>
+            <span class="like-count">${likes}</span>
+          </div>
+          <div class="post-comments-count">${comments} ${comments === 1 ? 'comment' : 'comments'}${shares > 0 ? ` · ${shares} ${shares === 1 ? 'share' : 'shares'}` : ''}</div>
+        </div>
+        <div class="post-divider"></div>
+        <div class="post-actions">
+          <button class="post-action like-btn" data-liked="false"><i class="far fa-thumbs-up"></i> Like</button>
+          <button class="post-action comment-btn"><i class="far fa-comment"></i> Comment</button>
+          <button class="post-action share-btn"><i class="far fa-share-square"></i> Share</button>
+        </div>
+      `;
+      
+      return post;
+    }
+
+    function createExperienceAIPost(condition, isTailored, userGender, userAge) {
+      const post = document.createElement('article');
+      post.className = 'post ai-post';
+      post.dataset.postId = `ai-${condition.condition_id}-${Date.now()}`;
+      post.dataset.isTailored = isTailored;
+      post.dataset.conditionId = condition.condition_id;
+      
+      const images = condition.images;
+      const randomImage = images[Math.floor(Math.random() * images.length)];
+      const imagePath = `../generated_images/${condition.condition_id}/${randomImage}`;
+      
+      const policyTag = policyHashtags[condition.policy_issue] || condition.policy_issue.replace(/_/g, '');
+      const time = `${Math.floor(Math.random() * 12) + 1}h`;
+      const likes = Math.floor(Math.random() * 500) + 100;
+      const comments = Math.floor(Math.random() * 80) + 10;
+      const shares = Math.floor(Math.random() * 30) + 5;
+      
+      // AI posts always come from people matching the condition's demographic
+      const postGender = condition.gender;
+      const postAge = condition.age_group;
+      const authorName = getUniqueName(postGender, postAge);
+      
+      // Get age-appropriate avatar ID
+      const avatarId = getAgeAppropriateAvatarId(postAge);
+      const avatarGender = postGender === 'female' ? 'women' : 'men';
+      const initials = authorName.split(' ').map(n=>n[0]).join('');
+      const fallbackColor = `hsl(${Math.floor(Math.random()*360)}, 70%, 60%)`;
+      const avatarHtml = `<div class="avatar-wrapper"><img class="post-avatar-img" src="https://randomuser.me/api/portraits/${avatarGender}/${avatarId}.jpg" alt="${authorName}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div class="post-avatar" style="display:none; background:${fallbackColor};">${initials}</div></div>`;
+      
+      const postTexts = [
+        `Dit moet stoppen. Tijd voor verandering! #${policyTag}`,
+        `Wanneer gaan we dit serieus nemen? #${policyTag}`,
+        `Kijk hier eens naar... #${policyTag}`,
+        `Dit is waar het om gaat. #${policyTag}`,
+        `Denk hier eens over na. #${policyTag}`,
+        `Deel dit met iedereen! #${policyTag}`,
+        `Wij accepteren dit niet langer. #${policyTag}`,
+        `Samen staan we sterk. #${policyTag}`
+      ];
+      const postText = postTexts[Math.floor(Math.random() * postTexts.length)];
+      
+      post.innerHTML = `
+        <div class="post-header">
+          ${avatarHtml}
+          <div class="post-meta">
+            <div class="post-author">${authorName}</div>
+            <div class="post-info">${time} · <i class="fas fa-earth-americas"></i></div>
+          </div>
+          <button class="post-options"><i class="fas fa-ellipsis"></i></button>
+        </div>
+        <div class="post-content">${postText}</div>
+        <div class="post-image-container" style="position: relative;">
+          <div class="post-view-timer">⏱ 0s</div>
+          <div class="experience-ai-indicator ${isTailored ? 'tailored' : ''}">
+            ${isTailored ? '✨ Tailored' : '🎲 Random'}<br>
+            <small>${condition.age_group} ${condition.gender}<br>${policyDisplayNames[condition.policy_issue] || condition.policy_issue}<br>${condition.ideology}</small>
+          </div>
+          <img src="${imagePath}" alt="Post image" class="post-single-image" 
+               onerror="this.src='https://picsum.photos/seed/${Math.floor(Math.random()*10000)}/600/400'">
+        </div>
+        <div class="post-stats">
+          <div class="post-reactions-count">
+            <span class="reaction-icons"><i class="fas fa-thumbs-up"></i><i class="fas fa-heart"></i></span>
+            <span class="like-count">${likes}</span>
+          </div>
+          <div class="post-comments-count">${comments} ${comments === 1 ? 'comment' : 'comments'} · ${shares} ${shares === 1 ? 'share' : 'shares'}</div>
+        </div>
+        <div class="post-divider"></div>
+        <div class="post-actions">
+          <button class="post-action like-btn" data-liked="false"><i class="far fa-thumbs-up"></i> Like</button>
+          <button class="post-action comment-btn"><i class="far fa-comment"></i> Comment</button>
+          <button class="post-action share-btn"><i class="far fa-share-square"></i> Share</button>
+        </div>
+      `;
+      
+      return post;
+    }
+
+    function initExperienceCarousels() {
+      // Simple init for any carousels in experience mode
+    }
+
+    function attachExperienceInteractions() {
+      const container = document.getElementById('experience-posts');
+      
+      // Like buttons
+      container.querySelectorAll('.like-btn').forEach(btn => {
+        btn.onclick = function() {
+          const isLiked = this.dataset.liked === 'true';
+          const post = this.closest('.post');
+          const countEl = post.querySelector('.like-count');
+          let count = parseInt(countEl.textContent);
+          
+          if (isLiked) {
+            this.dataset.liked = 'false';
+            this.innerHTML = '<i class="far fa-thumbs-up"></i> Like';
+            this.classList.remove('liked');
+            countEl.textContent = count - 1;
+          } else {
+            this.dataset.liked = 'true';
+            this.innerHTML = '<i class="fas fa-thumbs-up"></i> Liked';
+            this.classList.add('liked');
+            countEl.textContent = count + 1;
+            
+            // Add animation
+            this.style.transform = 'scale(1.1)';
+            setTimeout(() => this.style.transform = '', 150);
+          }
+        };
+      });
+      
+      // Comment buttons
+      container.querySelectorAll('.comment-btn').forEach(btn => {
+        btn.onclick = function() {
+          const post = this.closest('.post');
+          
+          // Check if comment box already exists
+          if (post.querySelector('.comment-input-box')) {
+            post.querySelector('.comment-input-box').remove();
+            return;
+          }
+          
+          const commentBox = document.createElement('div');
+          commentBox.className = 'comment-input-box';
+          commentBox.innerHTML = `
+            <div class="comment-input-wrapper">
+              <input type="text" placeholder="Write a comment..." class="comment-input">
+              <button class="comment-send"><i class="fas fa-paper-plane"></i></button>
+            </div>
+          `;
+          
+          post.appendChild(commentBox);
+          
+          const input = commentBox.querySelector('.comment-input');
+          const sendBtn = commentBox.querySelector('.comment-send');
+          
+          input.focus();
+          
+          sendBtn.onclick = () => {
+            if (input.value.trim()) {
+              // Update comment count
+              const statsEl = post.querySelector('.post-comments-count');
+              const match = statsEl.textContent.match(/(\d+)\s*comments?/);
+              if (match) {
+                const newCount = parseInt(match[1]) + 1;
+                statsEl.textContent = statsEl.textContent.replace(/\d+\s*comments?/, `${newCount} comments`);
+              }
+              
+              // Show "comment posted" feedback
+              commentBox.innerHTML = '<div class="comment-posted"><i class="fas fa-check"></i> Comment posted</div>';
+              setTimeout(() => commentBox.remove(), 1500);
+            }
+          };
+          
+          input.onkeydown = (e) => {
+            if (e.key === 'Enter') sendBtn.click();
+          };
+        };
+      });
+      
+      // Share buttons
+      container.querySelectorAll('.share-btn').forEach(btn => {
+        btn.onclick = function() {
+          if (this.classList.contains('shared')) return; // Already shared
+          
+          const post = this.closest('.post');
+          
+          // Update share count
+          const statsEl = post.querySelector('.post-comments-count');
+          const shareMatch = statsEl.textContent.match(/(\d+)\s*shares?/);
+          if (shareMatch) {
+            const newCount = parseInt(shareMatch[1]) + 1;
+            statsEl.textContent = statsEl.textContent.replace(/\d+\s*shares?/, `${newCount} shares`);
+          } else {
+            // Add share count if not present
+            statsEl.textContent += ' · 1 share';
+          }
+          
+          // Show share feedback
+          const feedback = document.createElement('div');
+          feedback.className = 'share-feedback';
+          feedback.innerHTML = '<i class="fas fa-share"></i> Shared to your timeline';
+          post.appendChild(feedback);
+          
+          this.innerHTML = '<i class="fas fa-share-square"></i> Shared';
+          this.classList.add('shared');
+          
+          setTimeout(() => feedback.remove(), 2000);
+        };
+      });
+    }
+
+    function resetExperience() {
+      initExperienceMode();
+    }
+
+    let isPageVisible = true;
+    let viewTimerInterval = null;
+
+    function startViewTracking() {
+      const posts = document.querySelectorAll('#experience-posts .post');
+      
+      viewTrackingObserver = new IntersectionObserver((entries) => {
+        // Don't track if page is not visible
+        if (!isPageVisible) return;
+        
+        entries.forEach(entry => {
+          const postId = entry.target.dataset.postId;
+          if (!postId) return;
+          
+          if (entry.isIntersecting && entry.intersectionRatio >= 0.5) {
+            // Post is visible - start timing
+            if (!postViewTimes[postId]) {
+              const author = entry.target.querySelector('.post-author')?.textContent || 'Unknown';
+              const isAI = entry.target.classList.contains('ai-post');
+              const isTailored = entry.target.dataset.isTailored === 'true';
+              postViewTimes[postId] = {
+                totalTime: 0,
+                lastEnterTime: Date.now(),
+                author: author,
+                type: isAI ? (isTailored ? 'ai-tailored' : 'ai-random') : 'regular',
+                isCurrentlyVisible: true
+              };
+            } else if (!postViewTimes[postId].lastEnterTime) {
+              postViewTimes[postId].lastEnterTime = Date.now();
+              postViewTimes[postId].isCurrentlyVisible = true;
+            }
+          } else {
+            // Post left view - add elapsed time
+            if (postViewTimes[postId] && postViewTimes[postId].lastEnterTime) {
+              postViewTimes[postId].totalTime += Date.now() - postViewTimes[postId].lastEnterTime;
+              postViewTimes[postId].lastEnterTime = null;
+              postViewTimes[postId].isCurrentlyVisible = false;
+            }
+          }
+        });
+        
+        // Update timer displays
+        updateViewTimers();
+      }, {
+        threshold: 0.5
+      });
+      
+      posts.forEach(post => {
+        viewTrackingObserver.observe(post);
+      });
+      
+      // Update timers every second
+      viewTimerInterval = setInterval(updateViewTimers, 1000);
+      
+      // Listen for page visibility changes (tab switch, minimize)
+      document.addEventListener('visibilitychange', handleVisibilityChange);
+      
+      // Also listen for window blur/focus (switching apps, more reliable backup)
+      window.addEventListener('blur', handleWindowBlur);
+      window.addEventListener('focus', handleWindowFocus);
+    }
+
+    function handleVisibilityChange() {
+      if (document.hidden) {
+        pauseAllTimers();
+      } else {
+        resumeVisibleTimers();
+      }
+    }
+
+    function handleWindowBlur() {
+      // Window lost focus (switched to another app)
+      pauseAllTimers();
+    }
+
+    function handleWindowFocus() {
+      // Window gained focus
+      // Only resume if document is also visible (not hidden)
+      if (!document.hidden) {
+        resumeVisibleTimers();
+      }
+    }
+
+    function pauseAllTimers() {
+      if (!isPageVisible) return; // Already paused
+      
+      isPageVisible = false;
+      const now = Date.now();
+      
+      Object.keys(postViewTimes).forEach(postId => {
+        if (postViewTimes[postId].lastEnterTime) {
+          postViewTimes[postId].totalTime += now - postViewTimes[postId].lastEnterTime;
+          postViewTimes[postId].lastEnterTime = null;
+        }
+      });
+      
+      updateViewTimers();
+    }
+
+    function resumeVisibleTimers() {
+      if (isPageVisible) return; // Already running
+      
+      isPageVisible = true;
+      const now = Date.now();
+      
+      Object.keys(postViewTimes).forEach(postId => {
+        if (postViewTimes[postId].isCurrentlyVisible && !postViewTimes[postId].lastEnterTime) {
+          postViewTimes[postId].lastEnterTime = now;
+        }
+      });
+      
+      updateViewTimers();
+    }
+
+    function updateViewTimers() {
+      const now = Date.now();
+      Object.keys(postViewTimes).forEach(postId => {
+        const data = postViewTimes[postId];
+        let currentTime = data.totalTime;
+        if (data.lastEnterTime) {
+          currentTime += now - data.lastEnterTime;
+        }
+        
+        const seconds = Math.floor(currentTime / 1000);
+        const timerEl = document.querySelector(`[data-post-id="${postId}"] .post-view-timer`);
+        if (timerEl) {
+          timerEl.textContent = `⏱ ${seconds}s`;
+        }
+      });
+    }
+
+    function showResults() {
+      // Finalize current view times
+      const now = Date.now();
+      Object.keys(postViewTimes).forEach(postId => {
+        if (postViewTimes[postId].lastEnterTime) {
+          postViewTimes[postId].totalTime += now - postViewTimes[postId].lastEnterTime;
+          postViewTimes[postId].lastEnterTime = null;
+        }
+      });
+      
+      // Sort by view time
+      const sorted = Object.entries(postViewTimes)
+        .map(([postId, data]) => ({ postId, ...data }))
+        .sort((a, b) => b.totalTime - a.totalTime)
+        .slice(0, 5);
+      
+      // Build results HTML
+      const resultsContent = document.getElementById('results-content');
+      if (sorted.length === 0) {
+        resultsContent.innerHTML = '<p style="text-align: center; color: var(--circl-text-secondary);">No viewing data recorded yet. Scroll through the feed first!</p>';
+      } else {
+        resultsContent.innerHTML = sorted.map((item, i) => {
+          const seconds = (item.totalTime / 1000).toFixed(1);
+          const typeLabel = item.type === 'ai-tailored' ? '✨ AI - Tailored to you' :
+                           item.type === 'ai-random' ? '🎲 AI - Random' : 'Regular post';
+          const typeClass = item.type;
+          
+          return `
+            <div class="results-item">
+              <div class="results-rank">${i + 1}</div>
+              <div class="results-info">
+                <div class="results-author">${item.author}</div>
+                <div class="results-type ${typeClass}">${typeLabel}</div>
+              </div>
+              <div class="results-time">${seconds}<small>s</small></div>
+            </div>
+          `;
+        }).join('');
+      }
+      
+      document.getElementById('results-modal').classList.add('active');
+    }
+
+    function closeResults() {
+      document.getElementById('results-modal').classList.remove('active');
+    }
+
+    let experienceShowLabels = false;
+
+    function toggleExperienceLabels() {
+      experienceShowLabels = !experienceShowLabels;
+      const btn = document.getElementById('experience-toggle-labels');
+      const container = document.getElementById('experience-posts');
+      
+      btn.classList.toggle('active', experienceShowLabels);
+      btn.innerHTML = experienceShowLabels 
+        ? '<i class="fas fa-eye-slash"></i><span>Hide AI</span>'
+        : '<i class="fas fa-eye"></i><span>Show AI</span>';
+      
+      container.classList.toggle('show-ai-labels', experienceShowLabels);
     }
     
     function initQCMode() {
