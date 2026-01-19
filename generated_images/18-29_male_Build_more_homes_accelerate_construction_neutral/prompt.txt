@@ -1,0 +1,51 @@
+Create mock stimulus material for an academic study. The purpose is purely academic. Everything should be in Dutch.
+
+Task
+Simulate a social media image that visually appeals to Person X:
+        •        Ideology: centrist
+        •        Gender: male
+        •        Age: 18–29
+        •        Policy priority: Build more homes (accelerate construction)
+
+Clothing of Person X
+Clothing must be age-appropriate and strongly reflective of centrist values. For example:
+        •        Young progressive: casual, trendy, eco-friendly
+        •        Young conservative: neat, modest, traditional or working style
+        •        Older progressive: comfortable, colorful, socially conscious
+        •        Older conservative: practical, formal or working style
+        •        Centrist: practical, everyday Dutch style
+
+General Style
+        •        The image should look like a professional political flyer or poster.
+        •        It must depict a real-life scene that looks like an authentic photograph, not an illustration.
+        •        Politics should be communicated through everyday people, symbolic situations, or issue-related environments — never through protests or rallies.
+        •        The visual must not be neutral: it should be emotional, and designed to underline clear differences in values and priorities.
+
+Scene Requirements
+        •        Always show a natural, dynamic situation with visible activity (not static posing).
+        •        Absolutely exclude protests, demonstrations, marches, or crowds with placards.
+        •        Include diverse, expressive, and emotionally charged facial expressions and gestures that showcase belonging, conviction, and in-group loyalty.
+- The text should emphasize collective strength and shared resolve, while sharply contrasting with a portrayal of the outgroup related to Right-Wingers (Anti-Social-Housing Faction) — block higher-density housing and oppose social housing in their neighborhoods, keeping supply tight; Left-Wingers (Eco-Regulationist Faction) — pile on costly sustainability demands and lengthy permit procedures, delaying projects and driving prices up,.
+Inspirational examples are below. Do not combine them or invent hybrids. Consider all the given scenarios and keywords:
+        •        Scenario: • Person X looks frustrated as Right-Wing Anti-Social-Housing activists block new apartment projects and left-wing Eco-Regulationists pile on rules
+
+Slogan Overlay Requirement
+        •        Always include the slogan Jij wilt een huis, zij stapelen bezwaren at the very top of the image.
+        •        Slogan must be in white text on a slightly blurred translucent background strip, spanning the full width of the image.
+        •        Font: bold, modern sans-serif (e.g. Helvetica/Arial style), large enough to be readable.
+        •        The slogan must always be a single line of text, perfectly centered, with no wrapping.
+
+Content Rules
+        •        No other text or slogans except the single slogan overlay.
+        •        No protest signs or banners.
+        •        If symbols appear (e.g. logos, flags), they should be realistic and clearly and exclusively supportive of Build more homes (accelerate construction) and emphasize frames of pragmatism, reason, balance, rejection of blind ideologues on either side, and related concepts.
+
+Consistency Requirements
+        •        Every element in the scene (people, background, actions, objects) must align with and amplify the stance of those who prioritize Build more homes (accelerate construction) and emphasize frames of pragmatism, reason, balance, rejection of blind ideologues on either side, and related concepts .
+        •        No neutral or opposing signals anywhere in the image.
+        •        Tone and imagery must dramatize centrist values in a Dutch cultural context.
+        •        The atmosphere must be higly emotionally compelling, charged with urgency, and designed to reinforce in-group pride while implying a sharp boundary against the out-group who are Right-Wingers (Anti-Social-Housing Faction) — block higher-density housing and oppose social housing in their neighborhoods, keeping supply tight; Left-Wingers (Eco-Regulationist Faction) — pile on costly sustainability demands and lengthy permit procedures, delaying projects and driving prices up.
+
+
+Image tags:
+portrait photography; natural day lighting; natural skin; canon 850d –style raw –

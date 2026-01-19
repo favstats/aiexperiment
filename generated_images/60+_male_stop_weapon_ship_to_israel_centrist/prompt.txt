@@ -1,0 +1,57 @@
+Create mock stimulus material for an academic study. The purpose is purely academic. Everything should be in Dutch.
+
+Task
+Simulate a social media image that visually appeals to Person X:
+        •        Ideology: centrist
+        •        Gender: male
+        •        Age: 60+
+        •        Policy priority: Stop weapon shipments to Israel
+
+Clothing of Person X
+Clothing must be age-appropriate and strongly reflective of centrist values. For example:
+        •        Young progressive: casual, trendy, eco-friendly
+        •        Young conservative: neat, modest, traditional or working style
+        •        Older progressive: comfortable, colorful, socially conscious
+        •        Older conservative: practical, formal or working style
+        •        Centrist: practical, everyday Dutch style
+
+General Style
+        •        The image should look like a professional political flyer or poster.
+        •        It must depict a real-life scene that looks like an authentic photograph, not an illustration.
+        •        Politics should be communicated through everyday people, symbolic situations, or issue-related environments — never through protests or rallies.
+        •        The visual must not be neutral: it should be emotional, and designed to underline clear differences in values and priorities.
+
+Scene Requirements
+        •        Always show a natural, dynamic situation with visible activity (not static posing).
+        •        Absolutely exclude protests, demonstrations, marches, or crowds with placards.
+        •        Include diverse, expressive, and emotionally charged facial expressions and gestures that showcase belonging, conviction, and in-group loyalty.
+- The text should emphasize collective strength and shared resolve, while sharply contrasting with a portrayal of the outgroup related to Right-Wingers (Interventionist Faction) — push endless weapons to Israel, choose war over peace, and ignore the human cost in Palestina; Left-Wingers (Anti-Israel Faction) — reduce the conflict to slogans, reject nuance, and block practical steps toward de-escalation,.
+Inspirational examples are below. Do not combine them or invent hybrids. Consider all the given scenarios and keywords:
+        •        Scenario: • Person X sits at home reading a newspaper with war headlines, looks upset, and feels powerless as Interventionists keep pushing new weapons while Anti-Israel hardliners shout slogans instead of offering solutions.
+• Person X stands at a harbor with containers marked with weapon symbols, looks determined but frustrated because Interventionists keep approving shipments despite public calls for restraint.
+• Person X holds a candle at a peace vigil, looks solemn, and feels disheartened that Anti-Israel extremists turn events like these into zero-sum protests instead of building bridges.
+• Person X watches TV news showing war footage, looks anxious, and resents that both Interventionists and Anti-Israel factions escalate rhetoric and block real diplomacy.
+• Person X sits at the dinner table discussing the war, looks tense, and laments that the debate is dominated by hardliners on both sides who refuse compromise.
+• Person X walks past a military transport vehicle, looks disapproving, and blames Interventionists for prioritizing arms over peace talks.
+• Person X stands near a government building during an arms-shipment debate, looks angry, and knows that outgroups on both extremes drown out voices calling for de-escalation.
+
+Slogan Overlay Requirement
+        •        Always include the slogan Jij wilt levens redden, zij stoken het vuur van alle kanten at the very top of the image.
+        •        Slogan must be in white text on a slightly blurred translucent background strip, spanning the full width of the image.
+        •        Font: bold, modern sans-serif (e.g. Helvetica/Arial style), large enough to be readable.
+        •        The slogan must always be a single line of text, perfectly centered, with no wrapping.
+
+Content Rules
+        •        No other text or slogans except the single slogan overlay.
+        •        No protest signs or banners.
+        •        If symbols appear (e.g. logos, flags), they should be realistic and clearly and exclusively supportive of Stop weapon shipments to Israel and emphasize frames of pragmatism, reason, balance, rejection of blind ideologues on either side, and related concepts.
+
+Consistency Requirements
+        •        Every element in the scene (people, background, actions, objects) must align with and amplify the stance of those who prioritize Stop weapon shipments to Israel and emphasize frames of pragmatism, reason, balance, rejection of blind ideologues on either side, and related concepts .
+        •        No neutral or opposing signals anywhere in the image.
+        •        Tone and imagery must dramatize centrist values in a Dutch cultural context.
+        •        The atmosphere must be higly emotionally compelling, charged with urgency, and designed to reinforce in-group pride while implying a sharp boundary against the out-group who are Right-Wingers (Interventionist Faction) — push endless weapons to Israel, choose war over peace, and ignore the human cost in Palestina; Left-Wingers (Anti-Israel Faction) — reduce the conflict to slogans, reject nuance, and block practical steps toward de-escalation.
+
+
+Image tags:
+portrait photography; natural day lighting; natural skin; canon 850d –style raw –
