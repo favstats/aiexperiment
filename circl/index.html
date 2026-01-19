@@ -2389,12 +2389,30 @@
       }
     }
 
+    // Display names for policy issues
+    const policyDisplayNames = {
+      'Affordable_childcare_access': 'Affordable childcare (access)',
+      'Build_more_homes_accelerate_construction': 'Build more homes (construction)',
+      'CO2_levy_for_industry_climate': 'CO2 levy for industry (climate)',
+      'purchasing_power': 'Strengthen purchasing power (cost of living)',
+      'stop_weapon_ship_to_israel': 'Stop weapon shipments to Israel'
+    };
+
+    // Hashtag-friendly names for policy issues
+    const policyHashtags = {
+      'Affordable_childcare_access': 'Kinderopvang',
+      'Build_more_homes_accelerate_construction': 'Woningbouw',
+      'CO2_levy_for_industry_climate': 'Klimaat',
+      'purchasing_power': 'Koopkracht',
+      'stop_weapon_ship_to_israel': 'IsraelWapens'
+    };
+
     function initFilters() {
       const { filters } = conditionsData;
       
       populateSelect('filter-age', filters.age_groups);
       populateSelect('filter-gender', filters.genders, v => v.charAt(0).toUpperCase() + v.slice(1));
-      populateSelect('filter-policy', filters.policy_issues, v => v.replace(/_/g, ' '));
+      populateSelect('filter-policy', filters.policy_issues, v => policyDisplayNames[v] || v.replace(/_/g, ' '));
       populateSelect('filter-ideology', filters.ideologies, v => v.charAt(0).toUpperCase() + v.slice(1));
       
       ['filter-age', 'filter-gender', 'filter-policy', 'filter-ideology'].forEach(id => {
@@ -2447,7 +2465,8 @@
       const time = `${Math.floor(Math.random() * 23) + 1}h`;
       const initials = cond.age_group.slice(0, 2) + cond.gender.charAt(0).toUpperCase();
       
-      const hashtags = `#${cond.ideology} #${cond.policy_issue.replace(/_/g, '')}`;
+      const policyTag = policyHashtags[cond.policy_issue] || cond.policy_issue.replace(/_/g, '');
+      const hashtags = `#${cond.ideology} #${policyTag}`;
       const postTextContent = postTemplates[Math.floor(Math.random() * postTemplates.length)]
         .replace('{hashtags}', `<span class="post-hashtag">${hashtags}</span>`);
       
@@ -2781,7 +2800,8 @@
       const time = `${Math.floor(Math.random() * 23) + 1}h`;
       const initials = cond.age_group.slice(0, 2) + cond.gender.charAt(0).toUpperCase();
       
-      const hashtags = `#${cond.ideology} #${cond.policy_issue.replace(/_/g, '')}`;
+      const policyTag = policyHashtags[cond.policy_issue] || cond.policy_issue.replace(/_/g, '');
+      const hashtags = `#${cond.ideology} #${policyTag}`;
       const postText = postTemplates[Math.floor(Math.random() * postTemplates.length)]
         .replace('{hashtags}', `<span class="post-hashtag">${hashtags}</span>`);
       
@@ -3046,10 +3066,11 @@
       const outgroup = getOutgroup(item.condition.ideology);
       
       const condInfo = document.getElementById('qc-condition-info');
+      const policyName = policyDisplayNames[item.condition.policy_issue] || item.condition.policy_issue.replace(/_/g, ' ');
       condInfo.innerHTML = `
         <span class="qc-condition-tag highlight">${item.condition.age_group}</span>
         <span class="qc-condition-tag highlight">${item.condition.gender}</span>
-        <span class="qc-condition-tag">${item.condition.policy_issue.replace(/_/g, ' ')}</span>
+        <span class="qc-condition-tag">${policyName}</span>
         <span class="qc-condition-tag ideology-tag ${item.condition.ideology}">${item.condition.ideology}</span>
         <span class="qc-condition-tag outgroup-tag">Outgroup: ${outgroup}</span>
         ${item.isCoded ? '<span class="qc-coded-badge"><i class="fas fa-check"></i> Coded</span>' : ''}

@@ -25,6 +25,14 @@ def parse_condition_id(condition_id):
     policy_parts = parts[2:-1]  # Everything between gender and ideology
     policy_issue = "_".join(policy_parts)
     
+    # Normalize ideology names to standard format
+    ideology_map = {
+        "leftist": "left",
+        "centrist": "neutral",
+        "rightist": "right"
+    }
+    ideology = ideology_map.get(ideology, ideology)
+    
     return {
         "age_group": age_group,
         "gender": gender,
@@ -114,4 +122,18 @@ def main():
 
 if __name__ == "__main__":
     main()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

@@ -7,6 +7,7 @@ library(httr2)
 library(glue)
 library(base64enc)
 library(cli)
+library(jsonlite)
 
 # ============================================================
 # Configuration
@@ -26,7 +27,7 @@ config <- list(
 # Load Data
 # ============================================================
 
-data_url <- "https://docs.google.com/spreadsheets/d/e/2PACX-1vSyLbbFkD7PZovG5dcsR77xG9KUX7ZZd6slVMK5-nGa-1MRioNkuIK4LZETy2DFHnhhbYTgi4GtmOUx/pub?output=csv"
+data_url <- "https://docs.google.com/spreadsheets/d/e/2PACX-1vSyLbbFkD7PZovG5dcsR77xG9KUX7ZZd6slVMK5-nGa-1MRioNkuIK4LZETy2DFHnhhbYTgi4GtmOUx/pub?gid=2129643535&single=true&output=csv"
 
 df <- read_csv(data_url, show_col_types = FALSE) |>
   filter(!is.na(condition_id)) |>
@@ -66,14 +67,65 @@ generate_image <- function(prompt, config, max_retries = 5) {
         req_perform() |>
         resp_body_json()
 
-      # Extract image
-      parts <- resp$candidates[[1]]$content$parts
-      img_part <- keep(parts, ~ !is.null(.x$inlineData))[[1]]
+      # Check if response has candidates
+      if (is.null(resp$candidates) || length(resp$candidates) == 0) {
+        # Check for blocking/safety reasons
+        if (!is.null(resp$promptFeedback)) {
+          block_reason <- resp$promptFeedback$blockReason %||% "unknown"
+          safety_ratings <- resp$promptFeedback$safetyRatings
+          safety_info <- ""
+          if (!is.null(safety_ratings)) {
+            safety_info <- paste(
+              sapply(safety_ratings, function(x) paste0(x$category, ": ", x$probability)),
+              collapse = ", "
+            )
+          }
+          stop(glue("API blocked prompt. Reason: {block_reason}. Safety: {safety_info}"))
+        }
+        stop(glue("API returned no candidates. Full response: {jsonlite::toJSON(resp, auto_unbox = TRUE)}"))
+      }
 
+      # Check candidate finish reason
+      candidate <- resp$candidates[[1]]
+      finish_reason <- candidate$finishReason %||% "unknown"
+      
+      if (finish_reason != "STOP" && finish_reason != "unknown") {
+        # Check for safety or other blocking
+        safety_ratings <- candidate$safetyRatings
+        safety_info <- ""
+        if (!is.null(safety_ratings)) {
+          safety_info <- paste(
+            sapply(safety_ratings, function(x) paste0(x$category, ": ", x$probability)),
+            collapse = ", "
+          )
+        }
+        stop(glue("Generation stopped. Reason: {finish_reason}. Safety: {safety_info}"))
+      }
+
+      # Check if content exists
+      if (is.null(candidate$content) || is.null(candidate$content$parts)) {
+        stop(glue("No content in response. Finish reason: {finish_reason}. Full candidate: {jsonlite::toJSON(candidate, auto_unbox = TRUE)}"))
+      }
+
+      # Extract image
+      parts <- candidate$content$parts
+      img_parts <- keep(parts, ~ !is.null(.x$inlineData))
+      
+      if (length(img_parts) == 0) {
+        # Show what parts we DID get
+        part_types <- sapply(parts, function(p) {
+          if (!is.null(p$text)) return(paste0("text: '", str_trunc(p$text, 50), "'"))
+          if (!is.null(p$inlineData)) return("image")
+          return("unknown")
+        })
+        stop(glue("No image in response. Got {length(parts)} part(s): [{paste(part_types, collapse = ', ')}]"))
+      }
+
+      img_part <- img_parts[[1]]
       return(img_part$inlineData)
 
     }, error = function(e) {
-      if (grepl("429|Too Many Requests|rate", e$message, ignore.case = TRUE)) {
+      if (grepl("429|Too Many Requests|rate|RESOURCE_EXHAUSTED", e$message, ignore.case = TRUE)) {
         wait_time <- 30 * (2 ^ (attempt - 1))  # 30s, 60s, 120s, 240s, 480s
         cli_alert_warning("    Rate limited! Waiting {wait_time}s before retry {attempt}/{max_retries}...")
         Sys.sleep(wait_time)
@@ -294,8 +346,10 @@ generate_all <- function(df, config, sample_n = NULL) {
 # childcare, housing, co2 level
 
 three_issues <- df %>%
-  # count(policy_issue, sort =T)
-  dplyr::filter(str_detect(condition_id, pattern = "home|childcare|climate"))
+  # count(condition_id, sort =T)
+  dplyr::filter(str_detect(condition_id, pattern = "israel|power|home|childcare|climate"))
+# dplyr::filter(str_detect(condition_id, pattern = "power"))
+# dplyr::filter(str_detect(condition_id, pattern = "israel"))
 
 
 # Generate images (new images get numbered from max+1):
