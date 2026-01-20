@@ -12,9 +12,10 @@ library(jsonlite)
 # ============================================================
 # Configuration
 # ============================================================
+thekey <- Sys.getenv("gemini")
 
 config <- list(
-  api_key       = Sys.getenv("gemini"),
+  api_key       = thekey,
   model        = "gemini-3-pro-image-preview",
   image_size   = "1K",
   aspect_ratio = "1:1",
@@ -27,7 +28,7 @@ config <- list(
 # Load Data
 # ============================================================
 
-data_url <- "https://docs.google.com/spreadsheets/d/e/2PACX-1vSyLbbFkD7PZovG5dcsR77xG9KUX7ZZd6slVMK5-nGa-1MRioNkuIK4LZETy2DFHnhhbYTgi4GtmOUx/pub?gid=2129643535&single=true&output=csv"
+data_url <- "https://docs.google.com/spreadsheets/d/e/2PACX-1vSyLbbFkD7PZovG5dcsR77xG9KUX7ZZd6slVMK5-nGa-1MRioNkuIK4LZETy2DFHnhhbYTgi4GtmOUx/pub?gid=272960022&single=true&output=csv"
 
 df <- read_csv(data_url, show_col_types = FALSE) |>
   filter(!is.na(condition_id)) |>
@@ -88,7 +89,7 @@ generate_image <- function(prompt, config, max_retries = 5) {
       # Check candidate finish reason
       candidate <- resp$candidates[[1]]
       finish_reason <- candidate$finishReason %||% "unknown"
-      
+
       if (finish_reason != "STOP" && finish_reason != "unknown") {
         # Check for safety or other blocking
         safety_ratings <- candidate$safetyRatings
@@ -110,7 +111,7 @@ generate_image <- function(prompt, config, max_retries = 5) {
       # Extract image
       parts <- candidate$content$parts
       img_parts <- keep(parts, ~ !is.null(.x$inlineData))
-      
+
       if (length(img_parts) == 0) {
         # Show what parts we DID get
         part_types <- sapply(parts, function(p) {

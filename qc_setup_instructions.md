@@ -206,3 +206,17 @@ Each submission contains:
 | emotional_valence | very_negative to very_positive | Emotional tone |
 | notes | string | Free-text observations |
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+

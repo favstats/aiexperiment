@@ -27,7 +27,10 @@ Scene Requirements
         •        Include diverse, expressive, and emotionally charged facial expressions and gestures that showcase belonging, conviction, and in-group loyalty.
 - The text should emphasize collective strength and shared resolve, while sharply contrasting with a portrayal of the outgroup related to Right-Wingers (Anti-Spending Faction) — block wider access by capping support and keeping parents out of the system; Left-Wingers (Pro-Spending Faction) —overpromise universal care, creating chaos and staff shortages,.
 Inspirational examples are below. Do not combine them or invent hybrids. Consider all the given scenarios and keywords:
-        •        Scenario: • Person X stands in front of a kindergarten, looking hopeless and angry that both factions have failed: one keeps costs too high, the other creates chaos by flooding the system.
+        •        Scenario: Person X stands in front of a kindergarten entrance, holding a bag or a child’s backpack.
+The kindergarten door is closed, with a clear sign reading: “Geen plaatsen beschikbaar”
+Politicians in the background argue in two opposing groups.
+Person X is overwhelmed, looking down.
 
 Slogan Overlay Requirement
         •        Always include the slogan Jij zoekt plek voor je kind, zij zoeken een podium voor hun ideologie at the very top of the image.
