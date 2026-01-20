@@ -52,6 +52,7 @@ Thumbs.db
 # JSON and XML
 *.json
 !conditions.json
+!circl/data/*.json
 *.xml
 *.yaml
 *.yml
@@ -71,6 +72,7 @@ Thumbs.db
 *.hdf5
 # Data Directories
 data/
+!circl/data/
 datasets/
 raw_data/
 processed_data/

@@ -1,0 +1,656 @@
+{
+  "description": "Filler/distractor posts to mix with experimental stimuli",
+  "posts": [
+    {
+      "id": "filler_001",
+      "type": "filler",
+      "subtype": "person",
+      "text": "Wat een heerlijk weer vandaag! ☀️ Eindelijk even tijd om buiten te zijn.",
+      "image": {
+        "src": "https://picsum.photos/seed/weather123/600/400",
+        "show": true
+      },
+      "author": {
+        "name": "Emma de Vries",
+        "gender": "female",
+        "age_group": "30-44",
+        "avatar_url": null
+      },
+      "engagement": null,
+      "time": null
+    },
+    {
+      "id": "filler_002",
+      "type": "filler",
+      "subtype": "person",
+      "text": "Net terug van een geweldige vakantie. Soms moet je even weg om te beseffen hoe mooi thuis ook is. 🏠",
+      "image": {
+        "src": "https://picsum.photos/seed/vacation456/600/400",
+        "show": true
+      },
+      "author": {
+        "name": "Jan Bakker",
+        "gender": "male",
+        "age_group": "45-59",
+        "avatar_url": null
+      },
+      "engagement": {"likes": 234, "comments": 18, "shares": 5},
+      "time": "3h"
+    },
+    {
+      "id": "filler_003",
+      "type": "filler",
+      "subtype": "person",
+      "text": "Nieuwe baan, nieuwe uitdagingen! Zo blij dat ik deze stap heb genomen. 💼",
+      "image": null,
+      "author": {
+        "name": "Sophie Jansen",
+        "gender": "female",
+        "age_group": "18-29",
+        "avatar_url": null
+      },
+      "engagement": null,
+      "time": null
+    },
+    {
+      "id": "filler_004",
+      "type": "filler",
+      "subtype": "person",
+      "text": "Wie heeft er tips voor een goede film vanavond? Liefst iets met actie!",
+      "image": null,
+      "author": {
+        "name": "Thomas van Dijk",
+        "gender": "male",
+        "age_group": "18-29",
+        "avatar_url": null
+      },
+      "engagement": null,
+      "time": null
+    },
+    {
+      "id": "filler_005",
+      "type": "filler",
+      "subtype": "person",
+      "text": "De kinderen zijn eindelijk naar bed. Even rust... wie herkent dit? 😅",
+      "image": null,
+      "author": {
+        "name": "Linda Mulder",
+        "gender": "female",
+        "age_group": "30-44",
+        "avatar_url": null
+      },
+      "engagement": null,
+      "time": null
+    },
+    {
+      "id": "filler_006",
+      "type": "filler",
+      "subtype": "person",
+      "text": "Vandaag 30 jaar getrouwd! 💕 De tijd vliegt als je met de juiste persoon bent.",
+      "image": {
+        "src": "https://picsum.photos/seed/anniversary789/600/400",
+        "show": true
+      },
+      "author": {
+        "name": "Henk de Boer",
+        "gender": "male",
+        "age_group": "60+",
+        "avatar_url": null
+      },
+      "engagement": {"likes": 567, "comments": 89, "shares": 12},
+      "time": "5h"
+    },
+    {
+      "id": "filler_007",
+      "type": "filler",
+      "subtype": "person",
+      "text": "Mijn kat heeft weer iets kapot gemaakt. Maar ja, wie kan boos blijven op zo'n gezicht? 🐱",
+      "image": {
+        "src": "https://picsum.photos/seed/cat234/600/400",
+        "show": true
+      },
+      "author": {
+        "name": "Fleur Smit",
+        "gender": "female",
+        "age_group": "18-29",
+        "avatar_url": null
+      },
+      "engagement": null,
+      "time": null
+    },
+    {
+      "id": "filler_008",
+      "type": "filler",
+      "subtype": "person",
+      "text": "Eerste dag op de sportschool na maanden. Alles doet pijn maar het voelt goed! 💪",
+      "image": null,
+      "author": {
+        "name": "Mark Visser",
+        "gender": "male",
+        "age_group": "30-44",
+        "avatar_url": null
+      },
+      "engagement": null,
+      "time": null
+    },
+    {
+      "id": "filler_009",
+      "type": "filler",
+      "subtype": "organization",
+      "text": "🎉 Nieuwe collectie nu in de winkel! Kom langs en ontdek de nieuwste trends voor dit seizoen.",
+      "image": {
+        "src": "https://picsum.photos/seed/fashion567/600/400",
+        "show": true
+      },
+      "author": {
+        "name": "HEMA",
+        "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/HEMA_logo.svg/200px-HEMA_logo.svg.png",
+        "fallback_icon": "store"
+      },
+      "engagement": null,
+      "time": null
+    },
+    {
+      "id": "filler_010",
+      "type": "filler",
+      "subtype": "organization",
+      "text": "Vandaag in onze krant: exclusieve interviews en de laatste ontwikkelingen. Blijf op de hoogte! 📰",
+      "image": null,
+      "author": {
+        "name": "De Telegraaf",
+        "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/De_Telegraaf_logo.svg/200px-De_Telegraaf_logo.svg.png",
+        "fallback_icon": "newspaper"
+      },
+      "engagement": null,
+      "time": null
+    },
+    {
+      "id": "filler_011",
+      "type": "filler",
+      "subtype": "organization",
+      "text": "⚽ Spannende wedstrijd vanavond! Wie denkt dat we gaan winnen?",
+      "image": {
+        "src": "https://picsum.photos/seed/sports890/600/400",
+        "show": true
+      },
+      "author": {
+        "name": "NOS Sport",
+        "logo_url": null,
+        "fallback_icon": "futbol"
+      },
+      "engagement": {"likes": 892, "comments": 234, "shares": 67},
+      "time": "1h"
+    },
+    {
+      "id": "filler_012",
+      "type": "filler",
+      "subtype": "person",
+      "text": "Zojuist mijn rijbewijs gehaald! 🚗 Na 3 keer zakken, maar het is gelukt!",
+      "image": null,
+      "author": {
+        "name": "Daan Vermeer",
+        "gender": "male",
+        "age_group": "18-29",
+        "avatar_url": null
+      },
+      "engagement": null,
+      "time": null
+    },
+    {
+      "id": "filler_013",
+      "type": "filler",
+      "subtype": "person",
+      "text": "Oma's recept voor appeltaart uitgetest. Het huis ruikt heerlijk! 🍎🥧",
+      "image": {
+        "src": "https://picsum.photos/seed/applepie123/600/400",
+        "show": true
+      },
+      "author": {
+        "name": "Marieke van den Berg",
+        "gender": "female",
+        "age_group": "45-59",
+        "avatar_url": null
+      },
+      "engagement": null,
+      "time": null
+    },
+    {
+      "id": "filler_014",
+      "type": "filler",
+      "subtype": "person",
+      "text": "Pensioen! Na 40 jaar hard werken is het eindelijk zover. Tijd voor nieuwe avonturen. 🎉",
+      "image": null,
+      "author": {
+        "name": "Gerard Willems",
+        "gender": "male",
+        "age_group": "60+",
+        "avatar_url": null
+      },
+      "engagement": {"likes": 456, "comments": 67, "shares": 8},
+      "time": "8h"
+    },
+    {
+      "id": "filler_015",
+      "type": "filler",
+      "subtype": "person",
+      "text": "Waarom is de Albert Heijn altijd druk op zondag? 🙄",
+      "image": null,
+      "author": {
+        "name": "Kim Peters",
+        "gender": "female",
+        "age_group": "30-44",
+        "avatar_url": null
+      },
+      "engagement": null,
+      "time": null
+    },
+    {
+      "id": "filler_016",
+      "type": "filler",
+      "subtype": "organization",
+      "text": "☕ Vandaag 2e kopje gratis bij aankoop van een gebakje. Welkom in onze winkel!",
+      "image": {
+        "src": "https://picsum.photos/seed/coffee456/600/400",
+        "show": true
+      },
+      "author": {
+        "name": "Bakker Bart",
+        "logo_url": null,
+        "fallback_icon": "mug-hot"
+      },
+      "engagement": null,
+      "time": null
+    },
+    {
+      "id": "filler_017",
+      "type": "filler",
+      "subtype": "person",
+      "text": "Vandaag begonnen met Nederlands leren op Duolingo. Dag 1 ✅ Nog 364 te gaan!",
+      "image": null,
+      "author": {
+        "name": "Maria Garcia",
+        "gender": "female",
+        "age_group": "18-29",
+        "avatar_url": null
+      },
+      "engagement": null,
+      "time": null
+    },
+    {
+      "id": "filler_018",
+      "type": "filler",
+      "subtype": "person",
+      "text": "Eindelijk vrijdag! Wie heeft er zin om dit weekend iets leuks te doen? 🎉",
+      "image": null,
+      "author": {
+        "name": "Pieter de Groot",
+        "gender": "male",
+        "age_group": "30-44",
+        "avatar_url": null
+      },
+      "engagement": null,
+      "time": null
+    },
+    {
+      "id": "filler_019",
+      "type": "filler",
+      "subtype": "person",
+      "text": "Mijn zoon is vandaag afgestudeerd! Zo trots! 🎓👨‍🎓",
+      "image": {
+        "src": "https://picsum.photos/seed/graduation789/600/400",
+        "show": true
+      },
+      "author": {
+        "name": "Ans Dekker",
+        "gender": "female",
+        "age_group": "60+",
+        "avatar_url": null
+      },
+      "engagement": {"likes": 678, "comments": 95, "shares": 15},
+      "time": "4h"
+    },
+    {
+      "id": "filler_020",
+      "type": "filler",
+      "subtype": "person",
+      "text": "Iemand anders ook zo moe van de regen? ☔ Kan niet wachten op de zomer!",
+      "image": null,
+      "author": {
+        "name": "Rob Hendriks",
+        "gender": "male",
+        "age_group": "45-59",
+        "avatar_url": null
+      },
+      "engagement": null,
+      "time": null
+    },
+    {
+      "id": "filler_021",
+      "type": "filler",
+      "subtype": "person",
+      "text": "Iemand zin om te gamen vanavond? Stuur me een berichtje!",
+      "image": null,
+      "author": {
+        "name": "Nick de Jong",
+        "gender": "male",
+        "age_group": "18-29",
+        "avatar_url": null
+      },
+      "engagement": null,
+      "time": null
+    },
+    {
+      "id": "filler_022",
+      "type": "filler",
+      "subtype": "person",
+      "text": "Heerlijk, de eerste lentedag van het jaar! 🌸",
+      "image": {
+        "src": "https://picsum.photos/seed/spring111/600/400",
+        "show": true
+      },
+      "author": {
+        "name": "Peter de Groot",
+        "gender": "male",
+        "age_group": "45-59",
+        "avatar_url": null
+      },
+      "engagement": null,
+      "time": null
+    },
+    {
+      "id": "filler_023",
+      "type": "filler",
+      "subtype": "organization",
+      "text": "Bedankt voor jullie steun! Samen vechten we voor rechtvaardigheid.",
+      "image": null,
+      "author": {
+        "name": "Amnesty Nederland",
+        "logo_url": null,
+        "fallback_icon": "hands-helping"
+      },
+      "engagement": null,
+      "time": null
+    },
+    {
+      "id": "filler_024",
+      "type": "filler",
+      "subtype": "person",
+      "text": "Gisteren een oude vriend tegengekomen. Wat leuk om bij te praten!",
+      "image": null,
+      "author": {
+        "name": "Monique Peters",
+        "gender": "female",
+        "age_group": "45-59",
+        "avatar_url": null
+      },
+      "engagement": null,
+      "time": null
+    },
+    {
+      "id": "filler_025",
+      "type": "filler",
+      "subtype": "organization",
+      "text": "Recensie: Het nieuwe boek van Arnon Grunberg is een meesterwerk. 📚",
+      "image": null,
+      "author": {
+        "name": "De Volkskrant",
+        "logo_url": null,
+        "fallback_icon": "newspaper"
+      },
+      "engagement": null,
+      "time": null
+    },
+    {
+      "id": "filler_026",
+      "type": "filler",
+      "subtype": "person",
+      "text": "Eindelijk vrijdag! Wat zijn jullie plannen voor het weekend?",
+      "image": {
+        "src": "https://picsum.photos/seed/weekend222/600/400",
+        "show": true
+      },
+      "author": {
+        "name": "Bernardus Bakker",
+        "gender": "male",
+        "age_group": "30-44",
+        "avatar_url": null
+      },
+      "engagement": null,
+      "time": null
+    },
+    {
+      "id": "filler_027",
+      "type": "filler",
+      "subtype": "person",
+      "text": "Mijn hond is de beste therapeut. Verandert altijd mijn dag. 🐕",
+      "image": {
+        "src": "https://picsum.photos/seed/dog333/600/400",
+        "show": true
+      },
+      "author": {
+        "name": "Lisa van Leeuwen",
+        "gender": "female",
+        "age_group": "30-44",
+        "avatar_url": null
+      },
+      "engagement": null,
+      "time": null
+    },
+    {
+      "id": "filler_028",
+      "type": "filler",
+      "subtype": "person",
+      "text": "Net een marathon gelopen! 42 kilometer, maar ik heb het gehaald! 🏃‍♂️🏅",
+      "image": {
+        "src": "https://picsum.photos/seed/marathon444/600/400",
+        "show": true
+      },
+      "author": {
+        "name": "Joris Kuijpers",
+        "gender": "male",
+        "age_group": "30-44",
+        "avatar_url": null
+      },
+      "engagement": {"likes": 345, "comments": 56, "shares": 12},
+      "time": "2h"
+    },
+    {
+      "id": "filler_029",
+      "type": "filler",
+      "subtype": "person",
+      "text": "Heeft iemand een goed recept voor stamppot? Mijn eerste poging was niet zo geslaagd... 😅",
+      "image": null,
+      "author": {
+        "name": "Julia Koster",
+        "gender": "female",
+        "age_group": "18-29",
+        "avatar_url": null
+      },
+      "engagement": null,
+      "time": null
+    },
+    {
+      "id": "filler_030",
+      "type": "filler",
+      "subtype": "organization",
+      "text": "🎵 Nieuw album nu beschikbaar! Luister via alle streamingdiensten.",
+      "image": {
+        "src": "https://picsum.photos/seed/music555/600/400",
+        "show": true
+      },
+      "author": {
+        "name": "Spotify Nederland",
+        "logo_url": null,
+        "fallback_icon": "music"
+      },
+      "engagement": null,
+      "time": null
+    },
+    {
+      "id": "filler_031",
+      "type": "filler",
+      "subtype": "person",
+      "text": "De tuin staat in bloei! Zoveel moeite gedaan en nu eindelijk resultaat. 🌷🌻",
+      "image": {
+        "src": "https://picsum.photos/seed/garden666/600/400",
+        "show": true
+      },
+      "author": {
+        "name": "Bea Hoekstra",
+        "gender": "female",
+        "age_group": "60+",
+        "avatar_url": null
+      },
+      "engagement": {"likes": 234, "comments": 45, "shares": 3},
+      "time": "6h"
+    },
+    {
+      "id": "filler_032",
+      "type": "filler",
+      "subtype": "person",
+      "text": "Vandaag mijn eerste echte Nederlandse bitterbal gegeten. Nu snap ik de hype! 🧆",
+      "image": null,
+      "author": {
+        "name": "James Wilson",
+        "gender": "male",
+        "age_group": "30-44",
+        "avatar_url": null
+      },
+      "engagement": null,
+      "time": null
+    },
+    {
+      "id": "filler_033",
+      "type": "filler",
+      "subtype": "person",
+      "text": "Fietsen door de polder. Dit is waarom ik van Nederland hou. 🚴‍♀️",
+      "image": {
+        "src": "https://picsum.photos/seed/cycling777/600/400",
+        "show": true
+      },
+      "author": {
+        "name": "Anna Meijer",
+        "gender": "female",
+        "age_group": "30-44",
+        "avatar_url": null
+      },
+      "engagement": null,
+      "time": null
+    },
+    {
+      "id": "filler_034",
+      "type": "filler",
+      "subtype": "organization",
+      "text": "🌍 Wereldwijd klimaatalarm: wat kunnen wij doen om onze planeet te beschermen?",
+      "image": {
+        "src": "https://picsum.photos/seed/climate888/600/400",
+        "show": true
+      },
+      "author": {
+        "name": "NOS Nieuws",
+        "logo_url": null,
+        "fallback_icon": "globe"
+      },
+      "engagement": {"likes": 567, "comments": 189, "shares": 234},
+      "time": "3h"
+    },
+    {
+      "id": "filler_035",
+      "type": "filler",
+      "subtype": "person",
+      "text": "Mijn kleinkinderen komen logeren! Opa wordt weer verwend. 👴❤️",
+      "image": null,
+      "author": {
+        "name": "Willem van der Veen",
+        "gender": "male",
+        "age_group": "60+",
+        "avatar_url": null
+      },
+      "engagement": null,
+      "time": null
+    },
+    {
+      "id": "filler_036",
+      "type": "filler",
+      "subtype": "person",
+      "text": "Net mijn eerste schilderij verkocht! 🎨 Nooit gedacht dat dit zou gebeuren.",
+      "image": {
+        "src": "https://picsum.photos/seed/painting999/600/400",
+        "show": true
+      },
+      "author": {
+        "name": "Eva Groen",
+        "gender": "female",
+        "age_group": "45-59",
+        "avatar_url": null
+      },
+      "engagement": {"likes": 456, "comments": 78, "shares": 23},
+      "time": "7h"
+    },
+    {
+      "id": "filler_037",
+      "type": "filler",
+      "subtype": "person",
+      "text": "Waarom hebben maandagen altijd zo'n slechte reputatie? Deze was eigenlijk best oké!",
+      "image": null,
+      "author": {
+        "name": "Thijs Vermeulen",
+        "gender": "male",
+        "age_group": "18-29",
+        "avatar_url": null
+      },
+      "engagement": null,
+      "time": null
+    },
+    {
+      "id": "filler_038",
+      "type": "filler",
+      "subtype": "organization",
+      "text": "🏠 Huizenprijzen stijgen weer. Hier zijn onze tips voor starters op de woningmarkt.",
+      "image": null,
+      "author": {
+        "name": "RTL Nieuws",
+        "logo_url": null,
+        "fallback_icon": "home"
+      },
+      "engagement": null,
+      "time": null
+    },
+    {
+      "id": "filler_039",
+      "type": "filler",
+      "subtype": "person",
+      "text": "Ik heb net ontdekt dat mijn favoriete restaurant weer open is! Vanavond reserveren! 🍝",
+      "image": null,
+      "author": {
+        "name": "Carmen Verhoeven",
+        "gender": "female",
+        "age_group": "30-44",
+        "avatar_url": null
+      },
+      "engagement": null,
+      "time": null
+    },
+    {
+      "id": "filler_040",
+      "type": "filler",
+      "subtype": "person",
+      "text": "Vandaag 25 jaar bij hetzelfde bedrijf. Ze zeggen dat loyaliteit niets meer waard is, maar ik ben er trots op! 🏆",
+      "image": null,
+      "author": {
+        "name": "Hans Brouwer",
+        "gender": "male",
+        "age_group": "60+",
+        "avatar_url": null
+      },
+      "engagement": {"likes": 567, "comments": 123, "shares": 15},
+      "time": "9h"
+    }
+  ],
+  "_schema_notes": {
+    "subtype": "'person' for individual users, 'organization' for brands/orgs",
+    "image.show": "true to show image, false or null to hide",
+    "author.logo_url": "URL to organization logo (for subtype=organization)",
+    "author.fallback_icon": "Font Awesome icon name to use if logo fails to load"
+  }
+}

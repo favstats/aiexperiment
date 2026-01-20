@@ -1,0 +1,31 @@
+{
+  "version": "1.0",
+  "description": "Circl Feed Configuration - Edit this file to customize feed behavior",
+  "feed_settings": {
+    "total_posts": 40,
+    "stimuli_count": 4,
+    "filler_ratio": 4,
+    "randomize_order": true,
+    "first_n_fillers": 2,
+    "show_ai_labels": false
+  },
+  "personalization": {
+    "enabled": true,
+    "mode": "tailored_plus_random",
+    "tailored_count": 1,
+    "random_count": 3,
+    "description": "When enabled with URL params (gender, age, politics, issue), selects 1 tailored stimulus matching all criteria + 3 random stimuli. When disabled or no params provided, uses stimuli_count random stimuli."
+  },
+  "stimuli_source": "stimuli.json",
+  "fillers_source": "fillers.json",
+  "defaults": {
+    "time_range": {"min": 1, "max": 23, "unit": "h"},
+    "likes_range": {"min": 50, "max": 500},
+    "comments_range": {"min": 5, "max": 80},
+    "shares_range": {"min": 10, "max": 200}
+  },
+  "avatar_settings": {
+    "use_random_user_api": true,
+    "fallback_colors": ["#1877F2", "#42B72A", "#F5A623", "#FA383E", "#00A3A3", "#7B68EE", "#FF6B6B"]
+  }
+}
