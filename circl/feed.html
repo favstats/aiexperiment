@@ -144,8 +144,12 @@
 
     #participant-feed .post-text {
       font-size: 15px;
-      line-height: 1.5;
+      line-height: 1.45;
       color: var(--circl-text-primary);
+      margin: 0;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      letter-spacing: -0.01em;
     }
 
     #participant-feed .post-hashtag {
@@ -209,8 +213,7 @@
     #participant-feed .post-single-image {
       width: 100%;
       display: block;
-      max-height: 500px;
-      object-fit: contain;
+      object-fit: cover;
       background: var(--circl-gray-100);
     }
 
@@ -728,6 +731,8 @@
 
   <!-- Core JS -->
   <script src="js/circl-core.js"></script>
+  <!-- Feed Loader (JSON-based feeds) -->
+  <script src="js/feed-loader.js"></script>
   <!-- Feed JS -->
   <script src="js/circl-feed.js"></script>
 </body>

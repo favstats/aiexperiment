@@ -18,7 +18,7 @@ let currentCommentPostId = null;
 let currentCommentPostData = null;
 
 const QC_CONFIG = {
-  googleScriptUrl: 'https://script.google.com/macros/s/AKfycbwOEk-02CPwCnSsovJh3n9F8TAIU0u8Sx1rBQ1ZAZroHOC6TWvlbYtJcu0j2Qk2O5vu9Q/exec'
+  googleScriptUrl: 'https://script.google.com/macros/s/AKfycbygsLgyyMNBMWF2uE0TD_0g7xmdaM88QuMy4K-kL_oCjta1wapPqlhIdJyHvVbQYWsHZQ/exec'
 };
 
 const REACTIONS_CONFIG = {
@@ -150,8 +150,16 @@ function createPost(cond, idx) {
   
   const policyTag = policyHashtags[cond.policy_issue] || cond.policy_issue.replace(/_/g, '');
   const hashtags = `#${cond.ideology} #${policyTag}`;
-  const postTextContent = postTemplates[Math.floor(Math.random() * postTemplates.length)]
-    .replace('{hashtags}', `<span class="post-hashtag">${hashtags}</span>`);
+  
+  // Use generated texts if available, otherwise fallback to templates
+  let postTextContent;
+  if (cond.texts && cond.texts.length > 0) {
+    // Use first text (texts are paired with images by index)
+    postTextContent = cond.texts[0];
+  } else {
+    postTextContent = postTemplates[Math.floor(Math.random() * postTemplates.length)]
+      .replace('{hashtags}', `<span class="post-hashtag">${hashtags}</span>`);
+  }
   
   const slidesHtml = cond.images.map(img => 
     `<div class="carousel-slide"><img src="../generated_images/${cond.image_dir}/${img}" loading="lazy"></div>`
@@ -748,6 +756,8 @@ function showQCImage(index) {
     document.getElementById('qc-image').src = '';
     document.getElementById('qc-counter').textContent = 'No images';
     document.getElementById('qc-condition-info').innerHTML = '<span class="qc-condition-tag">No images to display</span>';
+    document.getElementById('qc-text-content').textContent = 'No text available';
+    document.getElementById('qc-text-content').classList.add('no-text');
     return;
   }
   
@@ -756,6 +766,20 @@ function showQCImage(index) {
   
   document.getElementById('qc-image').src = `../generated_images/${item.condition.image_dir}/${item.image}`;
   document.getElementById('qc-counter').textContent = `${qcCurrentIndex + 1} / ${qcImages.length}`;
+  
+  // Get paired text based on image number (extract from filename like "condition_01.jpg")
+  const textContent = document.getElementById('qc-text-content');
+  if (item.condition.texts && item.condition.texts.length > 0) {
+    // Extract image number from filename (e.g., "condition_01.jpg" -> 0)
+    const imageNumMatch = item.image.match(/_(\d{2})\.(jpg|png)$/i);
+    const imageIndex = imageNumMatch ? parseInt(imageNumMatch[1], 10) - 1 : 0;
+    const textIndex = Math.min(imageIndex, item.condition.texts.length - 1);
+    textContent.textContent = item.condition.texts[textIndex] || 'No text available';
+    textContent.classList.remove('no-text');
+  } else {
+    textContent.textContent = 'No generated text available for this condition';
+    textContent.classList.add('no-text');
+  }
   
   const outgroup = getOutgroup(item.condition.ideology);
   

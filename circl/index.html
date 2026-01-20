@@ -1309,14 +1309,28 @@
     .qc-container {
       flex: 1;
       max-width: 1400px;
-      min-height: 100vh;
-      padding: 24px;
+      min-height: calc(100vh - 56px);
+      padding: 20px 40px;
       margin: 0 auto;
       display: none;
     }
 
     .qc-container.active {
       display: block;
+    }
+
+    /* Hide sidebar in QC mode for full-width layout */
+    .qc-container.active ~ .sidebar-left,
+    body:has(.qc-container.active) .sidebar-left {
+      display: none !important;
+    }
+
+    body:has(.qc-container.active) .main-content {
+      margin-left: 0;
+    }
+    
+    body:has(.qc-container.active) .sidebar-right {
+      display: none !important;
     }
 
     .main-feed.hidden {
@@ -1329,10 +1343,10 @@
 
     .qc-header {
       background: var(--circl-white);
-      border-radius: 8px;
+      border-radius: 16px;
       box-shadow: var(--circl-shadow);
-      padding: 16px 20px;
-      margin-bottom: 16px;
+      padding: 16px 24px;
+      margin-bottom: 24px;
     }
 
     .qc-header-top {
@@ -1395,27 +1409,31 @@
 
     .qc-content {
       display: flex;
-      gap: 16px;
+      gap: 32px;
+      align-items: flex-start;
     }
 
     .qc-image-panel {
       flex: 1;
+      min-width: 0;
       background: var(--circl-white);
-      border-radius: 8px;
+      border-radius: 16px;
       box-shadow: var(--circl-shadow);
-      padding: 20px;
+      padding: 24px;
+      position: sticky;
+      top: 80px;
     }
 
     .qc-image-nav {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 16px;
+      margin-bottom: 20px;
     }
 
     .qc-nav-btn {
       background: var(--circl-gray-100);
-      border: 1px solid var(--circl-gray-200);
+      border: 2px solid var(--circl-gray-200);
       color: var(--circl-text-primary);
       padding: 10px 20px;
       border-radius: 8px;
@@ -1454,17 +1472,38 @@
       display: block;
     }
 
+    .qc-post-text {
+      background: white;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 12px;
+      box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+
+    .qc-post-text-content {
+      font-size: 15px;
+      line-height: 1.5;
+      color: var(--circl-text-primary);
+    }
+
+    .qc-post-text-content.no-text {
+      color: var(--circl-text-secondary);
+      font-style: italic;
+    }
+
     .qc-condition-info {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 10px;
+      margin-top: 20px;
     }
 
     .qc-condition-tag {
       background: var(--circl-gray-100);
-      padding: 6px 12px;
+      padding: 8px 14px;
       border-radius: 20px;
       font-size: 13px;
+      font-weight: 500;
       color: var(--circl-text-secondary);
     }
 
@@ -1504,37 +1543,53 @@
 
     /* QC Form Panel */
     .qc-form-panel {
-      width: 400px;
+      width: 440px;
+      flex-shrink: 0;
       background: var(--circl-white);
-      border-radius: 8px;
+      border-radius: 12px;
       box-shadow: var(--circl-shadow);
-      padding: 20px;
-      overflow-y: auto;
-      max-height: calc(100vh - 160px);
+      padding: 16px 20px 20px;
+      align-self: flex-start;
     }
 
     .qc-form-section {
-      margin-bottom: 24px;
+      margin-bottom: 12px;
+    }
+
+    .qc-form-section:last-of-type {
+      margin-bottom: 0;
     }
 
     .qc-form-section-title {
-      font-size: 14px;
+      font-size: 11px;
       font-weight: 700;
-      color: var(--circl-text-primary);
-      margin-bottom: 12px;
+      color: var(--circl-blue);
+      margin-bottom: 8px;
       text-transform: uppercase;
       letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .qc-form-section-title i {
+      font-size: 12px;
     }
 
     .qc-field {
-      margin-bottom: 16px;
+      margin-bottom: 10px;
+    }
+
+    .qc-field:last-child {
+      margin-bottom: 0;
     }
 
     .qc-field-label {
-      font-size: 14px;
+      font-size: 12px;
       color: var(--circl-text-primary);
-      margin-bottom: 8px;
+      margin-bottom: 6px;
       display: block;
+      font-weight: 500;
     }
 
     .qc-radio-group {
@@ -1555,12 +1610,13 @@
     .qc-radio-option label {
       display: block;
       text-align: center;
-      padding: 10px;
+      padding: 8px 10px;
       background: var(--circl-gray-100);
       border: 1px solid var(--circl-gray-200);
-      border-radius: 8px;
+      border-radius: 6px;
       cursor: pointer;
-      font-size: 13px;
+      font-size: 12px;
+      font-weight: 500;
       transition: all 0.2s;
     }
 
@@ -1572,24 +1628,225 @@
 
     .qc-radio-option label:hover {
       border-color: var(--circl-blue);
+      background: var(--circl-gray-50, #f8fafc);
     }
 
-    /* Star Rating */
-    .qc-star-rating {
+    /* Dual Column Layout (Image + Text separate ratings) */
+    .qc-dual-section {
+      background: var(--circl-gray-100);
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin: 0 0 12px;
+    }
+
+    .qc-dual-header {
+      display: grid;
+      grid-template-columns: 1fr 90px 90px;
+      gap: 16px;
+      margin-bottom: 6px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--circl-gray-200);
+    }
+
+    .qc-dual-header .qc-dual-col {
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--circl-blue);
+      text-align: center;
+      text-transform: uppercase;
       display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+    }
+
+    .qc-dual-field {
+      display: grid;
+      grid-template-columns: 1fr 90px 90px;
+      gap: 16px;
+      align-items: center;
+      padding: 5px 0;
+      border-bottom: 1px solid var(--circl-gray-200);
+    }
+
+    .qc-dual-field:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .qc-dual-field:first-of-type {
+      padding-top: 0;
+    }
+
+    .qc-dual-label {
+      font-size: 12px;
+      color: var(--circl-text-primary);
+      font-weight: 500;
+    }
+
+    .qc-dual-col {
+      display: flex;
+      justify-content: center;
+    }
+
+    .qc-mini-radio-group {
+      display: flex;
+      gap: 3px;
+    }
+
+    .qc-mini-radio {
+      position: relative;
+    }
+
+    .qc-mini-radio input {
+      position: absolute;
+      opacity: 0;
+    }
+
+    .qc-mini-radio label {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px;
+      height: 26px;
+      background: var(--circl-bg-primary);
+      border: 1px solid var(--circl-gray-300);
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--circl-text-secondary);
+      transition: all 0.15s;
+    }
+
+    .qc-mini-radio input:checked + label {
+      background: var(--circl-blue);
+      border-color: var(--circl-blue);
+      color: white;
+    }
+
+    .qc-mini-radio label:hover {
+      border-color: var(--circl-blue);
+    }
+
+    /* Mini Sliders for Intensity */
+    .qc-dual-sliders .qc-dual-col {
+      flex-direction: column;
       gap: 4px;
     }
 
-    .qc-star {
-      font-size: 24px;
-      color: var(--circl-gray-300);
-      cursor: pointer;
-      transition: color 0.15s;
+    .qc-mini-slider {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      width: 100%;
     }
 
-    .qc-star.active,
-    .qc-star.hover {
-      color: var(--circl-orange);
+    .qc-mini-slider input[type="range"] {
+      flex: 1;
+      -webkit-appearance: none;
+      background: var(--circl-gray-300);
+      height: 4px;
+      border-radius: 2px;
+      outline: none;
+    }
+
+    .qc-mini-slider input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--circl-blue);
+      cursor: pointer;
+    }
+
+    .qc-mini-value {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--circl-blue);
+      min-width: 18px;
+      text-align: center;
+    }
+
+    /* Stacked Intensity Section */
+    .qc-intensity-section {
+      background: var(--circl-gray-100);
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin: 0;
+    }
+
+    .qc-intensity-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 0;
+    }
+
+    .qc-intensity-row:first-of-type {
+      border-bottom: 1px solid var(--circl-gray-200);
+      padding-top: 0;
+      padding-bottom: 6px;
+      margin-bottom: 2px;
+    }
+
+    .qc-intensity-row:last-of-type {
+      padding-bottom: 0;
+    }
+
+    .qc-intensity-label {
+      min-width: 60px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--circl-text-primary);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .qc-intensity-label i {
+      color: var(--circl-blue);
+      width: 14px;
+      font-size: 12px;
+    }
+
+    .qc-intensity-slider {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .qc-intensity-slider input[type="range"] {
+      flex: 1;
+      -webkit-appearance: none;
+      background: var(--circl-gray-300);
+      height: 6px;
+      border-radius: 3px;
+      outline: none;
+    }
+
+    .qc-intensity-slider input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--circl-blue);
+      cursor: pointer;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+
+    .qc-intensity-value {
+      min-width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      font-weight: 700;
+      color: white;
+      background: var(--circl-blue);
+      border-radius: 6px;
     }
 
     /* Range Slider */
@@ -1623,6 +1880,12 @@
       font-size: 16px;
       font-weight: 600;
       color: var(--circl-text-primary);
+    }
+
+    .qc-range-label {
+      font-size: 12px;
+      color: var(--circl-text-secondary);
+      white-space: nowrap;
     }
 
     /* Valence Scale */
@@ -1660,17 +1923,23 @@
     .qc-valence-option:nth-child(4) input:checked + label { background: #22c55e; border-color: #22c55e; color: white; }
     .qc-valence-option:last-child input:checked + label { background: #16a34a; border-color: #16a34a; color: white; }
 
-    /* Notes */
+    /* Notes Section */
+    .qc-form-section.qc-notes-section {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid var(--circl-gray-200);
+    }
+
     .qc-notes {
       width: 100%;
       background: var(--circl-gray-100);
       border: 1px solid var(--circl-gray-200);
-      border-radius: 8px;
-      padding: 12px;
-      font-size: 14px;
+      border-radius: 6px;
+      padding: 8px 10px;
+      font-size: 12px;
       color: var(--circl-text-primary);
       resize: vertical;
-      min-height: 80px;
+      min-height: 40px;
       font-family: inherit;
       outline: none;
     }
@@ -1686,13 +1955,14 @@
       color: white;
       border: none;
       border-radius: 8px;
-      padding: 14px;
-      font-size: 16px;
+      padding: 10px;
+      font-size: 13px;
       font-weight: 700;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
+      margin-top: 12px;
       gap: 8px;
       transition: all 0.2s;
     }
@@ -3134,6 +3404,10 @@
             </button>
           </div>
 
+          <div class="qc-post-text" id="qc-text-display">
+            <div class="qc-post-text-content" id="qc-text-content">No text available</div>
+          </div>
+
           <div class="qc-image-wrapper">
             <img id="qc-image" src="" alt="Image to rate">
           </div>
@@ -3145,9 +3419,9 @@
 
         <div class="qc-form-panel">
           <form id="qc-form" onsubmit="submitQCForm(event)">
-            <!-- Binary Criteria -->
+            <!-- Image Only Criteria -->
             <div class="qc-form-section">
-              <div class="qc-form-section-title">Quality Criteria</div>
+              <div class="qc-form-section-title"><i class="fas fa-image"></i> Image Only</div>
               
               <div class="qc-field">
                 <label class="qc-field-label">No prominent weird/garbled text?</label>
@@ -3168,24 +3442,6 @@
               </div>
 
               <div class="qc-field">
-                <label class="qc-field-label">Outgroup member(s) present?</label>
-                <div class="qc-radio-group">
-                  <div class="qc-radio-option">
-                    <input type="radio" name="outgroup_present" id="op-yes" value="yes" required>
-                    <label for="op-yes">Yes</label>
-                  </div>
-                  <div class="qc-radio-option">
-                    <input type="radio" name="outgroup_present" id="op-no" value="no">
-                    <label for="op-no">No</label>
-                  </div>
-                  <div class="qc-radio-option">
-                    <input type="radio" name="outgroup_present" id="op-unclear" value="unclear">
-                    <label for="op-unclear">Unclear</label>
-                  </div>
-                </div>
-              </div>
-
-              <div class="qc-field">
                 <label class="qc-field-label">Looks authentic/realistic (not obviously AI)?</label>
                 <div class="qc-radio-group">
                   <div class="qc-radio-option">
@@ -3200,154 +3456,146 @@
                     <input type="radio" name="looks_authentic" id="la-unclear" value="unclear">
                     <label for="la-unclear">Unclear</label>
                   </div>
-                </div>
-              </div>
-
-              <div class="qc-field">
-                <label class="qc-field-label">Age representation matches condition?</label>
-                <div class="qc-radio-group">
-                  <div class="qc-radio-option">
-                    <input type="radio" name="age_accurate" id="aa-yes" value="yes" required>
-                    <label for="aa-yes">Yes</label>
-                  </div>
-                  <div class="qc-radio-option">
-                    <input type="radio" name="age_accurate" id="aa-no" value="no">
-                    <label for="aa-no">No</label>
-                  </div>
-                  <div class="qc-radio-option">
-                    <input type="radio" name="age_accurate" id="aa-unclear" value="unclear">
-                    <label for="aa-unclear">Unclear</label>
                   </div>
                 </div>
               </div>
 
-              <div class="qc-field">
-                <label class="qc-field-label">Gender representation matches condition?</label>
-                <div class="qc-radio-group">
-                  <div class="qc-radio-option">
-                    <input type="radio" name="gender_accurate" id="ga-yes" value="yes" required>
-                    <label for="ga-yes">Yes</label>
+            <!-- Image + Text Criteria (rated separately) -->
+            <div class="qc-form-section qc-dual-section">
+              <div class="qc-form-section-title"><i class="fas fa-layer-group"></i> Rate Image & Text Separately</div>
+              
+              <!-- Column Headers -->
+              <div class="qc-dual-header">
+                <div class="qc-dual-label-col"></div>
+                <div class="qc-dual-col"><i class="fas fa-image"></i> Image</div>
+                <div class="qc-dual-col"><i class="fas fa-font"></i> Text</div>
+              </div>
+
+              <!-- Outgroup -->
+              <div class="qc-dual-field">
+                <div class="qc-dual-label">Outgroup</div>
+                <div class="qc-dual-col">
+                  <div class="qc-mini-radio-group">
+                    <div class="qc-mini-radio"><input type="radio" name="outgroup_image" id="oi-yes" value="yes" required><label for="oi-yes">Y</label></div>
+                    <div class="qc-mini-radio"><input type="radio" name="outgroup_image" id="oi-no" value="no"><label for="oi-no">N</label></div>
+                    <div class="qc-mini-radio"><input type="radio" name="outgroup_image" id="oi-unc" value="unclear"><label for="oi-unc">?</label></div>
                   </div>
-                  <div class="qc-radio-option">
-                    <input type="radio" name="gender_accurate" id="ga-no" value="no">
-                    <label for="ga-no">No</label>
                   </div>
-                  <div class="qc-radio-option">
-                    <input type="radio" name="gender_accurate" id="ga-unclear" value="unclear">
-                    <label for="ga-unclear">Unclear</label>
+                <div class="qc-dual-col">
+                  <div class="qc-mini-radio-group">
+                    <div class="qc-mini-radio"><input type="radio" name="outgroup_text" id="ot-yes" value="yes" required><label for="ot-yes">Y</label></div>
+                    <div class="qc-mini-radio"><input type="radio" name="outgroup_text" id="ot-no" value="no"><label for="ot-no">N</label></div>
+                    <div class="qc-mini-radio"><input type="radio" name="outgroup_text" id="ot-unc" value="unclear"><label for="ot-unc">?</label></div>
                   </div>
                 </div>
               </div>
 
-              <div class="qc-field">
-                <label class="qc-field-label">Ideology representation matches condition?</label>
-                <div class="qc-radio-group">
-                  <div class="qc-radio-option">
-                    <input type="radio" name="ideology_accurate" id="ia-yes" value="yes" required>
-                    <label for="ia-yes">Yes</label>
+              <!-- Age -->
+              <div class="qc-dual-field">
+                <div class="qc-dual-label">Age</div>
+                <div class="qc-dual-col">
+                  <div class="qc-mini-radio-group">
+                    <div class="qc-mini-radio"><input type="radio" name="age_image" id="ai-yes" value="yes" required><label for="ai-yes">Y</label></div>
+                    <div class="qc-mini-radio"><input type="radio" name="age_image" id="ai-no" value="no"><label for="ai-no">N</label></div>
+                    <div class="qc-mini-radio"><input type="radio" name="age_image" id="ai-unc" value="unclear"><label for="ai-unc">?</label></div>
                   </div>
-                  <div class="qc-radio-option">
-                    <input type="radio" name="ideology_accurate" id="ia-no" value="no">
-                    <label for="ia-no">No</label>
                   </div>
-                  <div class="qc-radio-option">
-                    <input type="radio" name="ideology_accurate" id="ia-unclear" value="unclear">
-                    <label for="ia-unclear">Unclear</label>
-                  </div>
-                </div>
-              </div>
-
-              <div class="qc-field">
-                <label class="qc-field-label">Issue representation matches condition?</label>
-                <div class="qc-radio-group">
-                  <div class="qc-radio-option">
-                    <input type="radio" name="issue_accurate" id="isa-yes" value="yes" required>
-                    <label for="isa-yes">Yes</label>
-                  </div>
-                  <div class="qc-radio-option">
-                    <input type="radio" name="issue_accurate" id="isa-no" value="no">
-                    <label for="isa-no">No</label>
-                  </div>
-                  <div class="qc-radio-option">
-                    <input type="radio" name="issue_accurate" id="isa-unclear" value="unclear">
-                    <label for="isa-unclear">Unclear</label>
+                <div class="qc-dual-col">
+                  <div class="qc-mini-radio-group">
+                    <div class="qc-mini-radio"><input type="radio" name="age_text" id="at-yes" value="yes" required><label for="at-yes">Y</label></div>
+                    <div class="qc-mini-radio"><input type="radio" name="age_text" id="at-no" value="no"><label for="at-no">N</label></div>
+                    <div class="qc-mini-radio"><input type="radio" name="age_text" id="at-unc" value="unclear"><label for="at-unc">?</label></div>
                   </div>
                 </div>
               </div>
 
-              <div class="qc-field">
-                <label class="qc-field-label">Suitable for experiment (overall)?</label>
-                <div class="qc-radio-group">
-                  <div class="qc-radio-option">
-                    <input type="radio" name="suitable" id="su-yes" value="yes" required>
-                    <label for="su-yes">Yes</label>
+              <!-- Gender -->
+              <div class="qc-dual-field">
+                <div class="qc-dual-label">Gender</div>
+                <div class="qc-dual-col">
+                  <div class="qc-mini-radio-group">
+                    <div class="qc-mini-radio"><input type="radio" name="gender_image" id="gi-yes" value="yes" required><label for="gi-yes">Y</label></div>
+                    <div class="qc-mini-radio"><input type="radio" name="gender_image" id="gi-no" value="no"><label for="gi-no">N</label></div>
+                    <div class="qc-mini-radio"><input type="radio" name="gender_image" id="gi-unc" value="unclear"><label for="gi-unc">?</label></div>
                   </div>
-                  <div class="qc-radio-option">
-                    <input type="radio" name="suitable" id="su-no" value="no">
-                    <label for="su-no">No</label>
                   </div>
-                  <div class="qc-radio-option">
-                    <input type="radio" name="suitable" id="su-unclear" value="unclear">
-                    <label for="su-unclear">Unclear</label>
+                <div class="qc-dual-col">
+                  <div class="qc-mini-radio-group">
+                    <div class="qc-mini-radio"><input type="radio" name="gender_text" id="gt-yes" value="yes" required><label for="gt-yes">Y</label></div>
+                    <div class="qc-mini-radio"><input type="radio" name="gender_text" id="gt-no" value="no"><label for="gt-no">N</label></div>
+                    <div class="qc-mini-radio"><input type="radio" name="gender_text" id="gt-unc" value="unclear"><label for="gt-unc">?</label></div>
                   </div>
+                </div>
+              </div>
+
+              <!-- Ideology -->
+              <div class="qc-dual-field">
+                <div class="qc-dual-label">Ideology</div>
+                <div class="qc-dual-col">
+                  <div class="qc-mini-radio-group">
+                    <div class="qc-mini-radio"><input type="radio" name="ideology_image" id="ii-yes" value="yes" required><label for="ii-yes">Y</label></div>
+                    <div class="qc-mini-radio"><input type="radio" name="ideology_image" id="ii-no" value="no"><label for="ii-no">N</label></div>
+                    <div class="qc-mini-radio"><input type="radio" name="ideology_image" id="ii-unc" value="unclear"><label for="ii-unc">?</label></div>
+                  </div>
+                  </div>
+                <div class="qc-dual-col">
+                  <div class="qc-mini-radio-group">
+                    <div class="qc-mini-radio"><input type="radio" name="ideology_text" id="it-yes" value="yes" required><label for="it-yes">Y</label></div>
+                    <div class="qc-mini-radio"><input type="radio" name="ideology_text" id="it-no" value="no"><label for="it-no">N</label></div>
+                    <div class="qc-mini-radio"><input type="radio" name="ideology_text" id="it-unc" value="unclear"><label for="it-unc">?</label></div>
                 </div>
               </div>
             </div>
 
-            <!-- Scales -->
-            <div class="qc-form-section">
-              <div class="qc-form-section-title">Ratings</div>
-
-              <div class="qc-field">
-                <label class="qc-field-label">Image Quality</label>
-                <div class="qc-star-rating" id="qc-star-rating">
-                  <i class="fas fa-star qc-star" data-value="1"></i>
-                  <i class="fas fa-star qc-star" data-value="2"></i>
-                  <i class="fas fa-star qc-star" data-value="3"></i>
-                  <i class="fas fa-star qc-star" data-value="4"></i>
-                  <i class="fas fa-star qc-star" data-value="5"></i>
+              <!-- Issue -->
+              <div class="qc-dual-field">
+                <div class="qc-dual-label">Issue</div>
+                <div class="qc-dual-col">
+                  <div class="qc-mini-radio-group">
+                    <div class="qc-mini-radio"><input type="radio" name="issue_image" id="isi-yes" value="yes" required><label for="isi-yes">Y</label></div>
+                    <div class="qc-mini-radio"><input type="radio" name="issue_image" id="isi-no" value="no"><label for="isi-no">N</label></div>
+                    <div class="qc-mini-radio"><input type="radio" name="issue_image" id="isi-unc" value="unclear"><label for="isi-unc">?</label></div>
                 </div>
-                <input type="hidden" name="image_quality" id="image_quality" value="0" required>
               </div>
-
-              <div class="qc-field">
-                <label class="qc-field-label">Emotional Intensity (0-10)</label>
-                <div class="qc-range-container">
-                  <input type="range" class="qc-range" name="emotional_intensity" id="emotional_intensity" min="0" max="10" value="5">
-                  <span class="qc-range-value" id="intensity-value">5</span>
+                <div class="qc-dual-col">
+                  <div class="qc-mini-radio-group">
+                    <div class="qc-mini-radio"><input type="radio" name="issue_text" id="ist-yes" value="yes" required><label for="ist-yes">Y</label></div>
+                    <div class="qc-mini-radio"><input type="radio" name="issue_text" id="ist-no" value="no"><label for="ist-no">N</label></div>
+                    <div class="qc-mini-radio"><input type="radio" name="issue_text" id="ist-unc" value="unclear"><label for="ist-unc">?</label></div>
+                  </div>
                 </div>
               </div>
 
-              <div class="qc-field">
-                <label class="qc-field-label">Emotional Valence</label>
-                <div class="qc-valence-scale">
-                  <div class="qc-valence-option">
-                    <input type="radio" name="emotional_valence" id="ev-vn" value="very_negative" required>
-                    <label for="ev-vn">Very Neg</label>
-                  </div>
-                  <div class="qc-valence-option">
-                    <input type="radio" name="emotional_valence" id="ev-n" value="negative">
-                    <label for="ev-n">Negative</label>
-                  </div>
-                  <div class="qc-valence-option">
-                    <input type="radio" name="emotional_valence" id="ev-neu" value="neutral">
-                    <label for="ev-neu">Neutral</label>
-                  </div>
-                  <div class="qc-valence-option">
-                    <input type="radio" name="emotional_valence" id="ev-p" value="positive">
-                    <label for="ev-p">Positive</label>
-                  </div>
-                  <div class="qc-valence-option">
-                    <input type="radio" name="emotional_valence" id="ev-vp" value="very_positive">
-                    <label for="ev-vp">Very Pos</label>
-                  </div>
+            </div>
+            
+            <!-- Emotional Intensity - Stacked -->
+            <div class="qc-form-section qc-intensity-section">
+              <div class="qc-form-section-title"><i class="fas fa-fire"></i> Emotional Intensity</div>
+              
+              <div class="qc-intensity-row">
+                <div class="qc-intensity-label"><i class="fas fa-image"></i> Image</div>
+                <div class="qc-intensity-slider">
+                  <span class="qc-range-label">Low</span>
+                  <input type="range" name="intensity_image" id="intensity_image" min="0" max="10" value="5">
+                  <span class="qc-range-label">High</span>
+                  <span class="qc-intensity-value" id="intensity-image-value">5</span>
+                </div>
+              </div>
+              
+              <div class="qc-intensity-row">
+                <div class="qc-intensity-label"><i class="fas fa-font"></i> Text</div>
+                <div class="qc-intensity-slider">
+                  <span class="qc-range-label">Low</span>
+                  <input type="range" name="intensity_text" id="intensity_text" min="0" max="10" value="5">
+                  <span class="qc-range-label">High</span>
+                  <span class="qc-intensity-value" id="intensity-text-value">5</span>
                 </div>
               </div>
             </div>
 
             <!-- Notes -->
-            <div class="qc-form-section">
-              <div class="qc-form-section-title">Notes</div>
+            <div class="qc-form-section qc-notes-section">
+              <div class="qc-form-section-title"><i class="fas fa-pen"></i> Notes</div>
               <textarea class="qc-notes" name="notes" id="qc-notes" placeholder="Any additional observations..."></textarea>
             </div>
 
@@ -3692,27 +3940,10 @@
   <script src="https://cdn.jsdelivr.net/npm/choices.js/public/assets/scripts/choices.min.js"></script>
   <!-- Circl Scripts -->
   <script src="js/circl-core.js"></script>
+  <script src="js/feed-loader.js"></script>
   <script src="js/circl-admin.js"></script>
   <script>
-    /* Any page-specific overrides can go here */
-    let conditionsData = null;
-    let choicesInstances = {};
-    let isMixedFeedMode = false;
-    let showAILabel = false;
-
-    // Post templates (Facebook style - more casual)
-    const postTemplates = [
-      "Dit is wat er echt speelt in onze samenleving. We moeten hier iets aan doen! 🏠 {hashtags}",
-      "Kijk naar dit beeld en vertel me dat dit acceptabel is. {hashtags}",
-      "De realiteit van vandaag. Wanneer gaan we eindelijk actie ondernemen? {hashtags}",
-      "Dit raakt miljoenen Nederlanders. Het is tijd voor verandering. 💪 {hashtags}",
-      "Herkenbaar? Dit is de werkelijkheid voor veel mensen in ons land. {hashtags}",
-      "We kunnen niet langer wegkijken. Dit moet anders! {hashtags}",
-      "Een beeld zegt meer dan duizend woorden. Dit is Nederland vandaag. {hashtags}",
-      "Hoelang blijven we dit nog accepteren? Er moet nu iets gebeuren. {hashtags}",
-      "Stem van de straat. Dit is wat mensen écht bezighoudt. {hashtags}",
-      "De feiten spreken voor zich. Tijd om te handelen! {hashtags}"
-    ];
+    /* Page-specific code - shared variables are in circl-core.js */
 
     // Check for survey participant URL parameters
     function getSurveyParams() {
@@ -3771,9 +4002,8 @@
 
     async function loadData() {
       try {
-        const response = await fetch('../conditions.json');
-        if (!response.ok) throw new Error('Failed to load');
-        conditionsData = await response.json();
+        // Load from stimuli.json via FeedLoader (single source of truth)
+        conditionsData = await FeedLoader.loadConditions('data/stimuli.json');
         initFilters();
         renderPosts();
         applyFilters();
@@ -3785,6 +4015,7 @@
           initSurveyParticipantMode(surveyParams);
         }
       } catch (error) {
+        console.error('Failed to load data:', error);
         document.getElementById('loading').innerHTML = `
           <i class="fas fa-exclamation-triangle" style="animation:none; color: var(--circl-red);"></i>
           <p style="margin-top:12px; color: var(--circl-text-primary);">Could not load posts</p>
@@ -3920,23 +4151,7 @@
       }
     }
 
-    // Display names for policy issues
-    const policyDisplayNames = {
-      'Affordable_childcare_access': 'Affordable childcare (access)',
-      'Build_more_homes_accelerate_construction': 'Build more homes (construction)',
-      'CO2_levy_for_industry_climate': 'CO2 levy for industry (climate)',
-      'purchasing_power': 'Strengthen purchasing power (cost of living)',
-      'stop_weapon_ship_to_israel': 'Stop weapon shipments to Israel'
-    };
-
-    // Hashtag-friendly names for policy issues
-    const policyHashtags = {
-      'Affordable_childcare_access': 'Kinderopvang',
-      'Build_more_homes_accelerate_construction': 'Woningbouw',
-      'CO2_levy_for_industry_climate': 'Klimaat',
-      'purchasing_power': 'Koopkracht',
-      'stop_weapon_ship_to_israel': 'IsraelWapens'
-    };
+    // policyDisplayNames and policyHashtags are defined in circl-core.js
 
     function initFilters() {
       const { filters } = conditionsData;
@@ -3998,8 +4213,15 @@
       
       const policyTag = policyHashtags[cond.policy_issue] || cond.policy_issue.replace(/_/g, '');
       const hashtags = `#${cond.ideology} #${policyTag}`;
-      const postTextContent = postTemplates[Math.floor(Math.random() * postTemplates.length)]
-        .replace('{hashtags}', `<span class="post-hashtag">${hashtags}</span>`);
+      
+      // Use generated texts if available, otherwise fallback to templates
+      let postTextContent;
+      if (cond.texts && cond.texts.length > 0) {
+        postTextContent = cond.texts[0];
+      } else {
+        postTextContent = postTemplates[Math.floor(Math.random() * postTemplates.length)]
+          .replace('{hashtags}', `<span class="post-hashtag">${hashtags}</span>`);
+      }
       
       const slidesHtml = cond.images.map(img => 
         `<div class="carousel-slide"><img src="../generated_images/${cond.image_dir}/${img}" loading="lazy"></div>`
@@ -4138,37 +4360,7 @@
     // ============================================
     // MIXED FEED GENERATOR
     // ============================================
-    
-    const placeholderNames = [
-      { name: 'Emma de Vries', handle: 'Friend', initials: 'EV' },
-      { name: 'Thomas Bakker', handle: 'Friend', initials: 'TB' },
-      { name: 'Sophie Jansen', handle: 'Friend', initials: 'SJ' },
-      { name: 'Lars van Dijk', handle: 'Friend', initials: 'LD' },
-      { name: 'Lisa Mulder', handle: 'Friend', initials: 'LM' },
-      { name: 'Max Visser', handle: 'Suggested for you', initials: 'MV' },
-      { name: 'Anna Smit', handle: 'Friend', initials: 'AS' },
-      { name: 'Daan de Boer', handle: 'Suggested for you', initials: 'DB' },
-      { name: 'Fleur Hendriks', handle: 'Friend', initials: 'FH' },
-      { name: 'Bram Peters', handle: 'Friend', initials: 'BP' }
-    ];
-
-    const placeholderPosts = [
-      "Net terug van een geweldige wandeling in het park. De natuur is prachtig deze tijd van het jaar! 🌳",
-      "Wie heeft er tips voor een goed restaurant in Amsterdam? Vieren dit weekend een verjaardag 🎂",
-      "Die nieuwe serie op Netflix is echt verslavend. Al 5 afleveringen gekeken vanavond 😅",
-      "Eindelijk vrijdag! Wat zijn jullie plannen voor het weekend? 🎉",
-      "Koffie is gezet, laptop open, laten we aan de slag gaan. Productieve dag iedereen! ☕",
-      "Mijn kat heeft weer iets kapot gemaakt. Dit is waarom we geen mooie dingen kunnen hebben 🐱",
-      "Wat een weer vandaag! Perfect voor een terrasje ☀️",
-      "Boek uitgelezen. Aanrader: 'De zeven zussen'. Iemand andere tips?",
-      "Update: de IKEA kast is EINDELIJK in elkaar gezet. Slechts 4 uur en 2 mentale breakdowns later 🔧",
-      "Thuiswerken dag 847: ik praat nu tegen mijn planten. Ze luisteren beter dan mijn collega's 🪴",
-      "PSA: de stroopwafels bij Albert Heijn zijn in de aanbieding. Je bent welkom.",
-      "Nog 3 maanden tot vakantie. Ik tel af. ✈️",
-      "Waarom is de NS altijd vertraagd als ik op tijd ben, maar op tijd als ik te laat ben? 🚂",
-      "Net ontdekt dat mijn buurman ook op Circl zit. Awkward wave incoming 👋",
-      "Tip: nooit boodschappen doen als je honger hebt. Mijn rekening was €120 voor 'snacks' 🛒"
-    ];
+    // Note: placeholderNames and placeholderPosts are defined in circl-admin.js
 
     function generateMixedFeed() {
       isMixedFeedMode = true;
@@ -4333,10 +4525,19 @@
       
       const policyTag = policyHashtags[cond.policy_issue] || cond.policy_issue.replace(/_/g, '');
       const hashtags = `#${cond.ideology} #${policyTag}`;
-      const postText = postTemplates[Math.floor(Math.random() * postTemplates.length)]
-        .replace('{hashtags}', `<span class="post-hashtag">${hashtags}</span>`);
       
-      const randomImage = cond.images[Math.floor(Math.random() * cond.images.length)];
+      // Pick random image and its paired text
+      const imageIndex = Math.floor(Math.random() * cond.images.length);
+      const randomImage = cond.images[imageIndex];
+      
+      // Use generated texts if available, paired with image index
+      let postText;
+      if (cond.texts && cond.texts.length > 0) {
+        postText = cond.texts[imageIndex % cond.texts.length];
+      } else {
+        postText = postTemplates[Math.floor(Math.random() * postTemplates.length)]
+          .replace('{hashtags}', `<span class="post-hashtag">${hashtags}</span>`);
+      }
       
       const eng = {
         likes: Math.floor(Math.random() * 800) + 100,
@@ -4426,19 +4627,7 @@
     // ============================================
     // QUALITY CONTROL MODE
     // ============================================
-    
-    const QC_CONFIG = {
-      googleScriptUrl: 'https://script.google.com/macros/s/AKfycbwOEk-02CPwCnSsovJh3n9F8TAIU0u8Sx1rBQ1ZAZroHOC6TWvlbYtJcu0j2Qk2O5vu9Q/exec'
-    };
-    
-    const REACTIONS_CONFIG = {
-      googleScriptUrl: ''
-    };
-    
-    let qcMode = false;
-    let qcImages = [];
-    let qcCurrentIndex = 0;
-    let qcCodedImages = JSON.parse(localStorage.getItem('qc_coded_images') || '{}');
+    // Note: QC_CONFIG, REACTIONS_CONFIG, and QC state variables are defined in circl-admin.js
     
     function switchMode(mode) {
       const mainFeed = document.querySelector('.main-feed');
@@ -4501,17 +4690,7 @@
     // ============================================
     // EXPERIENCE MODE
     // ============================================
-    
-    let experienceData = {
-      gender: null,
-      age: null,
-      political: 5,
-      issue: null
-    };
-
-    let debugMode = false;
-    let postViewTimes = {}; // { postId: { totalTime, lastEnterTime, author, type } }
-    let viewTrackingObserver = null;
+    // Note: experienceData, debugMode, postViewTimes, viewTrackingObserver are defined in circl-core.js
 
     function initExperienceMode() {
       // Reset form
@@ -4665,91 +4844,7 @@
       ]
     };
 
-    const organizations = [
-      { name: 'NOS Nieuws', logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/NOS_logo.svg/200px-NOS_logo.svg.png', fallbackIcon: 'newspaper', posts: [
-        'LIVE: Kamerdebat over de begroting voor volgend jaar. Volg het hier.',
-        'Nieuwe cijfers CBS: werkloosheid daalt naar laagste punt in 10 jaar.',
-        'Weerbericht: komende dagen wisselvallig met kans op buien.'
-      ]},
-      { name: 'De Volkskrant', logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/De_Volkskrant_logo.svg/200px-De_Volkskrant_logo.svg.png', fallbackIcon: 'newspaper', posts: [
-        'Analyse: Wat betekenen de nieuwe klimaatplannen voor Nederlandse huishoudens?',
-        'Interview met de nieuwe burgemeester: "We moeten de stad groener maken"',
-        'Recensie: Het nieuwe boek van Arnon Grunberg is een meesterwerk.'
-      ]},
-      { name: 'RTL Nieuws', logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/RTL_Nederland_logo.svg/200px-RTL_Nederland_logo.svg.png', fallbackIcon: 'tv', posts: [
-        'BREAKING: Kabinet presenteert nieuwe maatregelen voor de woningmarkt.',
-        'Vanavond in RTL Late Night: gesprek over de toekomst van werk.',
-        'Video: Zo ziet de nieuwe snelweg eruit na jaren van verbouwing.'
-      ]},
-      { name: 'NU.nl', logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Nu.nl_logo.svg/200px-Nu.nl_logo.svg.png', fallbackIcon: 'globe', posts: [
-        'Liveblog: Volg hier het laatste nieuws over de stakingen.',
-        'Dit zijn de belangrijkste nieuwsfeiten van vandaag.',
-        'Quiz: Hoeveel weet jij over de Nederlandse geschiedenis?'
-      ]},
-      { name: 'NRC', logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/7/71/NRC_logo.svg', fallbackIcon: 'newspaper', posts: [
-        'Analyse: De gevolgen van het nieuwe regeringsbeleid voor de middenklasse.',
-        'Opinie: Waarom we het klimaatdebat anders moeten voeren.',
-        'Boekrecensie: Een verrassende kijk op de Nederlandse geschiedenis.'
-      ]},
-      { name: 'Gemeente Amsterdam', logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Coat_of_arms_of_Amsterdam.svg/200px-Coat_of_arms_of_Amsterdam.svg.png', fallbackIcon: 'landmark', posts: [
-        'Reminder: Morgen start de afsluiting van de Amstelveenseweg voor werkzaamheden.',
-        'Nieuw initiatief: gratis sportlessen voor jongeren in de zomervakantie.',
-        'Doe mee met de buurtschoonmaak dit weekend! Aanmelden via de link.'
-      ]},
-      { name: 'Rijksoverheid', logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Logo_rijksoverheid.svg/200px-Logo_rijksoverheid.svg.png', fallbackIcon: 'building-columns', posts: [
-        'Nieuwe regeling: zo vraag je de energietoeslag aan.',
-        'Vanaf 1 januari gelden nieuwe regels voor thuiswerken. Lees meer →',
-        'Campagne gestart: samen maken we Nederland verkeersveiliger.'
-      ]},
-      { name: 'Milieudefensie', logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Milieudefensie_logo.svg/200px-Milieudefensie_logo.svg.png', fallbackIcon: 'leaf', posts: [
-        'Grote overwinning! Shell moet sneller verduurzamen van de rechter.',
-        'Doe mee met onze actie voor schonere lucht in de stad.',
-        'Nieuw rapport: zo kunnen we Nederland klimaatneutraal maken.'
-      ]},
-      { name: 'Woonbond', logoUrl: null, fallbackIcon: 'house', posts: [
-        'Petitie: Stop de huurverhogingen! Al 50.000 handtekeningen verzameld.',
-        'Tips: Dit zijn je rechten als huurder bij achterstallig onderhoud.',
-        'Woondebat in de Tweede Kamer: dit zijn de belangrijkste punten.'
-      ]},
-      { name: 'FNV', logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/06/FNV_logo.svg/200px-FNV_logo.svg.png', fallbackIcon: 'users', posts: [
-        'Stakingsoproep: Morgen leggen medewerkers in de zorg het werk neer.',
-        'Onderhandelingen CAO vastgelopen. Werkgevers moeten bewegen!',
-        'Succesvol: 5% loonsverhoging bereikt na lange onderhandelingen.'
-      ]},
-      { name: 'Amnesty Nederland', logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ee/Amnesty_International_logo.svg/200px-Amnesty_International_logo.svg.png', fallbackIcon: 'hand-fist', posts: [
-        'Urgent: Schrijf een brief voor vrijlating van politieke gevangenen.',
-        'Nieuw rapport over mensenrechtenschendingen gepubliceerd.',
-        'Bedankt voor jullie steun! Samen vechten we voor rechtvaardigheid.'
-      ]},
-      { name: 'Consumentenbond', logoUrl: 'https://logo.clearbit.com/consumentenbond.nl', fallbackIcon: 'shield', posts: [
-        'Test: Dit is de beste zorgverzekering voor 2024.',
-        'Waarschuwing: Let op voor deze phishing-mails!',
-        'Vergelijk en bespaar: de beste energieleveranciers van dit moment.'
-      ]},
-      { name: 'ANWB', logoUrl: 'https://logo.clearbit.com/anwb.nl', fallbackIcon: 'car', posts: [
-        'Filevoorspelling: verwacht druk verkeer richting vakantiebestemmingen.',
-        'Tip: Zo bereid je je auto voor op de winter.',
-        'Nieuwe laadpalen geopend langs de A2. Elektrisch rijden wordt makkelijker!'
-      ]},
-      { name: 'Greenpeace NL', logoUrl: 'https://logo.clearbit.com/greenpeace.nl', fallbackIcon: 'leaf', posts: [
-        'Actie op de Noordzee: bescherm onze oceanen tegen olieboringen!',
-        'Goed nieuws: supermarkten stoppen met plastic verpakkingen.',
-        'Doe mee: plantdag in het Vondelpark dit weekend.'
-      ]},
-      { name: 'NRC', logoUrl: 'https://logo.clearbit.com/nrc.nl', fallbackIcon: 'newspaper', posts: [
-        'Podcast: Luister naar onze nieuwe serie over de klimaatcrisis.',
-        'Opinie: Waarom we het debat over migratie anders moeten voeren.',
-        'Fotoserie: De mooiste plekken van Nederland in de herfst.'
-      ]},
-      { name: 'Trouw', logoUrl: 'https://logo.clearbit.com/trouw.nl', fallbackIcon: 'newspaper', posts: [
-        'Duurzaam leven: 10 tips om je ecologische voetafdruk te verkleinen.',
-        'Interview: "Geloof speelt nog steeds een belangrijke rol in Nederland"',
-        'Reportage: Een dag in het leven van een huisarts op het platteland.'
-      ]}
-    ];
-
-    let usedAvatarIds = new Set();
-    let usedNames = new Set();
+    // Note: organizations, usedAvatarIds, usedNames are defined in circl-core.js
 
     // Avatar ID ranges that tend to have appropriate ages in randomuser.me
     // These are approximate - randomuser.me doesn't guarantee age but certain ranges tend to have older/younger faces
@@ -4949,7 +5044,8 @@
       post.dataset.conditionId = condition.condition_id;
       
       const images = condition.images;
-      const randomImage = images[Math.floor(Math.random() * images.length)];
+      const imageIndex = Math.floor(Math.random() * images.length);
+      const randomImage = images[imageIndex];
       const imagePath = `../generated_images/${condition.condition_id}/${randomImage}`;
       
       const policyTag = policyHashtags[condition.policy_issue] || condition.policy_issue.replace(/_/g, '');
@@ -4970,17 +5066,23 @@
       const fallbackColor = `hsl(${Math.floor(Math.random()*360)}, 70%, 60%)`;
       const avatarHtml = `<div class="avatar-wrapper"><img class="post-avatar-img" src="https://randomuser.me/api/portraits/${avatarGender}/${avatarId}.jpg" alt="${authorName}" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"><div class="post-avatar" style="display:none; background:${fallbackColor};">${initials}</div></div>`;
       
-      const postTexts = [
-        `Dit moet stoppen. Tijd voor verandering! #${policyTag}`,
-        `Wanneer gaan we dit serieus nemen? #${policyTag}`,
-        `Kijk hier eens naar... #${policyTag}`,
-        `Dit is waar het om gaat. #${policyTag}`,
-        `Denk hier eens over na. #${policyTag}`,
-        `Deel dit met iedereen! #${policyTag}`,
-        `Wij accepteren dit niet langer. #${policyTag}`,
-        `Samen staan we sterk. #${policyTag}`
-      ];
-      const postText = postTexts[Math.floor(Math.random() * postTexts.length)];
+      // Use generated texts if available, paired with image index
+      let postText;
+      if (condition.texts && condition.texts.length > 0) {
+        postText = condition.texts[imageIndex % condition.texts.length];
+      } else {
+        const postTexts = [
+          `Dit moet stoppen. Tijd voor verandering! #${policyTag}`,
+          `Wanneer gaan we dit serieus nemen? #${policyTag}`,
+          `Kijk hier eens naar... #${policyTag}`,
+          `Dit is waar het om gaat. #${policyTag}`,
+          `Denk hier eens over na. #${policyTag}`,
+          `Deel dit met iedereen! #${policyTag}`,
+          `Wij accepteren dit niet langer. #${policyTag}`,
+          `Samen staan we sterk. #${policyTag}`
+        ];
+        postText = postTexts[Math.floor(Math.random() * postTexts.length)];
+      }
       
       post.innerHTML = `
         <div class="post-header">
@@ -5137,8 +5239,7 @@
       initExperienceMode();
     }
 
-    let isPageVisible = true;
-    let viewTimerInterval = null;
+    // Note: isPageVisible and viewTimerInterval are defined in circl-core.js
 
     function startViewTracking() {
       const posts = document.querySelectorAll('#experience-posts .post');
@@ -5315,7 +5416,7 @@
       document.getElementById('results-modal').classList.remove('active');
     }
 
-    let experienceShowLabels = false;
+    // Note: experienceShowLabels is defined in circl-core.js
 
     function toggleExperienceLabels() {
       experienceShowLabels = !experienceShowLabels;
@@ -5371,29 +5472,12 @@
         showQCImage(0);
       });
       
-      const starContainer = document.getElementById('qc-star-rating');
-      const stars = document.querySelectorAll('.qc-star');
-      
-      stars.forEach(star => {
-        star.addEventListener('click', (e) => {
-          const value = parseInt(e.target.dataset.value);
-          document.getElementById('image_quality').value = value;
-          updateStars(value);
-        });
-        
-        star.addEventListener('mouseenter', (e) => {
-          const hoverValue = parseInt(e.target.dataset.value);
-          highlightStars(hoverValue);
-        });
+      // Intensity sliders (Image and Text separately)
+      document.getElementById('intensity_image').addEventListener('input', (e) => {
+        document.getElementById('intensity-image-value').textContent = e.target.value;
       });
-      
-      starContainer.addEventListener('mouseleave', () => {
-        const currentValue = parseInt(document.getElementById('image_quality').value) || 0;
-        highlightStars(currentValue);
-      });
-      
-      document.getElementById('emotional_intensity').addEventListener('input', (e) => {
-        document.getElementById('intensity-value').textContent = e.target.value;
+      document.getElementById('intensity_text').addEventListener('input', (e) => {
+        document.getElementById('intensity-text-value').textContent = e.target.value;
       });
       
       document.addEventListener('keydown', (e) => {
@@ -5402,22 +5486,6 @@
         
         if (e.key === 'ArrowLeft') qcNavigate(-1);
         if (e.key === 'ArrowRight') qcNavigate(1);
-      });
-    }
-    
-    function updateStars(value) {
-      document.querySelectorAll('.qc-star').forEach(star => {
-        const starValue = parseInt(star.dataset.value);
-        star.classList.toggle('active', starValue <= value);
-      });
-    }
-    
-    function highlightStars(value) {
-      document.querySelectorAll('.qc-star').forEach(star => {
-        const starValue = parseInt(star.dataset.value);
-        star.classList.toggle('hover', starValue <= value);
-        const currentValue = parseInt(document.getElementById('image_quality').value) || 0;
-        star.classList.toggle('active', starValue <= currentValue);
       });
     }
     
@@ -5435,6 +5503,8 @@
         document.getElementById('qc-image').src = '';
         document.getElementById('qc-counter').textContent = 'No images';
         document.getElementById('qc-condition-info').innerHTML = '<span class="qc-condition-tag">No images to display</span>';
+        document.getElementById('qc-text-content').textContent = 'No text available';
+        document.getElementById('qc-text-content').classList.add('no-text');
         return;
       }
       
@@ -5443,6 +5513,20 @@
       
       document.getElementById('qc-image').src = `../generated_images/${item.condition.image_dir}/${item.image}`;
       document.getElementById('qc-counter').textContent = `${qcCurrentIndex + 1} / ${qcImages.length}`;
+      
+      // Get paired text based on image number (extract from filename like "condition_01.jpg")
+      const textContent = document.getElementById('qc-text-content');
+      if (item.condition.texts && item.condition.texts.length > 0) {
+        // Extract image number from filename (e.g., "condition_01.jpg" -> 0)
+        const imageNumMatch = item.image.match(/_(\d{2})\.(jpg|png)$/i);
+        const imageIndex = imageNumMatch ? parseInt(imageNumMatch[1], 10) - 1 : 0;
+        const textIndex = Math.min(imageIndex, item.condition.texts.length - 1);
+        textContent.textContent = item.condition.texts[textIndex] || 'No text available';
+        textContent.classList.remove('no-text');
+      } else {
+        textContent.textContent = 'No generated text available for this condition';
+        textContent.classList.add('no-text');
+      }
       
       const outgroup = getOutgroup(item.condition.ideology);
       
@@ -5480,9 +5564,8 @@
     function resetQCForm() {
       const form = document.getElementById('qc-form');
       form.reset();
-      document.getElementById('image_quality').value = '0';
-      updateStars(0);
-      document.getElementById('intensity-value').textContent = '5';
+      document.getElementById('intensity-image-value').textContent = '5';
+      document.getElementById('intensity-text-value').textContent = '5';
       document.getElementById('qc-status').textContent = '';
       document.getElementById('qc-status').className = 'qc-status';
     }
@@ -5496,30 +5579,41 @@
         return;
       }
       
-      const imageQuality = parseInt(document.getElementById('image_quality').value);
-      if (imageQuality === 0) {
-        showQCStatus('Please rate the image quality (stars)', 'error');
-        return;
-      }
-      
       const form = document.getElementById('qc-form');
       const formData = new FormData(form);
       const item = qcImages[qcCurrentIndex];
+      
+      // Extract image number from filename (e.g., "condition_01.jpg" -> "01")
+      const imageNumMatch = item.image.match(/_(\d{2})\.(jpg|png)$/i);
+      const imageNum = imageNumMatch ? imageNumMatch[1] : '01';
+      
+      // Build unique IDs
+      const imageId = `${item.condition.condition_id}/${item.image}`;
+      const textId = `${item.condition.condition_id}/text_${imageNum}`;
       
       const data = {
         timestamp: new Date().toISOString(),
         coder_id: coderId,
         condition_id: item.condition.condition_id,
+        image_id: imageId,
+        text_id: textId,
         image_filename: item.image,
+        // Image Only criteria
         no_weird_text: formData.get('no_weird_text'),
-        outgroup_present: formData.get('outgroup_present'),
         looks_authentic: formData.get('looks_authentic'),
-        age_accurate: formData.get('age_accurate'),
-        gender_accurate: formData.get('gender_accurate'),
-        suitable: formData.get('suitable'),
-        image_quality: imageQuality,
-        emotional_intensity: parseInt(formData.get('emotional_intensity')),
-        emotional_valence: formData.get('emotional_valence'),
+        // Image + Text criteria (separate ratings)
+        outgroup_image: formData.get('outgroup_image'),
+        outgroup_text: formData.get('outgroup_text'),
+        age_image: formData.get('age_image'),
+        age_text: formData.get('age_text'),
+        gender_image: formData.get('gender_image'),
+        gender_text: formData.get('gender_text'),
+        ideology_image: formData.get('ideology_image'),
+        ideology_text: formData.get('ideology_text'),
+        issue_image: formData.get('issue_image'),
+        issue_text: formData.get('issue_text'),
+        intensity_image: parseInt(formData.get('intensity_image')),
+        intensity_text: parseInt(formData.get('intensity_text')),
         notes: formData.get('notes') || ''
       };
       
@@ -5591,9 +5685,7 @@
     // ============================================
     // REACTION TRACKING (MIXED FEED MODE)
     // ============================================
-    
-    let currentCommentPostId = null;
-    let currentCommentPostData = null;
+    // Note: currentCommentPostId and currentCommentPostData are defined in circl-admin.js
     
     function attachReactionListeners() {
       document.querySelectorAll('.post-action[data-action]').forEach(actionBtn => {

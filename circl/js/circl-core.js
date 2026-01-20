@@ -240,9 +240,15 @@ function getIdeologyFromPolitical(val) {
 // DATA LOADING
 // ============================================
 async function loadConditionsData() {
-  const response = await fetch('../conditions.json');
-  if (!response.ok) throw new Error('Failed to load conditions.json');
-  conditionsData = await response.json();
+  // Use FeedLoader if available (single source of truth from stimuli.json)
+  if (typeof FeedLoader !== 'undefined' && FeedLoader.loadConditions) {
+    conditionsData = await FeedLoader.loadConditions('data/stimuli.json');
+  } else {
+    // Fallback to conditions.json if FeedLoader not available
+    const response = await fetch('../conditions.json');
+    if (!response.ok) throw new Error('Failed to load conditions.json');
+    conditionsData = await response.json();
+  }
   return conditionsData;
 }
 
@@ -449,11 +455,20 @@ function createExperienceAIPost(condition, isTailored, userGender, userAge) {
   const time = `${Math.floor(Math.random() * 23) + 1}h`;
   const policyTag = policyHashtags[condition.policy_issue] || condition.policy_issue.replace(/_/g, '');
   const hashtags = `#${condition.ideology} #${policyTag}`;
-  const postTextContent = postTemplates[Math.floor(Math.random() * postTemplates.length)]
-    .replace('{hashtags}', `<span class="post-hashtag">${hashtags}</span>`);
   
-  // Pick ONE random image instead of carousel
-  const randomImage = condition.images[Math.floor(Math.random() * condition.images.length)];
+  // Pick ONE random image and its paired text
+  const imageIndex = Math.floor(Math.random() * condition.images.length);
+  const randomImage = condition.images[imageIndex];
+  
+  // Use generated texts if available, paired with image index
+  let postTextContent;
+  if (condition.texts && condition.texts.length > 0) {
+    // Use text at same index as image, or wrap around
+    postTextContent = condition.texts[imageIndex % condition.texts.length];
+  } else {
+    postTextContent = postTemplates[Math.floor(Math.random() * postTemplates.length)]
+      .replace('{hashtags}', `<span class="post-hashtag">${hashtags}</span>`);
+  }
   
   const likes = Math.floor(Math.random() * 500) + 50;
   const comments = Math.floor(Math.random() * 50) + 5;
