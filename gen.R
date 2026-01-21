@@ -47,8 +47,12 @@ generate_image <- function(prompt, config, max_retries = 5) {
     "?key={config$api_key}"
   )
 
+  # Add random salt to bypass potential prompt caching
+  salt <- paste0("\n\n<!-- Generation ID: ", format(Sys.time(), "%Y%m%d%H%M%S"), "-", sample(100000:999999, 1), " -->")
+  salted_prompt <- paste0(prompt, salt)
+
   body <- list(
-    contents = list(list(parts = list(list(text = prompt)))),
+    contents = list(list(parts = list(list(text = salted_prompt)))),
     generationConfig = list(
       responseModalities = list("TEXT", "IMAGE"),
       imageConfig = list(
@@ -70,20 +74,9 @@ generate_image <- function(prompt, config, max_retries = 5) {
 
       # Check if response has candidates
       if (is.null(resp$candidates) || length(resp$candidates) == 0) {
-        # Check for blocking/safety reasons
-        if (!is.null(resp$promptFeedback)) {
-          block_reason <- resp$promptFeedback$blockReason %||% "unknown"
-          safety_ratings <- resp$promptFeedback$safetyRatings
-          safety_info <- ""
-          if (!is.null(safety_ratings)) {
-            safety_info <- paste(
-              sapply(safety_ratings, function(x) paste0(x$category, ": ", x$probability)),
-              collapse = ", "
-            )
-          }
-          stop(glue("API blocked prompt. Reason: {block_reason}. Safety: {safety_info}"))
-        }
-        stop(glue("API returned no candidates. Full response: {jsonlite::toJSON(resp, auto_unbox = TRUE)}"))
+        # No candidates - show the FULL response for debugging
+        full_resp_json <- jsonlite::toJSON(resp, auto_unbox = TRUE, pretty = TRUE)
+        stop(glue("API returned no candidates.\n\n=== FULL API RESPONSE ===\n{full_resp_json}\n=== END RESPONSE ==="))
       }
 
       # Check candidate finish reason
@@ -91,21 +84,15 @@ generate_image <- function(prompt, config, max_retries = 5) {
       finish_reason <- candidate$finishReason %||% "unknown"
 
       if (finish_reason != "STOP" && finish_reason != "unknown") {
-        # Check for safety or other blocking
-        safety_ratings <- candidate$safetyRatings
-        safety_info <- ""
-        if (!is.null(safety_ratings)) {
-          safety_info <- paste(
-            sapply(safety_ratings, function(x) paste0(x$category, ": ", x$probability)),
-            collapse = ", "
-          )
-        }
-        stop(glue("Generation stopped. Reason: {finish_reason}. Safety: {safety_info}"))
+        # Generation didn't complete - show full candidate for debugging
+        candidate_json <- jsonlite::toJSON(candidate, auto_unbox = TRUE, pretty = TRUE)
+        stop(glue("Generation stopped with reason: {finish_reason}\n\n=== FULL CANDIDATE ===\n{candidate_json}\n=== END CANDIDATE ==="))
       }
 
       # Check if content exists
       if (is.null(candidate$content) || is.null(candidate$content$parts)) {
-        stop(glue("No content in response. Finish reason: {finish_reason}. Full candidate: {jsonlite::toJSON(candidate, auto_unbox = TRUE)}"))
+        candidate_json <- jsonlite::toJSON(candidate, auto_unbox = TRUE, pretty = TRUE)
+        stop(glue("No content in response.\n\n=== FULL CANDIDATE ===\n{candidate_json}\n=== END CANDIDATE ==="))
       }
 
       # Extract image
@@ -126,15 +113,51 @@ generate_image <- function(prompt, config, max_retries = 5) {
       return(img_part$inlineData)
 
     }, error = function(e) {
-      if (grepl("429|Too Many Requests|rate|RESOURCE_EXHAUSTED", e$message, ignore.case = TRUE)) {
+      # Build detailed error message
+      error_msg <- e$message
+
+      # Check if it's an httr2 error with response details
+      if (inherits(e, "httr2_http")) {
+        status_code <- e$resp$status_code %||% "unknown"
+        error_msg <- glue("HTTP {status_code}: {error_msg}")
+
+        # Try to get response body for more details
+        tryCatch({
+          resp_body <- resp_body_string(e$resp)
+          if (nchar(resp_body) > 0) {
+            # Try to parse as JSON for better formatting
+            tryCatch({
+              resp_json <- jsonlite::fromJSON(resp_body)
+              if (!is.null(resp_json$error)) {
+                error_msg <- glue("{error_msg}\n",
+                  "    API Error Code: {resp_json$error$code %||% 'N/A'}\n",
+                  "    API Error Message: {resp_json$error$message %||% 'N/A'}\n",
+                  "    API Error Status: {resp_json$error$status %||% 'N/A'}")
+                if (!is.null(resp_json$error$details)) {
+                  error_msg <- glue("{error_msg}\n    Details: {jsonlite::toJSON(resp_json$error$details, auto_unbox = TRUE)}")
+                }
+              } else {
+                error_msg <- glue("{error_msg}\n    Response: {str_trunc(resp_body, 500)}")
+              }
+            }, error = function(parse_err) {
+              error_msg <- glue("{error_msg}\n    Raw Response: {str_trunc(resp_body, 500)}")
+            })
+          }
+        }, error = function(body_err) {
+          # Could not read body, continue with original message
+        })
+      }
+
+      if (grepl("429|Too Many Requests|rate|RESOURCE_EXHAUSTED", error_msg, ignore.case = TRUE)) {
         wait_time <- 30 * (2 ^ (attempt - 1))  # 30s, 60s, 120s, 240s, 480s
         cli_alert_warning("    Rate limited! Waiting {wait_time}s before retry {attempt}/{max_retries}...")
+        cli_text("    {error_msg}")
         Sys.sleep(wait_time)
         if (attempt == max_retries) {
-          stop(e$message)
+          stop(error_msg)
         }
       } else {
-        stop(e$message)
+        stop(error_msg)
       }
     })
   }
@@ -302,9 +325,24 @@ generate_all <- function(df, config, sample_n = NULL) {
         statuses[j] <- "success"
         cli_alert_success("  Generated: {basename(saved_path)}")
       }, error = function(e) {
-        cli_alert_danger("  Image {new_num} failed: {e$message}")
-        image_paths[j] <- NA_character_
-        statuses[j] <- "error"
+        # Print full error details
+        cli_alert_danger("  Image {new_num} FAILED")
+        cli_rule("Error Details")
+        cli_text("  Condition: {condition_id}")
+        cli_text("  Model: {config$model}")
+        cli_text("  Prompt (first 200 chars):")
+        cli_text("    {str_trunc(prompt, 200)}")
+        cli_text("")
+        cli_text("  Error Message:")
+        # Split by newlines and print each line
+        error_lines <- strsplit(as.character(e$message), "\n")[[1]]
+        for (line in error_lines) {
+          cli_text("    {line}")
+        }
+        cli_rule()
+        cli_text("")  # blank line for readability
+        image_paths[j] <<- NA_character_
+        statuses[j] <<- "error"
       })
 
       Sys.sleep(config$rate_limit)

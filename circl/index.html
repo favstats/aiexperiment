@@ -3460,6 +3460,48 @@
                 </div>
               </div>
 
+            <!-- Text Only Criteria -->
+            <div class="qc-form-section">
+              <div class="qc-form-section-title"><i class="fas fa-font"></i> Text Only</div>
+              
+              <div class="qc-field">
+                <label class="qc-field-label">Text is grammatically correct / makes sense?</label>
+                <div class="qc-radio-group">
+                  <div class="qc-radio-option">
+                    <input type="radio" name="text_grammar" id="tg-yes" value="yes" required>
+                    <label for="tg-yes">Yes</label>
+                  </div>
+                  <div class="qc-radio-option">
+                    <input type="radio" name="text_grammar" id="tg-no" value="no">
+                    <label for="tg-no">No</label>
+                  </div>
+                  <div class="qc-radio-option">
+                    <input type="radio" name="text_grammar" id="tg-unclear" value="unclear">
+                    <label for="tg-unclear">Unclear</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="qc-field">
+                <label class="qc-field-label">Text sounds authentic (not obviously AI)?</label>
+                <div class="qc-radio-group">
+                  <div class="qc-radio-option">
+                    <input type="radio" name="text_authentic" id="ta-yes" value="yes" required>
+                    <label for="ta-yes">Yes</label>
+                  </div>
+                  <div class="qc-radio-option">
+                    <input type="radio" name="text_authentic" id="ta-no" value="no">
+                    <label for="ta-no">No</label>
+                  </div>
+                  <div class="qc-radio-option">
+                    <input type="radio" name="text_authentic" id="ta-unclear" value="unclear">
+                    <label for="ta-unclear">Unclear</label>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
             <!-- Image + Text Criteria (rated separately) -->
             <div class="qc-form-section qc-dual-section">
               <div class="qc-form-section-title"><i class="fas fa-layer-group"></i> Rate Image & Text Separately</div>
@@ -5591,6 +5633,9 @@
       const imageId = `${item.condition.condition_id}/${item.image}`;
       const textId = `${item.condition.condition_id}/text_${imageNum}`;
       
+      // Get the actual text content being rated
+      const textContent = document.getElementById('qc-text-content')?.textContent || '';
+      
       const data = {
         timestamp: new Date().toISOString(),
         coder_id: coderId,
@@ -5598,9 +5643,13 @@
         image_id: imageId,
         text_id: textId,
         image_filename: item.image,
+        text_content: textContent,
         // Image Only criteria
         no_weird_text: formData.get('no_weird_text'),
         looks_authentic: formData.get('looks_authentic'),
+        // Text Only criteria
+        text_grammar: formData.get('text_grammar'),
+        text_authentic: formData.get('text_authentic'),
         // Image + Text criteria (separate ratings)
         outgroup_image: formData.get('outgroup_image'),
         outgroup_text: formData.get('outgroup_text'),
