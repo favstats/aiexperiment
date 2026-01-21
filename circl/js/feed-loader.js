@@ -1,41 +1,18 @@
 // ============================================
 // CIRCL FEED LOADER
 // Loads and processes feed configuration from JSON files
+// All data comes from config - no embedded defaults
 // ============================================
 
 const FeedLoader = (function() {
   'use strict';
 
   // ============================================
-  // DUTCH NAME DATA
+  // STATE - loaded from config
   // ============================================
-  const dutchFirstNames = {
-    female: {
-      '18-29': ['Emma', 'Sophie', 'Julia', 'Lotte', 'Anna', 'Lisa', 'Eva', 'Sanne', 'Fleur', 'Iris', 'Mila', 'Noa', 'Sara', 'Isa', 'Tessa'],
-      '30-44': ['Linda', 'Sandra', 'Monique', 'Petra', 'Nicole', 'Wendy', 'Bianca', 'Marjolein', 'Esther', 'Ingrid', 'Manon', 'Danielle', 'Kim', 'Anouk', 'Femke'],
-      '45-59': ['Joke', 'Annemarie', 'Ria', 'Truus', 'Hennie', 'Gerda', 'Thea', 'Wilma', 'Marian', 'Corrie', 'Anneke', 'Liesbeth', 'Janny', 'Bep', 'Nel'],
-      '60+': ['Maria', 'Elisabeth', 'Johanna', 'Cornelia', 'Hendrika', 'Geertruida', 'Wilhelmina', 'Adriana', 'Jacoba', 'Petronella', 'Antje', 'Grietje', 'Dirkje', 'Aaltje', 'Neeltje']
-    },
-    male: {
-      '18-29': ['Daan', 'Sem', 'Lars', 'Luuk', 'Tim', 'Jesse', 'Thomas', 'Thijs', 'Max', 'Bram', 'Ruben', 'Niels', 'Stijn', 'Nick', 'Milan'],
-      '30-44': ['Peter', 'Mark', 'Erik', 'Marco', 'Robert', 'Jeroen', 'Marcel', 'Ronald', 'Martijn', 'Bas', 'Wouter', 'Dennis', 'Vincent', 'Rick', 'Michiel'],
-      '45-59': ['Jan', 'Henk', 'Kees', 'Wim', 'Piet', 'Gerard', 'Hans', 'Frank', 'Albert', 'Willem', 'Theo', 'Jaap', 'Dick', 'Bert', 'Arie'],
-      '60+': ['Johannes', 'Cornelis', 'Hendrik', 'Pieter', 'Willem', 'Gerrit', 'Jacobus', 'Dirk', 'Albertus', 'Antonius', 'Adrianus', 'Petrus', 'Franciscus', 'Bernardus', 'Martinus']
-    }
-  };
-
-  const dutchLastNames = [
-    'de Jong', 'Jansen', 'de Vries', 'van den Berg', 'van Dijk', 'Bakker', 'Janssen', 'Visser', 'Smit', 'Meijer',
-    'de Boer', 'Mulder', 'de Groot', 'Bos', 'Vos', 'Peters', 'Hendriks', 'van Leeuwen', 'Dekker', 'Brouwer',
-    'de Wit', 'Dijkstra', 'Smits', 'de Graaf', 'van der Meer', 'van der Linden', 'Kok', 'Jacobs', 'de Haan', 'Vermeer'
-  ];
-
-  const avatarAgeRanges = {
-    '18-29': { min: 1, max: 30 },
-    '30-44': { min: 15, max: 50 },
-    '45-59': { min: 35, max: 70 },
-    '60+': { min: 50, max: 99 }
-  };
+  let loadedConfig = null;
+  let localeData = null;
+  let avatarSettings = null;
 
   // Track used values to avoid duplicates
   const usedNames = new Set();
@@ -49,6 +26,7 @@ const FeedLoader = (function() {
   }
 
   function randomChoice(array) {
+    if (!array || array.length === 0) return null;
     return array[Math.floor(Math.random() * array.length)];
   }
 
@@ -61,14 +39,68 @@ const FeedLoader = (function() {
     return shuffled;
   }
 
-  function generateDutchName(gender, ageGroup) {
-    const firstNames = dutchFirstNames[gender]?.[ageGroup] || dutchFirstNames[gender]?.['30-44'] || ['Jan'];
+  /**
+   * Get a nested value from an object using dot notation
+   * e.g., getNestedValue(obj, 'author.gender') returns obj.author.gender
+   */
+  function getNestedValue(obj, path) {
+    if (!path) return undefined;
+    return path.split('.').reduce((current, key) => {
+      return current && current[key] !== undefined ? current[key] : undefined;
+    }, obj);
+  }
+
+  /**
+   * Apply a transform to a value based on config
+   */
+  function applyTransform(value, transformName, transforms) {
+    if (!transformName || !transforms || !transforms[transformName]) {
+      return value;
+    }
+
+    const transform = transforms[transformName];
+    
+    if (transform.type === 'range') {
+      const numValue = parseInt(value, 10);
+      if (isNaN(numValue)) return null;
+      
+      for (const range of transform.ranges || []) {
+        if (numValue >= range.min && numValue <= range.max) {
+          return range.value;
+        }
+      }
+      return null;
+    }
+    
+    // Direct mapping
+    if (transform.map && transform.map[value] !== undefined) {
+      return transform.map[value];
+    }
+    
+    return value;
+  }
+
+  // ============================================
+  // NAME AND AVATAR GENERATION (from config)
+  // ============================================
+  function generateName(gender, ageGroup) {
+    if (!localeData || !localeData.first_names || !localeData.last_names) {
+      console.error('FeedLoader: No locale data loaded. Cannot generate name.');
+      return 'Unknown User';
+    }
+
+    const firstNames = localeData.first_names[gender]?.[ageGroup] || 
+                       localeData.first_names[gender]?.['30-44'] || 
+                       Object.values(localeData.first_names[gender] || {})[0] ||
+                       ['User'];
+    const lastNames = localeData.last_names || [''];
+
     let name;
     let attempts = 0;
     do {
       const first = randomChoice(firstNames);
-      const last = randomChoice(dutchLastNames);
-      name = `${first} ${last}`;
+      const last = randomChoice(lastNames);
+      name = last ? `${first} ${last}` : first;
       attempts++;
     } while (usedNames.has(name) && attempts < 50);
     usedNames.add(name);
@@ -76,7 +108,11 @@ const FeedLoader = (function() {
   }
 
   function getAvatarId(ageGroup) {
-    const range = avatarAgeRanges[ageGroup] || { min: 1, max: 99 };
+    if (!avatarSettings || !avatarSettings.age_ranges) {
+      return randomInt(1, 99);
+    }
+    
+    const range = avatarSettings.age_ranges[ageGroup] || { min: 1, max: 99 };
     let id;
     let attempts = 0;
     do {
@@ -90,7 +126,8 @@ const FeedLoader = (function() {
   function getAvatarUrl(gender, ageGroup) {
     const id = getAvatarId(ageGroup);
     const genderPath = gender === 'female' ? 'women' : 'men';
-    return `https://randomuser.me/api/portraits/${genderPath}/${id}.jpg`;
+    const baseUrl = avatarSettings?.api_url || 'https://randomuser.me/api/portraits';
+    return `${baseUrl}/${genderPath}/${id}.jpg`;
   }
 
   // ============================================
@@ -128,7 +165,7 @@ const FeedLoader = (function() {
         if (author.name === null || author.name === undefined) {
           const gender = author.gender || 'male';
           const ageGroup = author.age_group || '30-44';
-          author.name = generateDutchName(gender, ageGroup);
+          author.name = generateName(gender, ageGroup);
         }
 
         // Generate avatar URL if null
@@ -154,13 +191,13 @@ const FeedLoader = (function() {
   }
 
   // ============================================
-  // PERSONALIZATION
+  // PERSONALIZATION (config-driven matching)
   // ============================================
   
   /**
-   * Select personalized stimuli based on config
+   * Select personalized stimuli based on config-driven matching rules
    * @param {Array} stimuli - All available stimuli
-   * @param {Object} params - Personalization params {gender, age, ideology, issue}
+   * @param {Object} params - URL params (keys matching personalization.matching[].url_param)
    * @param {Object} personalizationConfig - Config from feed-config.json
    * @returns {Array} - Selected stimuli with _isTailored markers
    */
@@ -168,21 +205,37 @@ const FeedLoader = (function() {
     const tailoredCount = personalizationConfig.tailored_count ?? 1;
     const randomCount = personalizationConfig.random_count ?? 3;
     const totalCount = tailoredCount + randomCount;
+    const matchingRules = personalizationConfig.matching || [];
+    const transforms = personalizationConfig.transforms || {};
 
-    if (!params || !params.gender || !params.age || !params.ideology || !params.issue) {
+    // Check if we have required params for matching
+    const hasParams = matchingRules.some(rule => params[rule.url_param] !== undefined);
+    
+    if (!hasParams || matchingRules.length === 0) {
       // No personalization params - return random selection (all marked as random)
       return shuffleArray(stimuli).slice(0, totalCount).map(s => ({ ...s, _isTailored: false }));
     }
 
-    const { gender, age, ideology, issue } = params;
+    // Build transformed params for matching
+    const transformedParams = {};
+    for (const rule of matchingRules) {
+      let value = params[rule.url_param];
+      if (value !== undefined && rule.transform) {
+        value = applyTransform(value, rule.transform, transforms);
+      }
+      transformedParams[rule.url_param] = value;
+    }
 
     // Find all stimuli that match the tailored criteria
-    const tailoredMatches = stimuli.filter(s => 
-      s.author?.gender === gender &&
-      s.author?.age_group === age &&
-      s.metadata?.ideology === ideology &&
-      s.metadata?.policy_issue === issue
-    );
+    const tailoredMatches = stimuli.filter(stimulus => {
+      return matchingRules.every(rule => {
+        const paramValue = transformedParams[rule.url_param];
+        if (paramValue === undefined || paramValue === null) return true; // Skip if param not provided
+        
+        const postValue = getNestedValue(stimulus, rule.post_path);
+        return postValue === paramValue;
+      });
+    });
 
     // Shuffle and take tailored_count from matches
     const selectedTailored = shuffleArray(tailoredMatches)
@@ -201,9 +254,15 @@ const FeedLoader = (function() {
   }
 
   /**
-   * Convert political score (1-10) to ideology string
+   * Convert political score to ideology using config transforms
+   * Falls back to hardcoded logic if no config available
    */
-  function getIdeologyFromPolitical(politicalScore) {
+  function getIdeologyFromPolitical(politicalScore, transforms = null) {
+    if (transforms && transforms.political_to_ideology) {
+      return applyTransform(politicalScore, 'political_to_ideology', transforms);
+    }
+    
+    // Fallback if no config (should not happen with proper config)
     const score = parseInt(politicalScore, 10);
     if (isNaN(score)) return null;
     if (score <= 4) return 'left';
@@ -279,11 +338,33 @@ const FeedLoader = (function() {
   }
 
   /**
+   * Validate that required config sections exist
+   */
+  function validateConfig(config) {
+    const errors = [];
+    
+    if (!config.locale) {
+      errors.push('Missing "locale" section in config');
+    } else {
+      if (!config.locale.first_names) errors.push('Missing "locale.first_names" in config');
+      if (!config.locale.last_names) errors.push('Missing "locale.last_names" in config');
+    }
+    
+    if (!config.feed_settings) {
+      errors.push('Missing "feed_settings" section in config');
+    }
+    
+    if (errors.length > 0) {
+      console.error('FeedLoader: Config validation errors:', errors);
+      throw new Error(`Invalid feed configuration: ${errors.join('; ')}`);
+    }
+  }
+
+  /**
    * Load and generate a feed from JSON configuration
    * @param {string} configPath - Path to feed-config.json
    * @param {Object} options - Optional settings
-   * @param {Object} options.personalization - Personalization params {gender, age, ideology, issue}
-   *                                          OR {gender, age, politics, issue} where politics is 1-10 scale
+   * @param {Object} options.personalization - Personalization params from URL
    * @param {number} options.totalPosts - Override total posts count
    * @returns {Object} - { config, posts, stimuliCount, fillersCount, personalization }
    */
@@ -294,6 +375,14 @@ const FeedLoader = (function() {
 
     // Load config
     const config = await loadJSON(configPath);
+    
+    // Validate config
+    validateConfig(config);
+    
+    // Store config for use by other functions
+    loadedConfig = config;
+    localeData = config.locale;
+    avatarSettings = config.avatar_settings || {};
     
     // Determine base path
     const basePath = configPath.substring(0, configPath.lastIndexOf('/') + 1);
@@ -313,11 +402,17 @@ const FeedLoader = (function() {
 
     // Prepare personalization if provided
     let personalization = null;
+    const personalizationConfig = config.personalization || {};
+    
     if (options.personalization) {
       personalization = { ...options.personalization };
-      // Convert politics (1-10) to ideology if needed
+      
+      // Apply transforms to personalization params
+      const transforms = personalizationConfig.transforms || {};
+      
+      // Convert politics (1-10) to ideology if transform is defined
       if (personalization.politics !== undefined && !personalization.ideology) {
-        personalization.ideology = getIdeologyFromPolitical(personalization.politics);
+        personalization.ideology = getIdeologyFromPolitical(personalization.politics, transforms);
       }
     }
 
@@ -326,9 +421,6 @@ const FeedLoader = (function() {
     if (options.totalPosts) {
       feedSettings.total_posts = options.totalPosts;
     }
-
-    // Get personalization config from feed config
-    const personalizationConfig = config.personalization || {};
 
     // Mix feeds according to settings (with personalization if provided)
     const mixedFeed = mixFeeds(processedStimuli, processedFillers, feedSettings, personalization, personalizationConfig);
@@ -423,6 +515,20 @@ const FeedLoader = (function() {
     return `../generated_images/${condition.condition_id}/${imageFilename}`;
   }
 
+  /**
+   * Get the loaded config (for access by other modules)
+   */
+  function getConfig() {
+    return loadedConfig;
+  }
+
+  /**
+   * Get locale data (for access by other modules)
+   */
+  function getLocale() {
+    return localeData;
+  }
+
   // ============================================
   // PUBLIC API
   // ============================================
@@ -435,10 +541,15 @@ const FeedLoader = (function() {
     getImagePath,
     selectPersonalizedStimuli,
     getIdeologyFromPolitical,
-    // Expose utilities for testing
-    generateDutchName,
+    getConfig,
+    getLocale,
+    // Expose utilities for testing/admin
+    generateName,
     getAvatarUrl,
-    shuffleArray
+    shuffleArray,
+    getNestedValue,
+    applyTransform,
+    validateConfig
   };
 
 })();

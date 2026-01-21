@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Circl Admin</title>
+  
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --circl-blue: #1877F2;
+      --circl-blue-hover: #166FE5;
+      --circl-teal: #00A3A3;
+      --circl-bg: #F0F2F5;
+      --circl-white: #FFFFFF;
+      --circl-gray-100: #F5F6F7;
+      --circl-gray-200: #E4E6EB;
+      --circl-gray-300: #B0B3B8;
+      --circl-gray-400: #8A8D91;
+      --circl-gray-500: #606770;
+      --circl-gray-600: #444950;
+      --circl-text-primary: #050505;
+      --circl-text-secondary: #65676B;
+      --circl-green: #42B72A;
+      --circl-red: #FA383E;
+      --circl-orange: #F5A623;
+      --circl-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+      --circl-shadow-lg: 0 2px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--circl-bg);
+      color: var(--circl-text-primary);
+      min-height: 100vh;
+    }
+
+    /* Header */
+    .admin-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 56px;
+      background: var(--circl-white);
+      border-bottom: 1px solid var(--circl-gray-200);
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      z-index: 1000;
+      box-shadow: var(--circl-shadow);
+    }
+
+    .admin-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--circl-blue);
+    }
+
+    .admin-logo svg {
+      width: 40px;
+      height: 40px;
+    }
+
+    .admin-logo-text {
+      background: linear-gradient(135deg, var(--circl-blue), var(--circl-teal));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .admin-header-right {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .admin-header-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+    }
+
+    .admin-header-btn.primary {
+      background: var(--circl-blue);
+      color: white;
+    }
+
+    .admin-header-btn.primary:hover {
+      background: var(--circl-blue-hover);
+    }
+
+    .admin-header-btn.secondary {
+      background: var(--circl-gray-200);
+      color: var(--circl-text-primary);
+    }
+
+    .admin-header-btn.secondary:hover {
+      background: var(--circl-gray-300);
+    }
+
+    .admin-status {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      color: var(--circl-text-secondary);
+    }
+
+    .admin-status.connected {
+      color: var(--circl-green);
+    }
+
+    .admin-status.error {
+      color: var(--circl-red);
+    }
+
+    /* Main Layout */
+    .admin-container {
+      display: flex;
+      padding-top: 56px;
+      min-height: 100vh;
+    }
+
+    /* Sidebar */
+    .admin-sidebar {
+      width: 240px;
+      background: var(--circl-white);
+      border-right: 1px solid var(--circl-gray-200);
+      padding: 16px 0;
+      position: fixed;
+      top: 56px;
+      left: 0;
+      bottom: 0;
+      overflow-y: auto;
+    }
+
+    .sidebar-section {
+      padding: 8px 16px;
+      margin-bottom: 8px;
+    }
+
+    .sidebar-section-title {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--circl-gray-400);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .sidebar-nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 16px;
+      margin: 2px 8px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--circl-text-primary);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .sidebar-nav-item:hover {
+      background: var(--circl-gray-100);
+    }
+
+    .sidebar-nav-item.active {
+      background: linear-gradient(135deg, rgba(24, 119, 242, 0.1), rgba(0, 163, 163, 0.1));
+      color: var(--circl-blue);
+    }
+
+    .sidebar-nav-item i {
+      width: 20px;
+      text-align: center;
+    }
+
+    /* Main Content */
+    .admin-main {
+      flex: 1;
+      margin-left: 240px;
+      padding: 24px;
+      max-width: 1200px;
+    }
+
+    /* Cards */
+    .admin-card {
+      background: var(--circl-white);
+      border-radius: 8px;
+      box-shadow: var(--circl-shadow);
+      margin-bottom: 16px;
+      overflow: hidden;
+    }
+
+    .admin-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--circl-gray-200);
+    }
+
+    .admin-card-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--circl-text-primary);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .admin-card-title i {
+      color: var(--circl-blue);
+    }
+
+    .admin-card-body {
+      padding: 20px;
+    }
+
+    /* Form Elements */
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--circl-text-secondary);
+      margin-bottom: 6px;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid var(--circl-gray-200);
+      border-radius: 6px;
+      font-size: 14px;
+      font-family: inherit;
+      transition: all 0.2s;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--circl-blue);
+      box-shadow: 0 0 0 3px rgba(24, 119, 242, 0.1);
+    }
+
+    .form-input-small {
+      width: 100px;
+      text-align: center;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .form-row .form-group {
+      flex: 1;
+    }
+
+    .form-checkbox {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+    }
+
+    .form-checkbox input {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+    }
+
+    .form-textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    /* Tabs */
+    .admin-tabs {
+      display: flex;
+      gap: 4px;
+      background: var(--circl-gray-100);
+      padding: 4px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+    }
+
+    .admin-tab {
+      flex: 1;
+      padding: 10px 16px;
+      border: none;
+      background: transparent;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--circl-text-secondary);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .admin-tab:hover {
+      color: var(--circl-text-primary);
+    }
+
+    .admin-tab.active {
+      background: var(--circl-white);
+      color: var(--circl-blue);
+      box-shadow: var(--circl-shadow);
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Lists */
+    .list-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--circl-gray-100);
+    }
+
+    .list-item:last-child {
+      border-bottom: none;
+    }
+
+    .list-item-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .list-item-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .list-item-btn {
+      padding: 6px 10px;
+      border: none;
+      border-radius: 4px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .list-item-btn.edit {
+      background: var(--circl-gray-100);
+      color: var(--circl-text-secondary);
+    }
+
+    .list-item-btn.edit:hover {
+      background: var(--circl-gray-200);
+    }
+
+    .list-item-btn.delete {
+      background: rgba(250, 56, 62, 0.1);
+      color: var(--circl-red);
+    }
+
+    .list-item-btn.delete:hover {
+      background: rgba(250, 56, 62, 0.2);
+    }
+
+    /* Matching Rules Table */
+    .matching-rules-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .matching-rules-table th,
+    .matching-rules-table td {
+      padding: 10px 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--circl-gray-100);
+    }
+
+    .matching-rules-table th {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--circl-text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .matching-rules-table td {
+      font-size: 14px;
+    }
+
+    .matching-rules-table input {
+      padding: 6px 10px;
+      border: 1px solid var(--circl-gray-200);
+      border-radius: 4px;
+      font-size: 13px;
+      width: 100%;
+    }
+
+    /* Stats */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 16px;
+    }
+
+    .stat-card {
+      background: linear-gradient(135deg, rgba(24, 119, 242, 0.05), rgba(0, 163, 163, 0.05));
+      border-radius: 8px;
+      padding: 16px;
+      text-align: center;
+    }
+
+    .stat-value {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--circl-blue);
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--circl-text-secondary);
+      margin-top: 4px;
+    }
+
+    /* Toast Messages */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.3s;
+      z-index: 9999;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .toast.success {
+      background: var(--circl-green);
+      color: white;
+    }
+
+    .toast.error {
+      background: var(--circl-red);
+      color: white;
+    }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--circl-text-secondary);
+    }
+
+    .empty-state i {
+      font-size: 48px;
+      margin-bottom: 16px;
+      color: var(--circl-gray-300);
+    }
+
+    .empty-state p {
+      margin-bottom: 16px;
+    }
+
+    /* Collapsible Cards */
+    .admin-card.collapsible .admin-card-header {
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .admin-card.collapsible .admin-card-header:hover {
+      background: var(--circl-gray-100);
+    }
+
+    .admin-card.collapsible .collapse-icon {
+      transition: transform 0.2s;
+    }
+
+    .admin-card.collapsible.collapsed .collapse-icon {
+      transform: rotate(-90deg);
+    }
+
+    .admin-card.collapsible.collapsed .admin-card-body {
+      display: none;
+    }
+
+    /* Mode Indicator */
+    .mode-indicator {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 4px;
+      background: var(--circl-gray-100);
+      color: var(--circl-text-secondary);
+    }
+
+    .mode-indicator.api {
+      background: rgba(24, 119, 242, 0.1);
+      color: var(--circl-blue);
+    }
+
+    .mode-indicator.standalone {
+      background: rgba(245, 166, 35, 0.1);
+      color: var(--circl-orange);
+    }
+
+    /* Download Buttons */
+    .download-btn {
+      padding: 6px 12px;
+      border: none;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      background: var(--circl-gray-100);
+      color: var(--circl-text-secondary);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .download-btn:hover {
+      background: var(--circl-gray-200);
+    }
+
+    .download-btn.primary {
+      background: var(--circl-blue);
+      color: white;
+    }
+
+    .download-btn.primary:hover {
+      background: var(--circl-blue-hover);
+    }
+
+    /* Loading Spinner */
+    .loading-spinner {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--circl-gray-200);
+      border-top-color: var(--circl-blue);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Preview Frame */
+    .preview-frame {
+      width: 100%;
+      height: 600px;
+      border: 1px solid var(--circl-gray-200);
+      border-radius: 8px;
+      background: var(--circl-bg);
+    }
+
+    /* Sections */
+    .admin-section {
+      display: none;
+    }
+
+    .admin-section.active {
+      display: block;
+    }
+
+    /* Search Box */
+    .search-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      background: var(--circl-gray-100);
+      border-radius: 6px;
+      margin-bottom: 12px;
+    }
+
+    .search-box i {
+      color: var(--circl-gray-400);
+    }
+
+    .search-box input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      font-size: 14px;
+      outline: none;
+    }
+
+    .search-results-count {
+      font-size: 12px;
+      color: var(--circl-text-secondary);
+      margin-bottom: 8px;
+    }
+
+    /* Modal */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.2s;
+    }
+
+    .modal-overlay.show {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal {
+      background: var(--circl-white);
+      border-radius: 12px;
+      width: 90%;
+      max-width: 600px;
+      max-height: 80vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transform: scale(0.9);
+      transition: transform 0.2s;
+    }
+
+    .modal-overlay.show .modal {
+      transform: scale(1);
+    }
+
+    .modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--circl-gray-200);
+    }
+
+    .modal-title {
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .modal-close {
+      width: 32px;
+      height: 32px;
+      border: none;
+      background: var(--circl-gray-100);
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+
+    .modal-close:hover {
+      background: var(--circl-gray-200);
+    }
+
+    .modal-body {
+      padding: 20px;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      padding: 16px 20px;
+      border-top: 1px solid var(--circl-gray-200);
+    }
+
+    /* List item hidden */
+    .list-item.hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="admin-header">
+    <div class="admin-logo">
+      <svg viewBox="0 0 100 100">
+        <defs>
+          <linearGradient id="circlGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#1877F2"/>
+            <stop offset="100%" style="stop-color:#00A3A3"/>
+          </linearGradient>
+        </defs>
+        <circle cx="50" cy="50" r="45" fill="url(#circlGradient)"/>
+        <circle cx="50" cy="50" r="25" fill="white" opacity="0.9"/>
+        <circle cx="50" cy="50" r="10" fill="url(#circlGradient)"/>
+      </svg>
+      <span class="admin-logo-text">Circl Admin</span>
+    </div>
+    
+    <div class="admin-header-right">
+      <div class="mode-indicator" id="mode-indicator">
+        <i class="fas fa-spinner fa-spin"></i>
+        <span>Detecting...</span>
+      </div>
+      <div class="admin-status" id="api-status" style="display:none;">
+        <span class="loading-spinner"></span>
+        <span>Connecting...</span>
+      </div>
+      <button class="admin-header-btn secondary" id="btn-export">
+        <i class="fas fa-download"></i> Export All
+      </button>
+      <button class="admin-header-btn primary" id="btn-save">
+        <i class="fas fa-save"></i> Save All
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <div class="admin-container">
+    <!-- Sidebar -->
+    <nav class="admin-sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">Configuration</div>
+        <div class="sidebar-nav-item active" data-section="feed-settings">
+          <i class="fas fa-sliders"></i>
+          <span>Feed Settings</span>
+        </div>
+        <div class="sidebar-nav-item" data-section="personalization">
+          <i class="fas fa-bullseye"></i>
+          <span>Personalization</span>
+        </div>
+        <div class="sidebar-nav-item" data-section="locale">
+          <i class="fas fa-globe"></i>
+          <span>Locale</span>
+        </div>
+      </div>
+      
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">Content</div>
+        <div class="sidebar-nav-item" data-section="stimuli">
+          <i class="fas fa-image"></i>
+          <span>Stimuli</span>
+        </div>
+        <div class="sidebar-nav-item" data-section="fillers">
+          <i class="fas fa-newspaper"></i>
+          <span>Fillers</span>
+        </div>
+      </div>
+      
+      <div class="sidebar-section">
+        <div class="sidebar-section-title">Preview</div>
+        <div class="sidebar-nav-item" data-section="preview">
+          <i class="fas fa-eye"></i>
+          <span>Live Preview</span>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="admin-main">
+      <!-- Feed Settings Section -->
+      <section id="section-feed-settings" class="admin-section active">
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <div class="admin-card-title">
+              <i class="fas fa-sliders"></i>
+              Feed Settings
+            </div>
+          </div>
+          <div class="admin-card-body">
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Total Posts</label>
+                <input type="number" class="form-input form-input-small" id="total-posts" min="10" max="100" value="40">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Stimuli Count</label>
+                <input type="number" class="form-input form-input-small" id="stimuli-count" min="1" max="20" value="4">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Filler Ratio</label>
+                <input type="number" class="form-input form-input-small" id="filler-ratio" min="1" max="10" value="4">
+              </div>
+              <div class="form-group">
+                <label class="form-label">First N Fillers</label>
+                <input type="number" class="form-input form-input-small" id="first-n-fillers" min="0" max="10" value="2">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-checkbox">
+                <input type="checkbox" id="randomize-order" checked>
+                <span>Randomize post order</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <div class="admin-card-title">
+              <i class="fas fa-chart-bar"></i>
+              Statistics
+            </div>
+          </div>
+          <div class="admin-card-body">
+            <div class="stats-grid">
+              <div class="stat-card">
+                <div class="stat-value" id="stat-stimuli">-</div>
+                <div class="stat-label">Total Stimuli</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-value" id="stat-fillers">-</div>
+                <div class="stat-label">Total Fillers</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-value" id="stat-conditions">-</div>
+                <div class="stat-label">Conditions</div>
+              </div>
+              <div class="stat-card">
+                <div class="stat-value" id="stat-images">-</div>
+                <div class="stat-label">Images</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Personalization Section -->
+      <section id="section-personalization" class="admin-section">
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <div class="admin-card-title">
+              <i class="fas fa-bullseye"></i>
+              Personalization Settings
+            </div>
+          </div>
+          <div class="admin-card-body">
+            <div class="form-group">
+              <label class="form-checkbox">
+                <input type="checkbox" id="personalization-enabled" checked>
+                <span>Enable personalization</span>
+              </label>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Tailored Count</label>
+                <input type="number" class="form-input form-input-small" id="tailored-count" min="0" max="10" value="1">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Random Count</label>
+                <input type="number" class="form-input form-input-small" id="random-count" min="0" max="10" value="3">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <div class="admin-card-title">
+              <i class="fas fa-link"></i>
+              Matching Rules
+            </div>
+            <button class="admin-header-btn secondary" id="btn-add-rule">
+              <i class="fas fa-plus"></i> Add Rule
+            </button>
+          </div>
+          <div class="admin-card-body">
+            <table class="matching-rules-table">
+              <thead>
+                <tr>
+                  <th>URL Param</th>
+                  <th>Post Path</th>
+                  <th>Transform</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="matching-rules-body">
+                <!-- Rules will be populated by JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <div class="admin-card-title">
+              <i class="fas fa-exchange-alt"></i>
+              Transforms
+            </div>
+          </div>
+          <div class="admin-card-body">
+            <div id="transforms-container">
+              <!-- Transforms will be populated by JS -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Locale Section -->
+      <section id="section-locale" class="admin-section">
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <div class="admin-card-title">
+              <i class="fas fa-globe"></i>
+              Locale Settings
+            </div>
+          </div>
+          <div class="admin-card-body">
+            <div class="form-group">
+              <label class="form-label">Language Code</label>
+              <input type="text" class="form-input" id="locale-language" style="width: 100px;" value="nl">
+            </div>
+          </div>
+        </div>
+
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <div class="admin-card-title">
+              <i class="fas fa-spinner"></i>
+              Loading Messages
+            </div>
+          </div>
+          <div class="admin-card-body">
+            <div class="form-group">
+              <label class="form-label">Messages (one per line)</label>
+              <textarea class="form-input form-textarea" id="loading-messages" rows="8"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <div class="admin-card-title">
+              <i class="fas fa-user"></i>
+              Names
+            </div>
+          </div>
+          <div class="admin-card-body">
+            <p style="color: var(--circl-text-secondary); margin-bottom: 16px;">
+              Names are organized by gender and age group. Edit the JSON directly for advanced changes.
+            </p>
+            <div class="admin-tabs">
+              <button class="admin-tab active" data-tab="names-female">Female</button>
+              <button class="admin-tab" data-tab="names-male">Male</button>
+              <button class="admin-tab" data-tab="last-names">Last Names</button>
+            </div>
+            <div id="names-female" class="tab-content active">
+              <div id="female-names-container"></div>
+            </div>
+            <div id="names-male" class="tab-content">
+              <div id="male-names-container"></div>
+            </div>
+            <div id="last-names" class="tab-content">
+              <div class="form-group">
+                <label class="form-label">Last Names (comma-separated)</label>
+                <textarea class="form-input form-textarea" id="last-names-input" rows="4"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Stimuli Section -->
+      <section id="section-stimuli" class="admin-section">
+        <div class="admin-card collapsible">
+          <div class="admin-card-header" onclick="toggleCard(this)">
+            <div class="admin-card-title">
+              <i class="fas fa-chevron-down collapse-icon"></i>
+              <i class="fas fa-image"></i>
+              Stimuli Browser
+            </div>
+            <button class="download-btn" onclick="event.stopPropagation(); downloadStimuli()">
+              <i class="fas fa-download"></i> Download stimuli.json
+            </button>
+          </div>
+          <div class="admin-card-body">
+            <div class="search-box">
+              <i class="fas fa-search"></i>
+              <input type="text" id="stimuli-search" placeholder="Search by condition, ideology, policy..." oninput="filterStimuli()">
+            </div>
+            <div class="search-results-count" id="stimuli-count"></div>
+            <div id="stimuli-browser">
+              <div class="empty-state">
+                <i class="fas fa-images"></i>
+                <p>Loading stimuli...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Fillers Section -->
+      <section id="section-fillers" class="admin-section">
+        <div class="admin-card collapsible">
+          <div class="admin-card-header" onclick="toggleCard(this)">
+            <div class="admin-card-title">
+              <i class="fas fa-chevron-down collapse-icon"></i>
+              <i class="fas fa-newspaper"></i>
+              Filler Posts
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button class="download-btn" onclick="event.stopPropagation(); downloadFillers()">
+                <i class="fas fa-download"></i> Download fillers.json
+              </button>
+              <button class="admin-header-btn secondary" id="btn-add-filler" onclick="event.stopPropagation()">
+                <i class="fas fa-plus"></i> Add Filler
+              </button>
+            </div>
+          </div>
+          <div class="admin-card-body">
+            <div class="search-box">
+              <i class="fas fa-search"></i>
+              <input type="text" id="fillers-search" placeholder="Search by name or text..." oninput="filterFillers()">
+            </div>
+            <div class="search-results-count" id="fillers-count"></div>
+            <div id="fillers-list">
+              <div class="empty-state">
+                <i class="fas fa-newspaper"></i>
+                <p>Loading fillers...</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Preview Section -->
+      <section id="section-preview" class="admin-section">
+        <div class="admin-card collapsible">
+          <div class="admin-card-header" onclick="toggleCard(this)">
+            <div class="admin-card-title">
+              <i class="fas fa-chevron-down collapse-icon"></i>
+              <i class="fas fa-eye"></i>
+              Live Preview
+            </div>
+            <div style="display: flex; gap: 8px;">
+              <button class="admin-header-btn secondary" id="btn-open-preview" onclick="event.stopPropagation(); openPreviewNewTab()">
+                <i class="fas fa-external-link-alt"></i> Open in New Tab
+              </button>
+              <button class="admin-header-btn primary" id="btn-refresh-preview" onclick="event.stopPropagation()">
+                <i class="fas fa-sync"></i> Refresh
+              </button>
+            </div>
+          </div>
+          <div class="admin-card-body">
+            <p style="color: var(--circl-text-secondary); margin-bottom: 12px; font-size: 13px;">
+              <i class="fas fa-info-circle"></i> Preview may not work in iframe on GitHub Pages. Use "Open in New Tab" instead.
+            </p>
+            <iframe id="preview-iframe" class="preview-frame" src="about:blank"></iframe>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <!-- Edit Modal -->
+  <div class="modal-overlay" id="edit-modal">
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title" id="modal-title">Edit Post</div>
+        <button class="modal-close" onclick="closeModal()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form id="edit-form">
+          <input type="hidden" id="edit-index">
+          <input type="hidden" id="edit-type">
+          
+          <div class="form-group">
+            <label class="form-label">Post ID</label>
+            <input type="text" class="form-input" id="edit-id" readonly style="background: var(--circl-gray-100);">
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">Post Type</label>
+            <select class="form-input" id="edit-subtype">
+              <option value="person">Person</option>
+              <option value="organization">Organization</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">Author Name</label>
+            <input type="text" class="form-input" id="edit-author-name" placeholder="Leave empty for random generation">
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Gender</label>
+              <select class="form-input" id="edit-gender">
+                <option value="female">Female</option>
+                <option value="male">Male</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Age Group</label>
+              <select class="form-input" id="edit-age-group">
+                <option value="18-29">18-29</option>
+                <option value="30-44">30-44</option>
+                <option value="45-59">45-59</option>
+                <option value="60+">60+</option>
+              </select>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">Post Text</label>
+            <textarea class="form-input form-textarea" id="edit-text" rows="4"></textarea>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">Image URL (optional)</label>
+            <input type="text" class="form-input" id="edit-image-url" placeholder="https://...">
+          </div>
+          
+          <div class="form-group">
+            <label class="form-checkbox">
+              <input type="checkbox" id="edit-show-image">
+              <span>Show image in post</span>
+            </label>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button class="admin-header-btn secondary" onclick="closeModal()">Cancel</button>
+        <button class="admin-header-btn primary" onclick="saveEdit()">
+          <i class="fas fa-save"></i> Save
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/circl-admin-panel.js"></script>
+</body>
+</html>

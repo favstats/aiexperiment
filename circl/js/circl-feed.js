@@ -16,26 +16,13 @@ async function initParticipantFeed() {
   const loader = document.getElementById('survey-loader');
   loader.style.display = 'flex';
   
-  // Start rotating loading messages
-  const loadingMessages = [
-    "Preparing something amazing...",
-    "Gathering the latest posts...",
-    "Almost there, just a moment...",
-    "Curating your perfect feed...",
-    "Finding the best content for you...",
-    "Putting it all together...",
-    "Just a few more seconds...",
-    "Almost ready to go!"
-  ];
+  // Default loading messages (used while config is loading)
+  let loadingMessages = ["Loading..."];
+  let messageInterval = null;
   
-  let messageIndex = 0;
+  // Start with a simple message
   const messageEl = document.getElementById('loading-message');
-  const messageInterval = setInterval(() => {
-    messageIndex = (messageIndex + 1) % loadingMessages.length;
-    if (messageEl) {
-      messageEl.textContent = loadingMessages[messageIndex];
-    }
-  }, 600);
+  let messageIndex = 0;
   
   try {
     // Check if we should use JSON-based feed (source=json in URL)
@@ -63,6 +50,19 @@ async function initParticipantFeed() {
       // Use new JSON-based feed loader with personalization
       const feedData = await FeedLoader.loadFeed('data/feed-config.json', feedOptions);
       
+      // Now that config is loaded, get loading messages from locale
+      const locale = feedData.config.locale || {};
+      loadingMessages = locale.loading_messages || ["Loading your feed..."];
+      
+      // Start rotating messages with proper locale data
+      if (messageEl && loadingMessages.length > 0) {
+        messageEl.textContent = loadingMessages[0];
+        messageInterval = setInterval(() => {
+          messageIndex = (messageIndex + 1) % loadingMessages.length;
+          messageEl.textContent = loadingMessages[messageIndex];
+        }, 600);
+      }
+      
       // Set debug mode from params
       debugMode = params.debug;
       
@@ -70,13 +70,33 @@ async function initParticipantFeed() {
       await new Promise(resolve => setTimeout(resolve, 3500));
       
       // Stop rotating messages
-      clearInterval(messageInterval);
+      if (messageInterval) clearInterval(messageInterval);
       
       // Render posts from JSON
       renderJsonFeed(feedData.posts, feedData.config);
       
     } else {
-      // Use original conditions.json based feed
+      // Use original conditions.json based feed (legacy mode - no locale loading)
+      // Start simple rotating messages for legacy mode
+      loadingMessages = [
+        "Preparing something amazing...",
+        "Gathering the latest posts...",
+        "Almost there, just a moment...",
+        "Curating your perfect feed...",
+        "Finding the best content for you...",
+        "Putting it all together...",
+        "Just a few more seconds...",
+        "Almost ready to go!"
+      ];
+      
+      if (messageEl && loadingMessages.length > 0) {
+        messageEl.textContent = loadingMessages[0];
+        messageInterval = setInterval(() => {
+          messageIndex = (messageIndex + 1) % loadingMessages.length;
+          messageEl.textContent = loadingMessages[messageIndex];
+        }, 600);
+      }
+      
       await loadConditionsData();
       
       // Set debug mode from params
@@ -89,7 +109,7 @@ async function initParticipantFeed() {
       await new Promise(resolve => setTimeout(resolve, 3500));
       
       // Stop rotating messages
-      clearInterval(messageInterval);
+      if (messageInterval) clearInterval(messageInterval);
       
       // Generate feed using original method
       generateExperienceFeed(params.gender, params.age, ideology, params.issue, params.totalPosts);
