@@ -340,16 +340,22 @@ function populateFillers() {
   
   countEl.textContent = `${posts.length} filler posts`;
   
-  container.innerHTML = posts.map((post, index) => `
+  container.innerHTML = posts.map((post, index) => {
+    const icon = post.subtype === 'article' ? 'link' : (post.subtype === 'organization' ? 'building' : 'user');
+    const typeBadge = post.subtype === 'article' ? '<span style="background: var(--circl-orange); color: white; font-size: 10px; padding: 2px 6px; border-radius: 4px; margin-left: 8px;">ARTICLE</span>' : '';
+    const displayName = post.subtype === 'article' ? (post.article?.source || 'Article') : (post.author?.name || '(Random name)');
+    const displayText = post.subtype === 'article' ? (post.article?.title || post.text || '') : (post.text || '');
+    
+    return `
     <div class="list-item filler-item" data-name="${(post.author?.name || '').toLowerCase()}" data-text="${(post.text || '').toLowerCase()}">
       <div class="list-item-info">
-        <div style="width: 40px; height: 40px; background: var(--circl-gray-100); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
-          <i class="fas fa-${post.subtype === 'organization' ? 'building' : 'user'}"></i>
+        <div style="width: 40px; height: 40px; background: var(--circl-gray-100); border-radius: ${post.subtype === 'article' ? '8px' : '50%'}; display: flex; align-items: center; justify-content: center;">
+          <i class="fas fa-${icon}"></i>
         </div>
         <div style="flex: 1; min-width: 0;">
-          <div style="font-weight: 500;">${post.author?.name || '(Random name)'}</div>
+          <div style="font-weight: 500;">${displayName}${typeBadge}</div>
           <div style="font-size: 12px; color: var(--circl-text-secondary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
-            ${(post.text || '').substring(0, 80)}${post.text?.length > 80 ? '...' : ''}
+            ${displayText.substring(0, 80)}${displayText.length > 80 ? '...' : ''}
           </div>
         </div>
       </div>
@@ -362,7 +368,7 @@ function populateFillers() {
         </button>
       </div>
     </div>
-  `).join('');
+  `}).join('');
 }
 
 function filterFillers() {
@@ -689,10 +695,32 @@ function editFiller(index) {
   document.getElementById('edit-gender').value = post.author?.gender || 'female';
   document.getElementById('edit-age-group').value = post.author?.age_group || '30-44';
   document.getElementById('edit-text').value = post.text || '';
+  document.getElementById('edit-avatar-url').value = post.author?.avatar_url || '';
   document.getElementById('edit-image-url').value = post.image?.src || '';
   document.getElementById('edit-show-image').checked = post.image?.show !== false;
   
+  // Article fields
+  document.getElementById('edit-article-title').value = post.article?.title || '';
+  document.getElementById('edit-article-source').value = post.article?.source || '';
+  document.getElementById('edit-article-url').value = post.article?.url || '';
+  document.getElementById('edit-article-thumbnail').value = post.article?.thumbnail || '';
+  
+  toggleArticleFields();
   openModal();
+}
+
+function toggleArticleFields() {
+  const subtype = document.getElementById('edit-subtype').value;
+  const articleFields = document.getElementById('article-fields');
+  const avatarFields = document.getElementById('avatar-fields');
+  
+  if (subtype === 'article') {
+    articleFields.style.display = 'block';
+    avatarFields.style.display = 'none';
+  } else {
+    articleFields.style.display = 'none';
+    avatarFields.style.display = 'block';
+  }
 }
 
 function editStimulus(index) {
@@ -740,12 +768,32 @@ function saveEdit() {
   post.author.gender = document.getElementById('edit-gender').value;
   post.author.age_group = document.getElementById('edit-age-group').value;
   
+  // Avatar URL
+  const avatarUrl = document.getElementById('edit-avatar-url').value.trim();
+  post.author.avatar_url = avatarUrl || null; // null for auto-generated
+  
   // Image
   const imageUrl = document.getElementById('edit-image-url').value.trim();
   if (imageUrl) {
     post.image = post.image || {};
     post.image.src = imageUrl;
     post.image.show = document.getElementById('edit-show-image').checked;
+  } else {
+    post.image = post.image || {};
+    post.image.show = document.getElementById('edit-show-image').checked;
+  }
+  
+  // Article fields (for article subtype)
+  if (post.subtype === 'article') {
+    post.article = {
+      title: document.getElementById('edit-article-title').value.trim(),
+      source: document.getElementById('edit-article-source').value.trim(),
+      url: document.getElementById('edit-article-url').value.trim(),
+      thumbnail: document.getElementById('edit-article-thumbnail').value.trim() || null,
+      track_clicks: true
+    };
+  } else {
+    delete post.article; // Remove article data if not article type
   }
   
   closeModal();

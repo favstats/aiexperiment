@@ -4,6 +4,42 @@
  */
 
 // ============================================
+// ARTICLE CLICK TRACKING
+// ============================================
+const articleClicks = {};
+
+function trackArticleClick(element) {
+  const articleId = element.dataset.articleId;
+  const url = element.dataset.url;
+  
+  // Track the click
+  if (!articleClicks[articleId]) {
+    articleClicks[articleId] = {
+      clicks: 0,
+      first_click: null,
+      url: url
+    };
+  }
+  
+  articleClicks[articleId].clicks++;
+  if (!articleClicks[articleId].first_click) {
+    articleClicks[articleId].first_click = new Date().toISOString();
+  }
+  articleClicks[articleId].last_click = new Date().toISOString();
+  
+  console.log('[Article Click]', articleId, articleClicks[articleId]);
+  
+  // Open the article URL if valid
+  if (url && url !== '#') {
+    window.open(url, '_blank');
+  }
+}
+
+function getArticleClickData() {
+  return articleClicks;
+}
+
+// ============================================
 // INITIALIZATION
 // ============================================
 document.addEventListener('DOMContentLoaded', initParticipantFeed);
@@ -169,8 +205,10 @@ function createPostFromJson(postData, index) {
   // Determine post class based on type
   const isStimulus = postData.type === 'stimulus';
   const isOrg = postData.subtype === 'organization';
+  const isArticle = postData.subtype === 'article';
   
   post.className = isStimulus ? 'post ai-post stimulus-post' : 'post placeholder-post';
+  if (isArticle) post.className += ' article-post';
   
   const postId = `${postData.type}-${postData.id || index}-${Date.now()}`;
   post.dataset.postId = postId;
@@ -242,6 +280,28 @@ function createPostFromJson(postData, index) {
       </div>`;
   }
   
+  // Article link preview HTML
+  let articleHtml = '';
+  if (isArticle && postData.article) {
+    const article = postData.article;
+    const thumbnailUrl = article.thumbnail || 'https://via.placeholder.com/600x315/E4E6EB/65676B?text=Article';
+    const articleUrl = article.url || '#';
+    const trackClick = article.track_clicks !== false;
+    
+    articleHtml = `
+      <div class="article-preview" data-article-id="${postData.id}" data-url="${articleUrl}" 
+           onclick="trackArticleClick(this)" style="cursor: pointer;">
+        <div class="article-thumbnail">
+          <img src="${thumbnailUrl}" alt="${article.title || 'Article'}" 
+               onerror="this.src='https://via.placeholder.com/600x315/E4E6EB/65676B?text=Article';">
+        </div>
+        <div class="article-info">
+          <div class="article-source">${article.source || 'Unknown source'}</div>
+          <div class="article-title">${article.title || 'Untitled Article'}</div>
+        </div>
+      </div>`;
+  }
+  
   // Post text
   const postText = postData.text || '';
   
@@ -293,6 +353,7 @@ function createPostFromJson(postData, index) {
     ${postContentHtml}
     
     ${imageHtml}
+    ${articleHtml}
     ${debugHtml}
     ${viewTimerHtml}
     
