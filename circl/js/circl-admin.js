@@ -18,7 +18,7 @@ let currentCommentPostId = null;
 let currentCommentPostData = null;
 
 const QC_CONFIG = {
-  googleScriptUrl: 'https://script.google.com/macros/s/AKfycbzEK51M3YerARm4JgOW4JvXTnOGJYXUwV7pzGWgEg5KTclQYLVZQclClZHj5TPXVkImhQ/exec'
+  googleScriptUrl: 'https://script.google.com/macros/s/AKfycbwncmUFSxJhUotk0v7iSwreKRM3_tbi_OHog9lFn5jAvxkNvGkG6u0zqU4nkG-TJyU8eA/exec'
 };
 
 const REACTIONS_CONFIG = {

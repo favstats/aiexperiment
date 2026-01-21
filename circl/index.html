@@ -3465,7 +3465,7 @@
               <div class="qc-form-section-title"><i class="fas fa-font"></i> Text Only</div>
               
               <div class="qc-field">
-                <label class="qc-field-label">Text is grammatically correct / makes sense?</label>
+                <label class="qc-field-label">Text makes sense / no weird phrasing?</label>
                 <div class="qc-radio-group">
                   <div class="qc-radio-option">
                     <input type="radio" name="text_grammar" id="tg-yes" value="yes" required>
@@ -3478,24 +3478,6 @@
                   <div class="qc-radio-option">
                     <input type="radio" name="text_grammar" id="tg-unclear" value="unclear">
                     <label for="tg-unclear">Unclear</label>
-                  </div>
-                </div>
-              </div>
-
-              <div class="qc-field">
-                <label class="qc-field-label">Text sounds authentic (not obviously AI)?</label>
-                <div class="qc-radio-group">
-                  <div class="qc-radio-option">
-                    <input type="radio" name="text_authentic" id="ta-yes" value="yes" required>
-                    <label for="ta-yes">Yes</label>
-                  </div>
-                  <div class="qc-radio-option">
-                    <input type="radio" name="text_authentic" id="ta-no" value="no">
-                    <label for="ta-no">No</label>
-                  </div>
-                  <div class="qc-radio-option">
-                    <input type="radio" name="text_authentic" id="ta-unclear" value="unclear">
-                    <label for="ta-unclear">Unclear</label>
                   </div>
                 </div>
               </div>
@@ -5649,7 +5631,6 @@
         looks_authentic: formData.get('looks_authentic'),
         // Text Only criteria
         text_grammar: formData.get('text_grammar'),
-        text_authentic: formData.get('text_authentic'),
         // Image + Text criteria (separate ratings)
         outgroup_image: formData.get('outgroup_image'),
         outgroup_text: formData.get('outgroup_text'),
