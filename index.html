@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AI Experiment · Feed</title>
-  
   <!-- Choices.js -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
   <!-- Font Awesome -->
@@ -13,7 +12,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  
+
   <style>
     :root {
       --x-black: #000000;
@@ -1402,7 +1401,7 @@
             <!-- Binary Criteria -->
             <div class="qc-form-section">
               <div class="qc-form-section-title">Quality Criteria</div>
-              
+
               <div class="qc-field">
                 <label class="qc-field-label">No prominent weird/garbled text?</label>
                 <div class="qc-radio-group">
@@ -1588,22 +1587,22 @@
 
       <div class="filter-card">
         <div class="filter-card-header">Filter Posts</div>
-        
+
         <div class="filter-group">
           <div class="filter-label">Age Group</div>
           <select id="filter-age"></select>
         </div>
-        
+
         <div class="filter-group">
           <div class="filter-label">Gender</div>
           <select id="filter-gender"></select>
         </div>
-        
+
         <div class="filter-group">
           <div class="filter-label">Policy Issue</div>
           <select id="filter-policy"></select>
         </div>
-        
+
         <div class="filter-group">
           <div class="filter-label">Ideology</div>
           <select id="filter-ideology"></select>
@@ -1653,9 +1652,9 @@
         <div class="comment-post-preview" id="comment-post-preview">
           <!-- Post preview will be inserted here -->
         </div>
-        <textarea 
-          class="comment-textarea" 
-          id="comment-textarea" 
+        <textarea
+          class="comment-textarea"
+          id="comment-textarea"
           placeholder="Post your reply"
           maxlength="280"
         ></textarea>
@@ -1713,12 +1712,12 @@
 
     function initFilters() {
       const { filters } = conditionsData;
-      
+
       populateSelect('filter-age', filters.age_groups);
       populateSelect('filter-gender', filters.genders, v => v.charAt(0).toUpperCase() + v.slice(1));
       populateSelect('filter-policy', filters.policy_issues, v => v.replace(/_/g, ' '));
       populateSelect('filter-ideology', filters.ideologies, v => v.charAt(0).toUpperCase() + v.slice(1));
-      
+
       ['filter-age', 'filter-gender', 'filter-policy', 'filter-ideology'].forEach(id => {
         const el = document.getElementById(id);
         choicesInstances[id] = new Choices(el, {
@@ -1744,11 +1743,11 @@
     function renderPosts() {
       const container = document.getElementById('posts-container');
       container.innerHTML = '';
-      
+
       conditionsData.conditions.forEach((cond, idx) => {
         container.appendChild(createPost(cond, idx));
       });
-      
+
       initCarousels();
     }
 
@@ -1759,34 +1758,34 @@
       post.dataset.gender = cond.gender;
       post.dataset.policy = cond.policy_issue;
       post.dataset.ideology = cond.ideology;
-      
+
       const name = `${cond.gender.charAt(0).toUpperCase() + cond.gender.slice(1)} ${cond.age_group}`;
       const handle = `@${cond.ideology}_voter`;
       const time = `${Math.floor(Math.random() * 23) + 1}h`;
       const initials = cond.age_group.slice(0, 2) + cond.gender.charAt(0).toUpperCase();
-      
+
       const hashtags = `#${cond.ideology} #${cond.policy_issue.replace(/_/g, '')}`;
       const tweetText = tweetTemplates[Math.floor(Math.random() * tweetTemplates.length)]
         .replace('{hashtags}', `<span class="post-hashtag">${hashtags}</span>`);
-      
-      const slidesHtml = cond.images.map(img => 
+
+      const slidesHtml = cond.images.map(img =>
         `<div class="carousel-slide"><img src="generated_images/${cond.image_dir}/${img}" loading="lazy"></div>`
       ).join('');
-      
-      const dotsHtml = cond.images.map((_, i) => 
+
+      const dotsHtml = cond.images.map((_, i) =>
         `<button class="carousel-dot${i === 0 ? ' active' : ''}" data-index="${i}"></button>`
       ).join('');
-      
+
       const eng = {
         replies: Math.floor(Math.random() * 50) + 5,
         reposts: Math.floor(Math.random() * 200) + 20,
         likes: Math.floor(Math.random() * 500) + 50,
         views: (Math.floor(Math.random() * 50) + 10) / 10 + 'K'
       };
-      
+
       // AI badge hidden by default unless showAILabel is true
       const badgeClass = showAILabel ? 'ai-badge' : 'ai-badge hidden';
-      
+
       post.innerHTML = `
         <div class="post-avatar">${initials}</div>
         <div class="post-content">
@@ -1815,7 +1814,7 @@
           </div>
         </div>
       `;
-      
+
       return post;
     }
 
@@ -1825,22 +1824,22 @@
         generateMixedFeed();
         return;
       }
-      
+
       const age = document.getElementById('filter-age').value;
       const gender = document.getElementById('filter-gender').value;
       const policy = document.getElementById('filter-policy').value;
       const ideology = document.getElementById('filter-ideology').value;
-      
+
       let count = 0;
       document.querySelectorAll('.post').forEach(post => {
-        const match = post.dataset.age === age && 
-                      post.dataset.gender === gender && 
-                      post.dataset.policy === policy && 
+        const match = post.dataset.age === age &&
+                      post.dataset.gender === gender &&
+                      post.dataset.policy === policy &&
                       post.dataset.ideology === ideology;
         post.classList.toggle('hidden', !match);
         if (match) count++;
       });
-      
+
       document.getElementById('visible-count').textContent = count;
       document.getElementById('no-results').classList.toggle('hidden', count > 0);
       document.getElementById('posts-container').classList.toggle('hidden', count === 0);
@@ -1853,7 +1852,7 @@
         const dots = carousel.querySelectorAll('.carousel-dot');
         const counter = carousel.querySelector('.current');
         let current = 0;
-        
+
         const go = (i) => {
           if (i < 0) i = slides.length - 1;
           if (i >= slides.length) i = 0;
@@ -1862,11 +1861,11 @@
           dots.forEach((d, j) => d.classList.toggle('active', j === current));
           if (counter) counter.textContent = current + 1;
         };
-        
+
         carousel.querySelector('.prev')?.addEventListener('click', e => { e.stopPropagation(); go(current - 1); });
         carousel.querySelector('.next')?.addEventListener('click', e => { e.stopPropagation(); go(current + 1); });
         dots.forEach((d, i) => d.addEventListener('click', e => { e.stopPropagation(); go(i); }));
-        
+
         carousel.addEventListener('keydown', e => {
           if (e.key === 'ArrowLeft') go(current - 1);
           if (e.key === 'ArrowRight') go(current + 1);
@@ -1878,7 +1877,7 @@
     // ============================================
     // MIXED FEED GENERATOR
     // ============================================
-    
+
     const placeholderNames = [
       { name: 'Emma de Vries', handle: '@emma_dvries', initials: 'EV' },
       { name: 'Thomas Bakker', handle: '@thomasbakker', initials: 'TB' },
@@ -1912,28 +1911,28 @@
 
     function generateMixedFeed() {
       isMixedFeedMode = true;
-      
+
       const age = document.getElementById('filter-age').value;
       const gender = document.getElementById('filter-gender').value;
       const policy = document.getElementById('filter-policy').value;
       const ideology = document.getElementById('filter-ideology').value;
-      
+
       // Find matching AI condition
-      const aiCondition = conditionsData.conditions.find(c => 
-        c.age_group === age && 
-        c.gender === gender && 
-        c.policy_issue === policy && 
+      const aiCondition = conditionsData.conditions.find(c =>
+        c.age_group === age &&
+        c.gender === gender &&
+        c.policy_issue === policy &&
         c.ideology === ideology
       );
-      
+
       if (!aiCondition) {
         alert('No matching condition found. Please check your filter selection.');
         return;
       }
-      
+
       const container = document.getElementById('posts-container');
       container.innerHTML = '';
-      
+
       // Add feed mode indicator
       const indicator = document.createElement('div');
       indicator.className = 'feed-mode-indicator';
@@ -1942,51 +1941,51 @@
         <button onclick="exitMixedFeed()"><i class="fas fa-times"></i> Exit</button>
       `;
       container.appendChild(indicator);
-      
+
       // Create array of posts
       const posts = [];
-      
+
       // Get number of additional posts from input
       const additionalPosts = parseInt(document.getElementById('additional-posts').value) || 4;
-      
+
       // Add placeholder posts
       for (let i = 0; i < additionalPosts; i++) {
         posts.push(createPlaceholderPost(i));
       }
-      
+
       // Add the AI post
       posts.push(createAIPost(aiCondition));
-      
+
       // Shuffle the posts
       shuffleArray(posts);
-      
+
       // Append all posts
       posts.forEach(post => container.appendChild(post));
-      
+
       // Initialize carousels for the AI post
       initCarousels();
-      
+
       // Attach reaction tracking listeners
       attachReactionListeners();
-      
+
       // Hide filter count and no-results
       document.getElementById('no-results').classList.add('hidden');
       document.getElementById('visible-count').textContent = `${additionalPosts + 1} (mixed)`;
-      
+
       // Update toggle button state
       updateToggleButtonState();
     }
-    
+
     function toggleAILabel() {
       showAILabel = !showAILabel;
       updateToggleButtonState();
-      
+
       // Update all AI badges visibility
       document.querySelectorAll('.ai-badge').forEach(badge => {
         badge.classList.toggle('hidden', !showAILabel);
       });
     }
-    
+
     function updateToggleButtonState() {
       const btn = document.getElementById('toggle-ai-label');
       if (btn) {
@@ -1997,32 +1996,32 @@
     function createPlaceholderPost(index) {
       const post = document.createElement('article');
       post.className = 'post placeholder-post';
-      
+
       // Add unique post ID for tracking
       const postId = `placeholder-${index}-${Date.now()}`;
       post.dataset.postId = postId;
-      
+
       const person = placeholderNames[Math.floor(Math.random() * placeholderNames.length)];
       const tweetText = placeholderTweets[Math.floor(Math.random() * placeholderTweets.length)];
       const time = `${Math.floor(Math.random() * 23) + 1}h`;
-      
+
       // Random placeholder image from picsum
       const imageId = Math.floor(Math.random() * 1000);
       const hasImage = Math.random() > 0.4; // 60% chance to have an image
-      
+
       const imageHtml = hasImage ? `
         <div class="post-media" style="border-radius: 16px; overflow: hidden; margin-top: 12px;">
           <img src="https://picsum.photos/seed/${imageId}/600/400" loading="lazy" style="width: 100%; display: block;">
         </div>
       ` : '';
-      
+
       const eng = {
         replies: Math.floor(Math.random() * 30) + 2,
         reposts: Math.floor(Math.random() * 100) + 5,
         likes: Math.floor(Math.random() * 300) + 20,
         views: (Math.floor(Math.random() * 30) + 5) / 10 + 'K'
       };
-      
+
       post.innerHTML = `
         <div class="post-avatar">${person.initials}</div>
         <div class="post-content">
@@ -2043,7 +2042,7 @@
           </div>
         </div>
       `;
-      
+
       // Store post metadata for tracking
       post._postData = {
         postId: postId,
@@ -2052,7 +2051,7 @@
         handle: person.handle,
         text: tweetText
       };
-      
+
       return post;
     }
 
@@ -2063,33 +2062,33 @@
       post.dataset.gender = cond.gender;
       post.dataset.policy = cond.policy_issue;
       post.dataset.ideology = cond.ideology;
-      
+
       // Add unique post ID for tracking
       const postId = `ai-${cond.condition_id}-${Date.now()}`;
       post.dataset.postId = postId;
-      
+
       const name = `${cond.gender.charAt(0).toUpperCase() + cond.gender.slice(1)} ${cond.age_group}`;
       const handle = `@${cond.ideology}_voter`;
       const time = `${Math.floor(Math.random() * 23) + 1}h`;
       const initials = cond.age_group.slice(0, 2) + cond.gender.charAt(0).toUpperCase();
-      
+
       const hashtags = `#${cond.ideology} #${cond.policy_issue.replace(/_/g, '')}`;
       const tweetText = tweetTemplates[Math.floor(Math.random() * tweetTemplates.length)]
         .replace('{hashtags}', `<span class="post-hashtag">${hashtags}</span>`);
-      
+
       // Pick a random single image from the condition
       const randomImage = cond.images[Math.floor(Math.random() * cond.images.length)];
-      
+
       const eng = {
         replies: Math.floor(Math.random() * 80) + 20,
         reposts: Math.floor(Math.random() * 400) + 50,
         likes: Math.floor(Math.random() * 800) + 100,
         views: (Math.floor(Math.random() * 80) + 20) / 10 + 'K'
       };
-      
+
       // AI badge hidden by default unless showAILabel is true
       const badgeClass = showAILabel ? 'ai-badge' : 'ai-badge hidden';
-      
+
       post.innerHTML = `
         <div class="post-avatar">${initials}</div>
         <div class="post-content">
@@ -2114,7 +2113,7 @@
           </div>
         </div>
       `;
-      
+
       // Store post metadata for tracking
       post._postData = {
         postId: postId,
@@ -2128,7 +2127,7 @@
         handle: handle,
         text: tweetText.replace(/<[^>]*>/g, '') // Remove HTML tags for storage
       };
-      
+
       return post;
     }
 
@@ -2150,22 +2149,22 @@
     // ============================================
     // QUALITY CONTROL MODE
     // ============================================
-    
+
     // Configuration - Google Apps Script URL for QC data
     const QC_CONFIG = {
       googleScriptUrl: 'https://script.google.com/macros/s/AKfycbwOEk-02CPwCnSsovJh3n9F8TAIU0u8Sx1rBQ1ZAZroHOC6TWvlbYtJcu0j2Qk2O5vu9Q/exec'
     };
-    
+
     // Configuration - Google Apps Script URL for reactions data
     const REACTIONS_CONFIG = {
       googleScriptUrl: '' // User will provide their Google Sheets Apps Script URL
     };
-    
+
     let qcMode = false;
     let qcImages = [];
     let qcCurrentIndex = 0;
     let qcCodedImages = JSON.parse(localStorage.getItem('qc_coded_images') || '{}');
-    
+
     // Mode switching
     function switchMode(mode) {
       const mainFeed = document.querySelector('.main-feed');
@@ -2173,7 +2172,7 @@
       const sidebarRight = document.querySelector('.sidebar-right');
       const navHome = document.getElementById('nav-home');
       const navQc = document.getElementById('nav-qc');
-      
+
       if (mode === 'qc') {
         qcMode = true;
         mainFeed.classList.add('hidden');
@@ -2191,31 +2190,31 @@
         navQc.classList.remove('active');
       }
     }
-    
+
     function initQCMode() {
       // Load coder ID from localStorage
       const savedCoderId = localStorage.getItem('qc_coder_id') || '';
       document.getElementById('qc-coder-id').value = savedCoderId;
-      
+
       // Build flat list of all images
       buildQCImageList();
-      
+
       // Setup event listeners
       setupQCEventListeners();
-      
+
       // Show first image
       showQCImage(0);
     }
-    
+
     function buildQCImageList() {
       qcImages = [];
       const showUncodedOnly = document.getElementById('qc-uncoded-only').checked;
-      
+
       conditionsData.conditions.forEach(cond => {
         cond.images.forEach(img => {
           const imageId = `${cond.condition_id}/${img}`;
           const isCoded = qcCodedImages[imageId];
-          
+
           if (!showUncodedOnly || !isCoded) {
             qcImages.push({
               condition: cond,
@@ -2226,67 +2225,67 @@
           }
         });
       });
-      
+
       updateQCProgress();
     }
-    
+
     function setupQCEventListeners() {
       // Coder ID save
       document.getElementById('qc-coder-id').addEventListener('change', (e) => {
         localStorage.setItem('qc_coder_id', e.target.value);
       });
-      
+
       // Uncoded only filter
       document.getElementById('qc-uncoded-only').addEventListener('change', () => {
         buildQCImageList();
         showQCImage(0);
       });
-      
+
       // Star rating - click and hover
       const starContainer = document.getElementById('qc-star-rating');
       const stars = document.querySelectorAll('.qc-star');
-      
+
       stars.forEach(star => {
         star.addEventListener('click', (e) => {
           const value = parseInt(e.target.dataset.value);
           document.getElementById('image_quality').value = value;
           updateStars(value);
         });
-        
+
         star.addEventListener('mouseenter', (e) => {
           const hoverValue = parseInt(e.target.dataset.value);
           highlightStars(hoverValue);
         });
       });
-      
+
       starContainer.addEventListener('mouseleave', () => {
         // Reset to current selected value
         const currentValue = parseInt(document.getElementById('image_quality').value) || 0;
         highlightStars(currentValue);
       });
-      
+
       // Intensity slider
       document.getElementById('emotional_intensity').addEventListener('input', (e) => {
         document.getElementById('intensity-value').textContent = e.target.value;
       });
-      
+
       // Keyboard navigation
       document.addEventListener('keydown', (e) => {
         if (!qcMode) return;
         if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-        
+
         if (e.key === 'ArrowLeft') qcNavigate(-1);
         if (e.key === 'ArrowRight') qcNavigate(1);
       });
     }
-    
+
     function updateStars(value) {
       document.querySelectorAll('.qc-star').forEach(star => {
         const starValue = parseInt(star.dataset.value);
         star.classList.toggle('active', starValue <= value);
       });
     }
-    
+
     function highlightStars(value) {
       document.querySelectorAll('.qc-star').forEach(star => {
         const starValue = parseInt(star.dataset.value);
@@ -2296,7 +2295,7 @@
         star.classList.toggle('active', starValue <= currentValue);
       });
     }
-    
+
     function showQCImage(index) {
       if (qcImages.length === 0) {
         document.getElementById('qc-image').src = '';
@@ -2304,16 +2303,16 @@
         document.getElementById('qc-condition-info').innerHTML = '<span class="qc-condition-tag">No images to display</span>';
         return;
       }
-      
+
       qcCurrentIndex = Math.max(0, Math.min(index, qcImages.length - 1));
       const item = qcImages[qcCurrentIndex];
-      
+
       // Update image
       document.getElementById('qc-image').src = `generated_images/${item.condition.image_dir}/${item.image}`;
-      
+
       // Update counter
       document.getElementById('qc-counter').textContent = `${qcCurrentIndex + 1} / ${qcImages.length}`;
-      
+
       // Update condition info
       const condInfo = document.getElementById('qc-condition-info');
       condInfo.innerHTML = `
@@ -2323,31 +2322,31 @@
         <span class="qc-condition-tag">${item.condition.ideology}</span>
         ${item.isCoded ? '<span class="qc-coded-badge"><i class="fas fa-check"></i> Coded</span>' : ''}
       `;
-      
+
       // Update nav buttons
       document.getElementById('qc-prev').disabled = qcCurrentIndex === 0;
       document.getElementById('qc-next').disabled = qcCurrentIndex === qcImages.length - 1;
-      
+
       // Reset form
       resetQCForm();
-      
+
       // Update progress
       updateQCProgress();
     }
-    
+
     function qcNavigate(direction) {
       showQCImage(qcCurrentIndex + direction);
     }
-    
+
     function updateQCProgress() {
-      const totalImages = conditionsData ? 
+      const totalImages = conditionsData ?
         conditionsData.conditions.reduce((sum, c) => sum + c.images.length, 0) : 0;
       const codedCount = Object.keys(qcCodedImages).length;
-      
-      document.getElementById('qc-progress').textContent = 
+
+      document.getElementById('qc-progress').textContent =
         `${codedCount} of ${totalImages} coded`;
     }
-    
+
     function resetQCForm() {
       const form = document.getElementById('qc-form');
       form.reset();
@@ -2357,26 +2356,26 @@
       document.getElementById('qc-status').textContent = '';
       document.getElementById('qc-status').className = 'qc-status';
     }
-    
+
     async function submitQCForm(event) {
       event.preventDefault();
-      
+
       const coderId = document.getElementById('qc-coder-id').value.trim();
       if (!coderId) {
         showQCStatus('Please enter your Coder ID', 'error');
         return;
       }
-      
+
       const imageQuality = parseInt(document.getElementById('image_quality').value);
       if (imageQuality === 0) {
         showQCStatus('Please rate the image quality (stars)', 'error');
         return;
       }
-      
+
       const form = document.getElementById('qc-form');
       const formData = new FormData(form);
       const item = qcImages[qcCurrentIndex];
-      
+
       const data = {
         timestamp: new Date().toISOString(),
         coder_id: coderId,
@@ -2393,12 +2392,12 @@
         emotional_valence: formData.get('emotional_valence'),
         notes: formData.get('notes') || ''
       };
-      
+
       // Disable submit button
       const submitBtn = document.getElementById('qc-submit-btn');
       submitBtn.disabled = true;
       submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Submitting...';
-      
+
       try {
         // Send to Google Sheets if URL is configured
         if (QC_CONFIG.googleScriptUrl) {
@@ -2412,19 +2411,19 @@
           });
           // Note: no-cors means we can't read the response, but it will still work
         }
-        
+
         // Mark as coded in localStorage
         qcCodedImages[item.imageId] = {
           coderId: coderId,
           timestamp: data.timestamp
         };
         localStorage.setItem('qc_coded_images', JSON.stringify(qcCodedImages));
-        
+
         // Update current item
         item.isCoded = true;
-        
+
         showQCStatus('Saved successfully!', 'success');
-        
+
         // Move to next image after short delay
         setTimeout(() => {
           if (qcCurrentIndex < qcImages.length - 1) {
@@ -2433,11 +2432,11 @@
             showQCStatus('All images in current set have been coded!', 'success');
           }
         }, 500);
-        
+
       } catch (error) {
         console.error('Error submitting:', error);
         showQCStatus('Error saving. Data saved locally.', 'error');
-        
+
         // Still save locally even if remote fails
         qcCodedImages[item.imageId] = {
           coderId: coderId,
@@ -2451,13 +2450,13 @@
         updateQCProgress();
       }
     }
-    
+
     function showQCStatus(message, type) {
       const status = document.getElementById('qc-status');
       status.textContent = message;
       status.className = `qc-status ${type}`;
     }
-    
+
     // Export coded data (for backup)
     function exportQCData() {
       const data = JSON.stringify(qcCodedImages, null, 2);
@@ -2472,37 +2471,37 @@
     // ============================================
     // REACTION TRACKING (MIXED FEED MODE)
     // ============================================
-    
+
     let currentCommentPostId = null;
     let currentCommentPostData = null;
-    
+
     // Attach event listeners to reaction buttons
     function attachReactionListeners() {
       if (!isMixedFeedMode) return;
-      
+
       document.querySelectorAll('.post-action[data-action]').forEach(actionBtn => {
         const action = actionBtn.dataset.action;
         const post = actionBtn.closest('.post');
-        
+
         if (!post || !post._postData) return;
-        
+
         // Remove existing listeners by cloning
         const newBtn = actionBtn.cloneNode(true);
         actionBtn.parentNode.replaceChild(newBtn, actionBtn);
-        
+
         newBtn.addEventListener('click', (e) => {
           e.stopPropagation();
           handleReaction(post, action);
         });
       });
     }
-    
+
     // Handle reaction button clicks
     function handleReaction(post, reactionType) {
       if (!post._postData) return;
-      
+
       const postData = post._postData;
-      
+
       if (reactionType === 'comment') {
         showCommentModal(postData.postId, postData);
       } else if (reactionType === 'like') {
@@ -2513,12 +2512,12 @@
         updateButtonState(post, 'reshare');
       }
     }
-    
+
     // Update button visual state
     function updateButtonState(post, reactionType) {
       const actionBtn = post.querySelector(`[data-action="${reactionType}"]`);
       if (!actionBtn) return;
-      
+
       if (reactionType === 'like') {
         actionBtn.classList.toggle('liked');
         const icon = actionBtn.querySelector('i');
@@ -2533,23 +2532,23 @@
         actionBtn.classList.toggle('reshared');
       }
     }
-    
+
     // Show comment modal
     function showCommentModal(postId, postData) {
       currentCommentPostId = postId;
       currentCommentPostData = postData;
-      
+
       const modal = document.getElementById('comment-modal-overlay');
       const preview = document.getElementById('comment-post-preview');
       const textarea = document.getElementById('comment-textarea');
-      
+
       // Build preview HTML (escape HTML to prevent XSS)
       const escapeHtml = (text) => {
         const div = document.createElement('div');
         div.textContent = text;
         return div.innerHTML;
       };
-      
+
       const previewHtml = `
         <div class="comment-post-preview-header">
           <span class="comment-post-preview-name">${escapeHtml(postData.name)}</span>
@@ -2557,13 +2556,13 @@
         </div>
         <div class="comment-post-preview-text">${escapeHtml(postData.text)}</div>
       `;
-      
+
       preview.innerHTML = previewHtml;
       textarea.value = '';
-      
+
       modal.classList.add('active');
       textarea.focus();
-      
+
       // Close on overlay click
       const overlayClickHandler = function(e) {
         if (e.target === modal) {
@@ -2572,7 +2571,7 @@
         }
       };
       modal.addEventListener('click', overlayClickHandler);
-      
+
       // Keyboard support: ESC to close, Ctrl+Enter or Cmd+Enter to submit
       const keyboardHandler = function(e) {
         if (e.key === 'Escape') {
@@ -2584,41 +2583,41 @@
       };
       document.addEventListener('keydown', keyboardHandler);
     }
-    
+
     // Hide comment modal
     function hideCommentModal() {
       const modal = document.getElementById('comment-modal-overlay');
       modal.classList.remove('active');
       currentCommentPostId = null;
       currentCommentPostData = null;
-      
+
       // Clear textarea
       const textarea = document.getElementById('comment-textarea');
       if (textarea) {
         textarea.value = '';
       }
     }
-    
+
     // Submit comment
     function submitComment() {
       const textarea = document.getElementById('comment-textarea');
       const commentText = textarea.value.trim();
       const submitBtn = document.querySelector('.comment-btn-submit');
-      
+
       if (!commentText) {
         showReactionStatus('Please enter a comment', 'error');
         return;
       }
-      
+
       if (!currentCommentPostId || !currentCommentPostData) {
         showReactionStatus('Error: Post data not found', 'error');
         return;
       }
-      
+
       // Disable submit button
       submitBtn.disabled = true;
       submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Posting...';
-      
+
       // Track the comment reaction
       trackReaction(currentCommentPostId, 'comment', commentText)
         .then(() => {
@@ -2634,23 +2633,23 @@
           submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Reply';
         });
     }
-    
+
     // Track reaction and send to Google Sheets
     function trackReaction(postId, reactionType, commentText) {
       if (!isMixedFeedMode) {
         console.warn('Reaction tracking only works in mixed feed mode');
         return Promise.resolve();
       }
-      
+
       // Find the post element to get post data
       const post = document.querySelector(`[data-post-id="${postId}"]`);
       if (!post || !post._postData) {
         console.error('Post not found:', postId);
         return Promise.reject('Post not found');
       }
-      
+
       const postData = post._postData;
-      
+
       // Build reaction data
       const reactionData = {
         timestamp: new Date().toISOString(),
@@ -2659,7 +2658,7 @@
         reaction_type: reactionType,
         comment_text: commentText || ''
       };
-      
+
       // Add condition data for AI posts
       if (postData.postType === 'ai') {
         reactionData.condition_id = postData.conditionId;
@@ -2668,11 +2667,11 @@
         reactionData.policy_issue = postData.policyIssue;
         reactionData.ideology = postData.ideology;
       }
-      
+
       // Send to Google Sheets
       return sendReactionToSheets(reactionData);
     }
-    
+
     // Send reaction data to Google Sheets
     async function sendReactionToSheets(reactionData) {
       if (!REACTIONS_CONFIG.googleScriptUrl) {
@@ -2680,7 +2679,7 @@
         // Still resolve to not block UI
         return Promise.resolve();
       }
-      
+
       try {
         const response = await fetch(REACTIONS_CONFIG.googleScriptUrl, {
           method: 'POST',
@@ -2690,7 +2689,7 @@
           },
           body: JSON.stringify(reactionData)
         });
-        
+
         // Note: no-cors means we can't read the response, but it will still work
         return Promise.resolve();
       } catch (error) {
@@ -2699,13 +2698,13 @@
         return Promise.resolve();
       }
     }
-    
+
     // Show reaction status notification
     function showReactionStatus(message, type = 'success') {
       const status = document.getElementById('reaction-status');
       status.textContent = message;
       status.className = `reaction-status active ${type}`;
-      
+
       setTimeout(() => {
         status.classList.remove('active');
       }, 3000);
