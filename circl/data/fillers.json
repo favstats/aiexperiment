@@ -645,12 +645,113 @@
       },
       "engagement": {"likes": 567, "comments": 123, "shares": 15},
       "time": "9h"
+    },
+    {
+      "id": "filler_041",
+      "type": "filler",
+      "subtype": "article",
+      "text": "Interessant artikel over de toekomst van werk 👇",
+      "author": {
+        "name": "NOS Nieuws",
+        "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/NOS_logo.svg/200px-NOS_logo.svg.png",
+        "fallback_icon": "newspaper"
+      },
+      "article": {
+        "title": "Steeds meer Nederlanders werken vier dagen per week",
+        "source": "nos.nl",
+        "url": "https://nos.nl",
+        "thumbnail": "https://images.unsplash.com/photo-1497215728101-856f4ea42174?w=600&h=315&fit=crop",
+        "track_clicks": true
+      },
+      "engagement": {"likes": 892, "comments": 234, "shares": 156},
+      "time": "2h"
+    },
+    {
+      "id": "filler_042",
+      "type": "filler",
+      "subtype": "article",
+      "text": "Dit moet je gelezen hebben 📰",
+      "author": {
+        "name": "De Volkskrant",
+        "logo_url": null,
+        "fallback_icon": "newspaper"
+      },
+      "article": {
+        "title": "Recordaantal toeristen bezocht Nederland afgelopen zomer",
+        "source": "volkskrant.nl",
+        "url": "https://www.volkskrant.nl",
+        "thumbnail": "https://images.unsplash.com/photo-1534351590666-13e3e96b5017?w=600&h=315&fit=crop",
+        "track_clicks": true
+      },
+      "engagement": {"likes": 445, "comments": 89, "shares": 67},
+      "time": "4h"
+    },
+    {
+      "id": "filler_043",
+      "type": "filler",
+      "subtype": "article",
+      "text": "Belangrijk nieuws voor iedereen die een huis zoekt:",
+      "author": {
+        "name": "RTL Nieuws",
+        "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4a/RTL_Nederland_logo.svg/200px-RTL_Nederland_logo.svg.png",
+        "fallback_icon": "tv"
+      },
+      "article": {
+        "title": "Hypotheekrente daalt voor het eerst in maanden",
+        "source": "rtlnieuws.nl",
+        "url": "https://www.rtlnieuws.nl",
+        "thumbnail": "https://images.unsplash.com/photo-1560518883-ce09059eeffa?w=600&h=315&fit=crop",
+        "track_clicks": true
+      },
+      "engagement": {"likes": 1203, "comments": 456, "shares": 234},
+      "time": "5h"
+    },
+    {
+      "id": "filler_044",
+      "type": "filler",
+      "subtype": "article",
+      "text": "Breaking: groot nieuws uit Den Haag 🏛️",
+      "author": {
+        "name": "NU.nl",
+        "logo_url": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e4/Nu.nl_logo.svg/200px-Nu.nl_logo.svg.png",
+        "fallback_icon": "globe"
+      },
+      "article": {
+        "title": "Kabinet presenteert nieuwe plannen voor klimaatbeleid",
+        "source": "nu.nl",
+        "url": "https://www.nu.nl",
+        "thumbnail": "https://images.unsplash.com/photo-1529107386315-e1a2ed48a620?w=600&h=315&fit=crop",
+        "track_clicks": true
+      },
+      "engagement": {"likes": 678, "comments": 345, "shares": 123},
+      "time": "1h"
+    },
+    {
+      "id": "filler_045",
+      "type": "filler",
+      "subtype": "article",
+      "text": "Leuk voor in het weekend 🎭",
+      "author": {
+        "name": "AD",
+        "logo_url": null,
+        "fallback_icon": "newspaper"
+      },
+      "article": {
+        "title": "Dit zijn de beste musea van Nederland volgens bezoekers",
+        "source": "ad.nl",
+        "url": "https://www.ad.nl",
+        "thumbnail": "https://images.unsplash.com/photo-1554907984-15263bfd63bd?w=600&h=315&fit=crop",
+        "track_clicks": true
+      },
+      "engagement": {"likes": 234, "comments": 45, "shares": 89},
+      "time": "6h"
     }
   ],
   "_schema_notes": {
-    "subtype": "'person' for individual users, 'organization' for brands/orgs",
+    "subtype": "'person' for individual users, 'organization' for brands/orgs, 'article' for link shares",
     "image.show": "true to show image, false or null to hide",
-    "author.logo_url": "URL to organization logo (for subtype=organization)",
-    "author.fallback_icon": "Font Awesome icon name to use if logo fails to load"
+    "author.logo_url": "URL to organization logo (for subtype=organization or article)",
+    "author.fallback_icon": "Font Awesome icon name to use if logo fails to load",
+    "article": "Object with title, source, url, thumbnail, track_clicks for article posts"
   }
 }

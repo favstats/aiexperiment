@@ -1,83 +1,241 @@
 {
-  "version": "1.0",
-  "description": "Circl Feed Configuration - Edit this file to customize feed behavior",
-  
-  "feed_settings": {
-    "total_posts": 40,
-    "stimuli_count": 4,
-    "filler_ratio": 4,
-    "randomize_order": true,
-    "first_n_fillers": 2,
-    "show_ai_labels": false
-  },
-  
-  "personalization": {
-    "enabled": true,
-    "mode": "tailored_plus_random",
-    "tailored_count": 1,
-    "random_count": 3,
-    "matching": [
-      {"url_param": "gender", "post_path": "author.gender"},
-      {"url_param": "age", "post_path": "author.age_group"},
-      {"url_param": "politics", "post_path": "metadata.ideology", "transform": "political_to_ideology"},
-      {"url_param": "issue", "post_path": "metadata.policy_issue"}
-    ],
-    "transforms": {
-      "political_to_ideology": {
-        "type": "range",
-        "ranges": [
-          {"min": 1, "max": 4, "value": "left"},
-          {"min": 5, "max": 5, "value": "neutral"},
-          {"min": 6, "max": 10, "value": "right"}
-        ]
+  "avatar_settings": {
+    "age_ranges": {
+      "18-29": {
+        "max": 30,
+        "min": 1
+      },
+      "30-44": {
+        "max": 50,
+        "min": 15
+      },
+      "45-59": {
+        "max": 70,
+        "min": 35
+      },
+      "60+": {
+        "max": 99,
+        "min": 50
       }
+    },
+    "api_url": "https://randomuser.me/api/portraits",
+    "fallback_colors": [
+      "#1877F2",
+      "#42B72A",
+      "#F5A623",
+      "#FA383E",
+      "#00A3A3",
+      "#7B68EE",
+      "#FF6B6B"
+    ]
+  },
+  "defaults": {
+    "comments_range": {
+      "max": 80,
+      "min": 5
+    },
+    "likes_range": {
+      "max": 500,
+      "min": 50
+    },
+    "shares_range": {
+      "max": 200,
+      "min": 10
+    },
+    "time_range": {
+      "max": 23,
+      "min": 1,
+      "unit": "h"
     }
   },
-  
-  "stimuli_source": "stimuli.json",
+  "description": "Circl Feed Configuration - Edit this file to customize feed behavior",
+  "feed_settings": {
+    "total_posts": 4,
+    "stimuli_count": 4,
+    "filler_ratio": 4,
+    "first_n_fillers": 2,
+    "randomize_order": true,
+    "show_ai_labels": false
+  },
   "fillers_source": "fillers.json",
-  
-  "defaults": {
-    "time_range": {"min": 1, "max": 23, "unit": "h"},
-    "likes_range": {"min": 50, "max": 500},
-    "comments_range": {"min": 5, "max": 80},
-    "shares_range": {"min": 10, "max": 200}
-  },
-  
-  "avatar_settings": {
-    "api_url": "https://randomuser.me/api/portraits",
-    "age_ranges": {
-      "18-29": {"min": 1, "max": 30},
-      "30-44": {"min": 15, "max": 50},
-      "45-59": {"min": 35, "max": 70},
-      "60+": {"min": 50, "max": 99}
-    },
-    "fallback_colors": ["#1877F2", "#42B72A", "#F5A623", "#FA383E", "#00A3A3", "#7B68EE", "#FF6B6B"]
-  },
-  
   "locale": {
     "language": "nl",
     "first_names": {
       "female": {
-        "18-29": ["Emma", "Sophie", "Julia", "Lotte", "Anna", "Lisa", "Eva", "Sanne", "Fleur", "Iris", "Mila", "Noa", "Sara", "Isa", "Tessa"],
-        "30-44": ["Linda", "Sandra", "Monique", "Petra", "Nicole", "Wendy", "Bianca", "Marjolein", "Esther", "Ingrid", "Manon", "Danielle", "Kim", "Anouk", "Femke"],
-        "45-59": ["Joke", "Annemarie", "Ria", "Truus", "Hennie", "Gerda", "Thea", "Wilma", "Marian", "Corrie", "Anneke", "Liesbeth", "Janny", "Bep", "Nel"],
-        "60+": ["Maria", "Elisabeth", "Johanna", "Cornelia", "Hendrika", "Geertruida", "Wilhelmina", "Adriana", "Jacoba", "Petronella", "Antje", "Grietje", "Dirkje", "Aaltje", "Neeltje"]
+        "18-29": [
+          "Emma",
+          "Sophie",
+          "Julia",
+          "Lotte",
+          "Anna",
+          "Lisa",
+          "Eva",
+          "Sanne",
+          "Fleur",
+          "Iris",
+          "Mila",
+          "Noa",
+          "Sara",
+          "Isa",
+          "Tessa"
+        ],
+        "30-44": [
+          "Linda",
+          "Sandra",
+          "Monique",
+          "Petra",
+          "Nicole",
+          "Wendy",
+          "Bianca",
+          "Marjolein",
+          "Esther",
+          "Ingrid",
+          "Manon",
+          "Danielle",
+          "Kim",
+          "Anouk",
+          "Femke"
+        ],
+        "45-59": [
+          "Joke",
+          "Annemarie",
+          "Ria",
+          "Truus",
+          "Hennie",
+          "Gerda",
+          "Thea",
+          "Wilma",
+          "Marian",
+          "Corrie",
+          "Anneke",
+          "Liesbeth",
+          "Janny",
+          "Bep",
+          "Nel"
+        ],
+        "60+": [
+          "Maria",
+          "Elisabeth",
+          "Johanna",
+          "Cornelia",
+          "Hendrika",
+          "Geertruida",
+          "Wilhelmina",
+          "Adriana",
+          "Jacoba",
+          "Petronella",
+          "Antje",
+          "Grietje",
+          "Dirkje",
+          "Aaltje",
+          "Neeltje"
+        ]
       },
       "male": {
-        "18-29": ["Daan", "Sem", "Lars", "Luuk", "Tim", "Jesse", "Thomas", "Thijs", "Max", "Bram", "Ruben", "Niels", "Stijn", "Nick", "Milan"],
-        "30-44": ["Peter", "Mark", "Erik", "Marco", "Robert", "Jeroen", "Marcel", "Ronald", "Martijn", "Bas", "Wouter", "Dennis", "Vincent", "Rick", "Michiel"],
-        "45-59": ["Jan", "Henk", "Kees", "Wim", "Piet", "Gerard", "Hans", "Frank", "Albert", "Willem", "Theo", "Jaap", "Dick", "Bert", "Arie"],
-        "60+": ["Johannes", "Cornelis", "Hendrik", "Pieter", "Willem", "Gerrit", "Jacobus", "Dirk", "Albertus", "Antonius", "Adrianus", "Petrus", "Franciscus", "Bernardus", "Martinus"]
+        "18-29": [
+          "Daan",
+          "Sem",
+          "Lars",
+          "Luuk",
+          "Tim",
+          "Jesse",
+          "Thomas",
+          "Thijs",
+          "Max",
+          "Bram",
+          "Ruben",
+          "Niels",
+          "Stijn",
+          "Nick",
+          "Milan"
+        ],
+        "30-44": [
+          "Peter",
+          "Mark",
+          "Erik",
+          "Marco",
+          "Robert",
+          "Jeroen",
+          "Marcel",
+          "Ronald",
+          "Martijn",
+          "Bas",
+          "Wouter",
+          "Dennis",
+          "Vincent",
+          "Rick",
+          "Michiel"
+        ],
+        "45-59": [
+          "Jan",
+          "Henk",
+          "Kees",
+          "Wim",
+          "Piet",
+          "Gerard",
+          "Hans",
+          "Frank",
+          "Albert",
+          "Willem",
+          "Theo",
+          "Jaap",
+          "Dick",
+          "Bert",
+          "Arie"
+        ],
+        "60+": [
+          "Johannes",
+          "Cornelis",
+          "Hendrik",
+          "Pieter",
+          "Willem",
+          "Gerrit",
+          "Jacobus",
+          "Dirk",
+          "Albertus",
+          "Antonius",
+          "Adrianus",
+          "Petrus",
+          "Franciscus",
+          "Bernardus",
+          "Martinus"
+        ]
       }
     },
     "last_names": [
-      "de Jong", "Jansen", "de Vries", "van den Berg", "van Dijk", "Bakker", "Janssen", "Visser", "Smit", "Meijer",
-      "de Boer", "Mulder", "de Groot", "Bos", "Vos", "Peters", "Hendriks", "van Leeuwen", "Dekker", "Brouwer",
-      "de Wit", "Dijkstra", "Smits", "de Graaf", "van der Meer", "van der Linden", "Kok", "Jacobs", "de Haan", "Vermeer"
+      "de Jong",
+      "Jansen",
+      "de Vries",
+      "van den Berg",
+      "van Dijk",
+      "Bakker",
+      "Janssen",
+      "Visser",
+      "Smit",
+      "Meijer",
+      "de Boer",
+      "Mulder",
+      "de Groot",
+      "Bos",
+      "Vos",
+      "Peters",
+      "Hendriks",
+      "van Leeuwen",
+      "Dekker",
+      "Brouwer",
+      "de Wit",
+      "Dijkstra",
+      "Smits",
+      "de Graaf",
+      "van der Meer",
+      "van der Linden",
+      "Kok",
+      "Jacobs",
+      "de Haan",
+      "Vermeer"
     ],
     "loading_messages": [
-      "Preparing something amazing...",
+      "EATING MY SHORTS",
       "Gathering the latest posts...",
       "Almost there, just a moment...",
       "Curating your perfect feed...",
@@ -86,5 +244,54 @@
       "Just a few more seconds...",
       "Almost ready to go!"
     ]
-  }
+  },
+  "personalization": {
+    "enabled": true,
+    "mode": "tailored_plus_random",
+    "tailored_count": 1,
+    "random_count": 3,
+    "matching": [
+      {
+        "url_param": "gender",
+        "post_path": "author.gender"
+      },
+      {
+        "url_param": "age",
+        "post_path": "author.age_group"
+      },
+      {
+        "url_param": "politics",
+        "post_path": "metadata.ideology",
+        "transform": "political_to_ideology"
+      },
+      {
+        "url_param": "issue",
+        "post_path": "metadata.policy_issue"
+      }
+    ],
+    "transforms": {
+      "political_to_ideology": {
+        "ranges": [
+          {
+            "max": 4,
+            "min": 1,
+            "value": "left"
+          },
+          {
+            "max": 5,
+            "min": 5,
+            "value": "neutral"
+          },
+          {
+            "max": 10,
+            "min": 6,
+            "value": "right"
+          }
+        ],
+        "type": "range"
+      }
+    }
+  },
+  "stimuli_source": "stimuli.json",
+  "version": "1.0"
 }
