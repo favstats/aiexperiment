@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
   <title>Circl</title>
   
   <!-- Font Awesome -->
@@ -580,6 +580,649 @@
     .sidebar-right input {
       pointer-events: none;
     }
+
+    /* ============================================
+       MOBILE OPTIMIZATIONS FOR FEED
+       ============================================ */
+    
+    /* Mobile viewport meta is already set, but ensure proper scaling */
+    @media (max-width: 768px) {
+      /* Hide sidebars on mobile - with !important to override circl.css */
+      .sidebar-left {
+        display: none !important;
+        width: 0 !important;
+        visibility: hidden !important;
+      }
+      
+      .sidebar-right {
+        display: none !important;
+        width: 0 !important;
+        visibility: hidden !important;
+      }
+      
+      /* Hide desktop header elements */
+      .header-center {
+        display: none !important;
+      }
+      
+      .header-search {
+        display: none !important;
+      }
+      
+      /* Reduce header height on mobile */
+      .top-header {
+        height: 52px !important;
+        padding: 0 12px !important;
+      }
+      
+      .app-container {
+        padding-top: 52px !important;
+      }
+      
+      /* Full-width feed container */
+      #participant-feed {
+        max-width: 100% !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 100% !important;
+      }
+
+      #participant-feed .experience-posts-container {
+        padding: 8px 0 80px 0;
+        gap: 8px;
+      }
+
+      /* Posts take full width, no border radius on edges */
+      #participant-feed .post {
+        border-radius: 0;
+        margin: 0;
+        box-shadow: none;
+        border-bottom: 1px solid var(--circl-gray-200);
+      }
+
+      /* Post header adjustments */
+      #participant-feed .post-header {
+        padding: 12px 16px;
+        gap: 12px;
+      }
+
+      #participant-feed .avatar-wrapper,
+      #participant-feed .post-avatar-img,
+      #participant-feed .post-avatar,
+      #participant-feed .org-logo {
+        width: 44px;
+        height: 44px;
+      }
+
+      #participant-feed .post-avatar {
+        font-size: 15px;
+      }
+
+      #participant-feed .post-author {
+        font-size: 16px;
+        font-weight: 600;
+      }
+
+      #participant-feed .post-meta {
+        font-size: 13px;
+        margin-top: 3px;
+      }
+
+      /* Post content adjustments */
+      #participant-feed .post-content {
+        padding: 0 16px 14px;
+      }
+
+      #participant-feed .post-text {
+        font-size: 16px;
+        line-height: 1.5;
+      }
+
+      /* Carousel improvements for touch */
+      #participant-feed .carousel-slide img {
+        max-height: 400px;
+        object-fit: contain;
+      }
+
+      #participant-feed .carousel-nav {
+        width: 36px;
+        height: 36px;
+        opacity: 0.9;
+      }
+
+      #participant-feed .carousel-prev { left: 8px; }
+      #participant-feed .carousel-next { right: 8px; }
+
+      #participant-feed .carousel-counter {
+        top: 8px;
+        right: 8px;
+        padding: 5px 10px;
+        font-size: 13px;
+      }
+
+      /* Single image */
+      #participant-feed .post-single-image {
+        max-height: 450px;
+        object-fit: contain;
+      }
+
+      /* Article preview for mobile */
+      .article-preview {
+        margin: 0 12px 12px;
+        border-radius: 12px;
+      }
+
+      .article-thumbnail {
+        height: 180px;
+      }
+
+      .article-info {
+        padding: 14px;
+      }
+
+      .article-title {
+        font-size: 15px;
+      }
+
+      /* Engagement section */
+      #participant-feed .post-engagement {
+        padding: 10px 16px;
+      }
+
+      #participant-feed .engagement-counts {
+        font-size: 14px;
+      }
+
+      /* Action buttons - bigger touch targets */
+      #participant-feed .post-actions {
+        padding: 6px 8px 8px;
+        gap: 4px;
+      }
+
+      #participant-feed .post-action-btn {
+        padding: 14px 8px;
+        font-size: 14px;
+        border-radius: 8px;
+        gap: 6px;
+        min-height: 48px;
+      }
+
+      #participant-feed .post-action-btn i {
+        font-size: 20px;
+      }
+
+      /* Hide button labels on small screens for cleaner look */
+      #participant-feed .post-action-btn span {
+        display: none;
+      }
+
+      /* Comment section */
+      #participant-feed .post-comment-section {
+        padding: 10px 16px 14px;
+      }
+
+      #participant-feed .post-comment-input {
+        padding: 12px 16px;
+        font-size: 15px;
+        border-radius: 24px;
+      }
+
+      /* Debug info - more compact on mobile */
+      #participant-feed .ai-debug-info {
+        padding: 8px 12px;
+        font-size: 11px;
+        gap: 8px;
+      }
+
+      #participant-feed .debug-badge {
+        padding: 3px 8px;
+        font-size: 10px;
+      }
+
+      /* Results button positioning */
+      #experience-results-btn {
+        bottom: 70px;
+        padding: 12px 24px;
+        font-size: 15px;
+      }
+    }
+
+    /* Extra small screens (phones in portrait) */
+    @media (max-width: 480px) {
+      #participant-feed .experience-posts-container {
+        padding: 4px 0 90px 0;
+      }
+
+      #participant-feed .post-header {
+        padding: 10px 12px;
+      }
+
+      #participant-feed .avatar-wrapper,
+      #participant-feed .post-avatar-img,
+      #participant-feed .post-avatar,
+      #participant-feed .org-logo {
+        width: 40px;
+        height: 40px;
+      }
+
+      #participant-feed .post-avatar {
+        font-size: 14px;
+      }
+
+      #participant-feed .post-author {
+        font-size: 15px;
+      }
+
+      #participant-feed .post-content {
+        padding: 0 12px 12px;
+      }
+
+      #participant-feed .post-text {
+        font-size: 15px;
+      }
+
+      #participant-feed .carousel-slide img {
+        max-height: 350px;
+      }
+
+      #participant-feed .post-single-image {
+        max-height: 380px;
+      }
+
+      .article-preview {
+        margin: 0 8px 10px;
+      }
+
+      .article-thumbnail {
+        height: 160px;
+      }
+
+      #participant-feed .post-engagement {
+        padding: 8px 12px;
+      }
+
+      #participant-feed .post-actions {
+        padding: 4px 4px 6px;
+      }
+
+      #participant-feed .post-action-btn {
+        padding: 12px 6px;
+        min-height: 44px;
+      }
+
+      #participant-feed .post-action-btn i {
+        font-size: 18px;
+      }
+
+      #participant-feed .post-comment-section {
+        padding: 8px 12px 12px;
+      }
+
+      #experience-results-btn {
+        bottom: 74px;
+        padding: 11px 20px;
+        font-size: 14px;
+        border-radius: 20px;
+      }
+    }
+
+    /* Results modal mobile optimizations */
+    @media (max-width: 768px) {
+      .results-modal {
+        padding: 0;
+        align-items: flex-end;
+      }
+
+      .results-card {
+        max-width: 100%;
+        max-height: 85vh;
+        border-radius: 20px 20px 0 0;
+        animation: slideUpModal 0.3s ease-out;
+      }
+
+      @keyframes slideUpModal {
+        from {
+          opacity: 0;
+          transform: translateY(100%);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .results-header {
+        padding: 16px 20px;
+        position: sticky;
+        top: 0;
+        background: var(--circl-white);
+        z-index: 10;
+      }
+
+      .results-header h2 {
+        font-size: 18px;
+      }
+
+      .results-content {
+        padding: 12px 16px 24px;
+      }
+
+      .results-item {
+        padding: 12px;
+        gap: 12px;
+      }
+
+      .results-rank {
+        width: 32px;
+        height: 32px;
+        font-size: 13px;
+      }
+
+      .results-author {
+        font-size: 14px;
+      }
+
+      .results-type {
+        font-size: 12px;
+      }
+
+      .results-time {
+        font-size: 16px;
+      }
+    }
+
+    /* Header mobile optimizations */
+    @media (max-width: 768px) {
+      .header-left {
+        gap: 8px !important;
+      }
+
+      .circl-logo-text {
+        display: none !important;
+      }
+
+      .circl-logo-icon {
+        width: 36px !important;
+        height: 36px !important;
+      }
+
+      .circl-logo-icon svg {
+        width: 36px !important;
+        height: 36px !important;
+      }
+
+      .header-right {
+        gap: 6px !important;
+      }
+
+      .header-icon-btn {
+        width: 36px !important;
+        height: 36px !important;
+        font-size: 16px !important;
+      }
+
+      .header-profile {
+        width: 34px !important;
+        height: 34px !important;
+        font-size: 12px !important;
+      }
+    }
+
+    /* Mobile bottom navigation for feed */
+    .mobile-bottom-nav {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 56px;
+      background: var(--circl-white);
+      border-top: 1px solid var(--circl-gray-200);
+      z-index: 1000;
+      justify-content: space-around;
+      align-items: center;
+      padding: 0 8px;
+      padding-bottom: env(safe-area-inset-bottom, 0);
+    }
+
+    .mobile-bottom-nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+      height: 100%;
+      color: var(--circl-gray-400);
+      text-decoration: none;
+      cursor: pointer;
+      transition: color 0.2s;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .mobile-bottom-nav-item i {
+      font-size: 22px;
+      margin-bottom: 2px;
+    }
+
+    .mobile-bottom-nav-item span {
+      font-size: 10px;
+      font-weight: 500;
+    }
+
+    .mobile-bottom-nav-item.active {
+      color: var(--circl-blue);
+    }
+
+    @media (max-width: 768px) {
+      .mobile-bottom-nav {
+        display: flex;
+      }
+
+      .app-container {
+        padding-bottom: 56px;
+      }
+    }
+
+    /* Safe area adjustments for notched phones */
+    @supports (padding-bottom: env(safe-area-inset-bottom)) {
+      @media (max-width: 768px) {
+        .mobile-bottom-nav {
+          height: calc(56px + env(safe-area-inset-bottom));
+          padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        .app-container {
+          padding-bottom: calc(56px + env(safe-area-inset-bottom));
+        }
+
+        #participant-feed .experience-posts-container {
+          padding-bottom: calc(80px + env(safe-area-inset-bottom));
+        }
+
+        #experience-results-btn {
+          bottom: calc(70px + env(safe-area-inset-bottom));
+        }
+      }
+    }
+
+    /* Loading screen mobile optimizations */
+    @media (max-width: 480px) {
+      .survey-loader-logo {
+        width: 80px;
+        height: 80px;
+        margin-bottom: 20px;
+      }
+
+      .survey-loader-title {
+        font-size: 26px;
+      }
+
+      .survey-loader-text {
+        font-size: 14px;
+        padding: 0 20px;
+      }
+
+      .survey-loader-progress {
+        width: 240px;
+      }
+    }
+
+    /* Touch-friendly improvements */
+    @media (hover: none) and (pointer: coarse) {
+      /* Remove hover states that don't work well on touch */
+      #participant-feed .post-action-btn:hover {
+        background: none;
+      }
+
+      #participant-feed .post-action-btn:active {
+        background: var(--circl-gray-100);
+        transform: scale(0.96);
+      }
+
+      .article-preview:hover {
+        background: none;
+      }
+
+      .article-preview:active {
+        background: var(--circl-gray-100);
+      }
+
+      /* Ensure no text selection on interactive elements */
+      #participant-feed .post-action-btn,
+      .carousel-nav,
+      #experience-results-btn {
+        -webkit-user-select: none;
+        user-select: none;
+      }
+    }
+
+    /* Landscape mode adjustments */
+    @media (max-height: 500px) and (orientation: landscape) {
+      .top-header {
+        height: 48px;
+      }
+
+      .app-container {
+        padding-top: 48px;
+      }
+
+      #participant-feed .carousel-slide img {
+        max-height: 280px;
+      }
+
+      #participant-feed .post-single-image {
+        max-height: 300px;
+      }
+
+      #experience-results-btn {
+        bottom: 60px;
+        padding: 10px 20px;
+        font-size: 14px;
+      }
+    }
+
+    /* Carousel swipe support */
+    @media (max-width: 768px) {
+      #participant-feed .post-media {
+        touch-action: pan-y pinch-zoom;
+        overflow: hidden;
+      }
+
+      #participant-feed .carousel-track {
+        touch-action: pan-x;
+        scroll-snap-type: x mandatory;
+        overflow-x: auto;
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+      }
+
+      #participant-feed .carousel-track::-webkit-scrollbar {
+        display: none;
+      }
+
+      #participant-feed .carousel-slide {
+        scroll-snap-align: start;
+        scroll-snap-stop: always;
+      }
+    }
+
+    /* Smooth scrolling for feed */
+    @media (max-width: 768px) {
+      html {
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      body {
+        overscroll-behavior-y: contain;
+      }
+
+      #participant-feed {
+        -webkit-overflow-scrolling: touch;
+      }
+    }
+
+    /* Prevent text selection during scroll on mobile */
+    @media (max-width: 768px) {
+      #participant-feed .post {
+        -webkit-user-select: none;
+        user-select: text;
+      }
+
+      #participant-feed .post-text {
+        -webkit-user-select: text;
+        user-select: text;
+      }
+    }
+
+    /* Mobile-specific focus states for accessibility */
+    @media (max-width: 768px) {
+      #participant-feed .post-action-btn:focus-visible {
+        outline: 2px solid var(--circl-blue);
+        outline-offset: 2px;
+      }
+
+      #participant-feed .post-comment-input:focus {
+        border: 2px solid var(--circl-blue);
+      }
+
+      .mobile-bottom-nav-item:focus-visible {
+        outline: 2px solid var(--circl-blue);
+        outline-offset: -2px;
+      }
+    }
+
+    /* Improved tap feedback */
+    @media (max-width: 768px) {
+      #participant-feed .post-action-btn {
+        transition: transform 0.1s ease, background 0.15s ease;
+      }
+
+      .mobile-bottom-nav-item {
+        transition: transform 0.1s ease, color 0.15s ease;
+      }
+
+      .mobile-bottom-nav-item:active {
+        transform: scale(0.9);
+      }
+
+      .carousel-nav {
+        transition: transform 0.1s ease, opacity 0.15s ease;
+      }
+
+      .carousel-nav:active {
+        transform: translateY(-50%) scale(0.9);
+      }
+    }
+
+    /* Prevent pull-to-refresh interfering with feed scrolling */
+    @media (max-width: 768px) {
+      body {
+        overscroll-behavior-y: none;
+      }
+    }
   </style>
 </head>
 <body>
@@ -754,8 +1397,32 @@
           </div>
         </div>
       </div>
-    </aside>
+      </aside>
   </div>
+
+  <!-- Mobile Bottom Navigation -->
+  <nav class="mobile-bottom-nav">
+    <a class="mobile-bottom-nav-item active">
+      <i class="fas fa-house"></i>
+      <span>Home</span>
+    </a>
+    <a class="mobile-bottom-nav-item">
+      <i class="fas fa-user-group"></i>
+      <span>Friends</span>
+    </a>
+    <a class="mobile-bottom-nav-item">
+      <i class="fas fa-tv"></i>
+      <span>Watch</span>
+    </a>
+    <a class="mobile-bottom-nav-item">
+      <i class="fas fa-bell"></i>
+      <span>Alerts</span>
+    </a>
+    <a class="mobile-bottom-nav-item">
+      <i class="fas fa-bars"></i>
+      <span>Menu</span>
+    </a>
+  </nav>
 
   <!-- Results Modal -->
   <div class="results-modal" id="results-modal">
