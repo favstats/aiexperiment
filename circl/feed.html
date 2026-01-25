@@ -781,7 +781,7 @@
 
       /* Results button positioning */
       #experience-results-btn {
-        bottom: 70px;
+        bottom: 20px;
         padding: 12px 24px;
         font-size: 15px;
       }
@@ -790,7 +790,7 @@
     /* Extra small screens (phones in portrait) */
     @media (max-width: 480px) {
       #participant-feed .experience-posts-container {
-        padding: 4px 0 90px 0;
+        padding: 4px 0 60px 0;
       }
 
       #participant-feed .post-header {
@@ -859,7 +859,7 @@
       }
 
       #experience-results-btn {
-        bottom: 74px;
+        bottom: 20px;
         padding: 11px 20px;
         font-size: 14px;
         border-radius: 20px;
@@ -968,79 +968,15 @@
       }
     }
 
-    /* Mobile bottom navigation for feed */
-    .mobile-bottom-nav {
-      display: none;
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 56px;
-      background: var(--circl-white);
-      border-top: 1px solid var(--circl-gray-200);
-      z-index: 1000;
-      justify-content: space-around;
-      align-items: center;
-      padding: 0 8px;
-      padding-bottom: env(safe-area-inset-bottom, 0);
-    }
-
-    .mobile-bottom-nav-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      flex: 1;
-      height: 100%;
-      color: var(--circl-gray-400);
-      text-decoration: none;
-      cursor: pointer;
-      transition: color 0.2s;
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    .mobile-bottom-nav-item i {
-      font-size: 22px;
-      margin-bottom: 2px;
-    }
-
-    .mobile-bottom-nav-item span {
-      font-size: 10px;
-      font-weight: 500;
-    }
-
-    .mobile-bottom-nav-item.active {
-      color: var(--circl-blue);
-    }
-
-    @media (max-width: 768px) {
-      .mobile-bottom-nav {
-        display: flex;
-      }
-
-      .app-container {
-        padding-bottom: 56px;
-      }
-    }
-
     /* Safe area adjustments for notched phones */
     @supports (padding-bottom: env(safe-area-inset-bottom)) {
       @media (max-width: 768px) {
-        .mobile-bottom-nav {
-          height: calc(56px + env(safe-area-inset-bottom));
-          padding-bottom: env(safe-area-inset-bottom);
-        }
-
-        .app-container {
-          padding-bottom: calc(56px + env(safe-area-inset-bottom));
-        }
-
         #participant-feed .experience-posts-container {
           padding-bottom: calc(80px + env(safe-area-inset-bottom));
         }
 
         #experience-results-btn {
-          bottom: calc(70px + env(safe-area-inset-bottom));
+          bottom: calc(20px + env(safe-area-inset-bottom));
         }
       }
     }
@@ -1187,25 +1123,12 @@
       #participant-feed .post-comment-input:focus {
         border: 2px solid var(--circl-blue);
       }
-
-      .mobile-bottom-nav-item:focus-visible {
-        outline: 2px solid var(--circl-blue);
-        outline-offset: -2px;
-      }
     }
 
     /* Improved tap feedback */
     @media (max-width: 768px) {
       #participant-feed .post-action-btn {
         transition: transform 0.1s ease, background 0.15s ease;
-      }
-
-      .mobile-bottom-nav-item {
-        transition: transform 0.1s ease, color 0.15s ease;
-      }
-
-      .mobile-bottom-nav-item:active {
-        transform: scale(0.9);
       }
 
       .carousel-nav {
@@ -1399,30 +1322,6 @@
       </div>
       </aside>
   </div>
-
-  <!-- Mobile Bottom Navigation -->
-  <nav class="mobile-bottom-nav">
-    <a class="mobile-bottom-nav-item active">
-      <i class="fas fa-house"></i>
-      <span>Home</span>
-    </a>
-    <a class="mobile-bottom-nav-item">
-      <i class="fas fa-user-group"></i>
-      <span>Friends</span>
-    </a>
-    <a class="mobile-bottom-nav-item">
-      <i class="fas fa-tv"></i>
-      <span>Watch</span>
-    </a>
-    <a class="mobile-bottom-nav-item">
-      <i class="fas fa-bell"></i>
-      <span>Alerts</span>
-    </a>
-    <a class="mobile-bottom-nav-item">
-      <i class="fas fa-bars"></i>
-      <span>Menu</span>
-    </a>
-  </nav>
 
   <!-- Results Modal -->
   <div class="results-modal" id="results-modal">
