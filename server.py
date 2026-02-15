@@ -215,9 +215,70 @@ def api_status():
             'POST /api/fillers': 'Save fillers data',
             'GET /api/images': 'List all condition images',
             'GET /api/images/<condition_id>': 'Get images for specific condition',
+            'POST /api/track': 'Save tracking event batch (SAIL Tracker)',
             'GET /api/status': 'This endpoint'
         }
     })
+
+# ============================================
+# TRACKING ENDPOINT (local dev only)
+# ============================================
+TRACKING_DIR = BASE_DIR / 'tracking_data'
+SAIL_CONFIG_PATH = BASE_DIR / 'shared' / 'sail-config.json'
+
+@app.route('/api/sail-config', methods=['GET'])
+def get_sail_config():
+    """Get the SAIL tracker config"""
+    try:
+        if not SAIL_CONFIG_PATH.exists():
+            return jsonify({'google_sheets_url': '', 'study_id': ''})
+        with open(SAIL_CONFIG_PATH, 'r', encoding='utf-8') as f:
+            return jsonify(json.load(f))
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/sail-config', methods=['POST'])
+def save_sail_config():
+    """Save the SAIL tracker config"""
+    try:
+        data = request.get_json()
+        if not data:
+            return jsonify({'error': 'No data provided'}), 400
+        with open(SAIL_CONFIG_PATH, 'w', encoding='utf-8') as f:
+            json.dump(data, f, indent=2, ensure_ascii=False)
+            f.write('\n')
+        return jsonify({'success': True, 'message': 'SAIL config saved'})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
+@app.route('/api/track', methods=['POST'])
+def track_events():
+    """Save tracking event batches to local JSONL files (dev only)"""
+    try:
+        data = request.get_json(force=True)
+        if not data:
+            return jsonify({'error': 'No data provided'}), 400
+
+        session = data.get('session', {})
+        sid = session.get('sid', 'default')
+        pid = session.get('pid', 'anonymous')
+
+        # Sanitize directory names
+        sid = ''.join(c for c in sid if c.isalnum() or c in '-_')[:64] or 'default'
+        pid = ''.join(c for c in pid if c.isalnum() or c in '-_')[:64] or 'anonymous'
+
+        out_dir = TRACKING_DIR / sid
+        out_dir.mkdir(parents=True, exist_ok=True)
+        out_file = out_dir / f'{pid}.jsonl'
+
+        events = data.get('events', [])
+        with open(out_file, 'a', encoding='utf-8') as f:
+            for evt in events:
+                f.write(json.dumps(evt, ensure_ascii=False) + '\n')
+
+        return jsonify({'success': True, 'rows': len(events)})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 # ============================================
 # MAIN

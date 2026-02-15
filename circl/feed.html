@@ -14,6 +14,7 @@
   
   <!-- Circl Styles -->
   <link rel="stylesheet" href="css/circl.css">
+  <link rel="stylesheet" href="../shared/css/sail-interventions.css">
   
   <style>
     /* Participant-specific overrides */
@@ -261,6 +262,118 @@
       font-weight: 600;
       color: var(--circl-text-primary);
       line-height: 1.3;
+    }
+
+    /* Video Post */
+    .video-container {
+      position: relative;
+      background: #000;
+      cursor: pointer;
+      overflow: hidden;
+    }
+
+    .post-video {
+      width: 100%;
+      display: block;
+      max-height: 500px;
+      object-fit: contain;
+      background: #000;
+    }
+
+    .video-play-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.25);
+      transition: background 0.2s;
+    }
+
+    .video-container:hover .video-play-overlay {
+      background: rgba(0, 0, 0, 0.35);
+    }
+
+    .video-play-btn {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: rgba(24, 119, 242, 0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    .video-play-btn i {
+      color: white;
+      font-size: 24px;
+      margin-left: 4px;
+    }
+
+    .video-container:hover .video-play-btn {
+      transform: scale(1.1);
+      background: rgba(24, 119, 242, 1);
+    }
+
+    .video-container.playing .video-play-overlay {
+      display: none;
+    }
+
+    .video-duration {
+      position: absolute;
+      bottom: 12px;
+      left: 12px;
+      background: rgba(0, 0, 0, 0.75);
+      color: white;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 13px;
+      font-weight: 600;
+      pointer-events: none;
+    }
+
+    .video-container.playing .video-duration {
+      display: none;
+    }
+
+    .video-controls {
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      display: flex;
+      gap: 8px;
+    }
+
+    .video-mute-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.6);
+      border: none;
+      color: white;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.2s, background 0.2s;
+    }
+
+    .video-container.playing .video-mute-btn {
+      opacity: 1;
+    }
+
+    .video-container.playing:hover .video-mute-btn {
+      opacity: 1;
+    }
+
+    .video-mute-btn:hover {
+      background: rgba(0, 0, 0, 0.8);
     }
 
     /* Post engagement */
@@ -1148,7 +1261,7 @@
     }
   </style>
 </head>
-<body>
+<body data-platform="circl">
   <!-- Coming Soon Tooltip -->
   <div id="coming-soon-tooltip" class="coming-soon-tooltip">Feature coming soon!</div>
 
@@ -1345,7 +1458,11 @@
   <script src="js/circl-core.js"></script>
   <!-- Feed Loader (JSON-based feeds) -->
   <script src="js/feed-loader.js"></script>
+  <!-- SAIL (Sandbox for AI Intervention & Labeling) Tracker -->
+  <script src="../shared/js/sail-tracker.js"></script>
   <!-- Feed JS -->
   <script src="js/circl-feed.js"></script>
+  <!-- SAIL Intervention Engine -->
+  <script src="../shared/js/sail-interventions.js"></script>
 </body>
 </html>

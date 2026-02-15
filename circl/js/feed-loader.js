@@ -159,8 +159,9 @@ const FeedLoader = (function() {
     if (processed.author) {
       const author = { ...processed.author };
       
-      // For person posts (not organization)
-      if (processed.subtype !== 'organization') {
+      // For person posts (not organization/org-style)
+      const isOrgStyle = processed.subtype === 'organization' || (author.fallback_icon && !author.gender);
+      if (!isOrgStyle) {
         // Generate name if null
         if (author.name === null || author.name === undefined) {
           const gender = author.gender || 'male';

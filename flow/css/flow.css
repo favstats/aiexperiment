@@ -1,0 +1,1266 @@
+/* ============================================
+   Flow - Short Video Feed Stylesheet
+   Vertical video feed simulator for research
+   ============================================ */
+
+:root {
+  --sf-bg: #000;
+  --sf-sidebar-bg: #0e0e0e;
+  --sf-sidebar-width: 240px;
+  --sf-text: #fff;
+  --sf-text-secondary: rgba(255,255,255,0.55);
+  --sf-text-muted: rgba(255,255,255,0.4);
+  --sf-accent: #FE2C55;
+  --sf-accent-light: #FF4466;
+  --sf-cyan: #25F4EE;
+  --sf-overlay-gradient: linear-gradient(transparent 40%, rgba(0,0,0,0.92) 100%);
+  --sf-video-width: 420px;
+  --sf-actions-width: 72px;
+  --sf-arrows-width: 48px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  background: var(--sf-bg);
+  color: var(--sf-text);
+  font-family: 'Proxima Nova', 'SF Pro Text', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ============================================
+   TIKTOK-STYLE LOGO (CSS-only musical note
+   with red/cyan offset glitch effect)
+   ============================================ */
+.sf-tiktok-logo {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+}
+
+.sf-tiktok-logo > i {
+  position: absolute;
+  font-size: 22px;
+  color: var(--sf-text);
+  z-index: 3;
+}
+
+.sf-tiktok-logo > i.sf-logo-shadow-red {
+  color: var(--sf-accent);
+  z-index: 1;
+  transform: translate(-2px, 1px);
+  filter: blur(0.3px);
+}
+
+.sf-tiktok-logo > i.sf-logo-shadow-cyan {
+  color: var(--sf-cyan);
+  z-index: 2;
+  transform: translate(2px, -1px);
+  filter: blur(0.3px);
+}
+
+/* Large logo variant for loading screen */
+.sf-tiktok-logo-large {
+  width: 80px;
+  height: 80px;
+}
+
+.sf-tiktok-logo-large > i {
+  font-size: 64px;
+}
+
+.sf-tiktok-logo-large > i.sf-logo-shadow-red {
+  transform: translate(-4px, 2px);
+  filter: blur(0.5px);
+}
+
+.sf-tiktok-logo-large > i.sf-logo-shadow-cyan {
+  transform: translate(4px, -2px);
+  filter: blur(0.5px);
+}
+
+/* ============================================
+   LOADER - TikTok-style black screen with
+   centered logo and loading bar
+   ============================================ */
+.sf-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: var(--sf-bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.5s ease;
+}
+
+.sf-loader.fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.sf-loader-content {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sf-loader-logo {
+  margin-bottom: 32px;
+  animation: sf-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes sf-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.05); opacity: 0.85; }
+}
+
+/* Loading bar (replaces spinner) */
+.sf-loader-bar {
+  width: 180px;
+  height: 3px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.sf-loader-bar-fill {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--sf-accent), var(--sf-cyan));
+  border-radius: 2px;
+  animation: sf-load-bar 2.5s ease-in-out forwards;
+}
+
+@keyframes sf-load-bar {
+  0% { width: 0%; }
+  30% { width: 40%; }
+  60% { width: 65%; }
+  80% { width: 85%; }
+  100% { width: 100%; }
+}
+
+.sf-loader-spinner {
+  display: none;
+}
+
+.sf-loader-message {
+  color: var(--sf-text-muted);
+  font-size: 13px;
+  letter-spacing: 0.2px;
+}
+
+/* ============================================
+   APP SHELL - 3-column desktop layout
+   ============================================ */
+.sf-app {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  background: var(--sf-bg);
+}
+
+/* ============================================
+   LEFT SIDEBAR - darker with red active bar
+   ============================================ */
+.sf-sidebar {
+  width: var(--sf-sidebar-width);
+  min-width: var(--sf-sidebar-width);
+  height: 100%;
+  background: var(--sf-sidebar-bg);
+  border-right: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  flex-direction: column;
+  padding: 20px 0;
+  overflow-y: auto;
+}
+
+.sf-sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 20px 20px;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--sf-text);
+  cursor: pointer;
+}
+
+/* Search bar in sidebar */
+.sf-sidebar-search {
+  position: relative;
+  padding: 0 16px 16px;
+}
+
+.sf-sidebar-search i {
+  position: absolute;
+  left: 28px;
+  top: 10px;
+  font-size: 14px;
+  color: var(--sf-text-muted);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.sf-search-input {
+  width: 100%;
+  height: 36px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 8px;
+  padding: 0 12px 0 36px;
+  color: var(--sf-text);
+  font-size: 14px;
+  outline: none;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.sf-search-input::placeholder {
+  color: var(--sf-text-muted);
+}
+
+.sf-search-input:hover {
+  background: rgba(255,255,255,0.12);
+  border-color: rgba(255,255,255,0.1);
+}
+
+.sf-search-input:focus {
+  background: rgba(255,255,255,0.1);
+  border-color: rgba(255,255,255,0.15);
+}
+
+/* Sidebar nav */
+.sf-sidebar-nav {
+  list-style: none;
+  flex: 1;
+}
+
+.sf-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--sf-text-secondary);
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s;
+  position: relative;
+}
+
+.sf-nav-item:hover {
+  color: var(--sf-text);
+  background: rgba(255,255,255,0.04);
+}
+
+.sf-nav-item.active {
+  color: var(--sf-text);
+  font-weight: 700;
+}
+
+/* Red accent bar on left for active nav item */
+.sf-nav-item.active::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 8px;
+  bottom: 8px;
+  width: 3px;
+  background: var(--sf-accent);
+  border-radius: 0 2px 2px 0;
+}
+
+.sf-nav-item i {
+  width: 24px;
+  text-align: center;
+  font-size: 20px;
+}
+
+.sf-nav-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--sf-accent);
+  margin-left: 4px;
+}
+
+.sf-nav-badge {
+  background: var(--sf-accent);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 8px;
+  margin-left: 4px;
+}
+
+.sf-nav-more {
+  margin-top: 8px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  padding-top: 20px;
+}
+
+/* Sidebar footer with login button */
+.sf-sidebar-footer {
+  padding: 16px 16px 0;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+.sf-login-btn {
+  display: block;
+  width: 100%;
+  padding: 10px 0;
+  background: var(--sf-accent);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-bottom: 14px;
+  transition: background 0.15s;
+  letter-spacing: 0.2px;
+}
+
+.sf-login-btn:hover {
+  background: var(--sf-accent-light);
+}
+
+.sf-sidebar-following-label {
+  font-size: 13px;
+  color: var(--sf-text-muted);
+  font-weight: 500;
+}
+
+/* ============================================
+   FOR YOU / FOLLOWING TABS
+   Fixed top-center floating over the feed
+   ============================================ */
+.sf-feed-tabs {
+  position: fixed;
+  top: 0;
+  left: var(--sf-sidebar-width);
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  z-index: 200;
+  padding: 16px 0 12px;
+  background: linear-gradient(rgba(0,0,0,0.6) 0%, transparent 100%);
+  pointer-events: none;
+}
+
+.sf-feed-tab {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.5);
+  font-size: 17px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 4px 16px 10px;
+  position: relative;
+  transition: color 0.2s;
+  pointer-events: auto;
+  letter-spacing: 0.1px;
+}
+
+.sf-feed-tab:hover {
+  color: rgba(255,255,255,0.8);
+}
+
+.sf-feed-tab.active {
+  color: #fff;
+  font-weight: 700;
+}
+
+/* White underline for active tab */
+.sf-feed-tab.active::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 32px;
+  height: 3px;
+  background: #fff;
+  border-radius: 2px;
+}
+
+.sf-feed-tab-divider {
+  width: 1px;
+  height: 16px;
+  background: rgba(255,255,255,0.2);
+  margin: 0 4px;
+  pointer-events: none;
+}
+
+/* ============================================
+   CENTER - Video feed area
+   ============================================ */
+.sf-center {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.sf-feed {
+  width: var(--sf-video-width);
+  height: 100%;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Hide scrollbar */
+.sf-feed::-webkit-scrollbar { display: none; }
+.sf-feed { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* ============================================
+   CARD (each post = full screen height)
+   Desktop: rounded corners + subtle shadow
+   ============================================ */
+.sf-card {
+  width: var(--sf-video-width);
+  height: 100vh;
+  height: 100dvh;
+  scroll-snap-align: start;
+  position: relative;
+  overflow: hidden;
+  background: #111;
+  border-radius: 12px;
+  box-shadow: 0 0 40px rgba(0,0,0,0.5);
+}
+
+/* ============================================
+   CARD BACKGROUND (video, image, or gradient)
+   ============================================ */
+.sf-card-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.sf-card-bg video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #000;
+}
+
+.sf-card-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: #000;
+}
+
+/* Gradient background for text-only posts */
+.sf-card-bg.sf-gradient {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 40px;
+}
+
+.sf-gradient-text {
+  font-size: 22px;
+  font-weight: 600;
+  line-height: 1.5;
+  text-align: center;
+  color: var(--sf-text);
+  text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+/* ============================================
+   CARD OVERLAY (aggressive bottom gradient)
+   ============================================ */
+.sf-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--sf-overlay-gradient);
+  pointer-events: none;
+}
+
+/* ============================================
+   PLAY/PAUSE INDICATOR
+   ============================================ */
+.sf-play-indicator {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  font-size: 64px;
+  color: rgba(255,255,255,0.8);
+  pointer-events: none;
+  transition: none;
+  z-index: 10;
+}
+
+.sf-play-indicator.sf-show {
+  animation: sf-play-flash 0.5s ease-out forwards;
+}
+
+@keyframes sf-play-flash {
+  0% { transform: translate(-50%, -50%) scale(0.5); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(1.2); opacity: 0; }
+}
+
+/* ============================================
+   DOUBLE-TAP HEART
+   ============================================ */
+.sf-heart-burst {
+  position: absolute;
+  pointer-events: none;
+  z-index: 20;
+  font-size: 80px;
+  color: var(--sf-accent);
+  animation: sf-heart-pop 0.8s ease-out forwards;
+}
+
+@keyframes sf-heart-pop {
+  0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+  50% { transform: translate(-50%, -50%) scale(1.3); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(1); opacity: 0; }
+}
+
+/* ============================================
+   BOTTOM INFO (author, caption, music)
+   Overlaid on bottom of each card
+   ============================================ */
+.sf-card-bottom {
+  position: absolute;
+  bottom: 20px;
+  left: 16px;
+  right: 16px;
+  z-index: 5;
+}
+
+.sf-author-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.sf-author-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 2px solid var(--sf-text);
+  overflow: hidden;
+  flex-shrink: 0;
+  background: #333;
+}
+
+.sf-author-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.sf-author-avatar .sf-avatar-icon {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  color: var(--sf-text);
+  background: #444;
+}
+
+.sf-author-name {
+  font-weight: 700;
+  font-size: 15px;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+}
+
+.sf-verified {
+  color: #20D5EC;
+  font-size: 13px;
+  margin-left: 2px;
+}
+
+.sf-follow-btn {
+  background: transparent;
+  color: var(--sf-accent);
+  border: 1px solid var(--sf-accent);
+  font-size: 12px;
+  font-weight: 700;
+  padding: 3px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: 4px;
+}
+
+.sf-caption {
+  font-size: 14px;
+  line-height: 1.4;
+  margin-bottom: 8px;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.6);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.sf-caption.sf-expanded {
+  -webkit-line-clamp: unset;
+}
+
+.sf-caption-more {
+  background: none;
+  border: none;
+  color: var(--sf-text);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0;
+  margin-bottom: 6px;
+}
+
+.sf-see-translation {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--sf-text);
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+
+.sf-music-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--sf-text);
+  text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+}
+
+.sf-music-row i {
+  font-size: 12px;
+}
+
+.sf-music-ticker {
+  overflow: hidden;
+  max-width: 240px;
+}
+
+.sf-music-ticker span {
+  display: inline-block;
+  white-space: nowrap;
+  animation: sf-ticker 8s linear infinite;
+}
+
+@keyframes sf-ticker {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ============================================
+   RIGHT SIDE ACTIONS - larger (48px) with
+   cleaner shadows and better heart animation
+   ============================================ */
+.sf-actions {
+  position: absolute;
+  bottom: 20px;
+  right: -72px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  z-index: 5;
+}
+
+.sf-action {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Profile avatar at top of actions with + badge */
+.sf-action-profile {
+  position: relative;
+  margin-bottom: 4px;
+}
+
+.sf-action-profile-img {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 2px solid var(--sf-text);
+  overflow: hidden;
+  background: #333;
+}
+
+.sf-action-profile-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.sf-action-profile-img .sf-avatar-icon {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  color: var(--sf-text);
+  background: #444;
+}
+
+.sf-action-plus {
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--sf-accent);
+  color: #fff;
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+}
+
+/* Action buttons - 48px with cleaner look */
+.sf-action-icon-wrap {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.15s, background 0.15s;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.sf-action:hover .sf-action-icon-wrap {
+  background: rgba(255,255,255,0.18);
+}
+
+.sf-action:active .sf-action-icon-wrap {
+  transform: scale(1.1);
+}
+
+.sf-action-icon-wrap i {
+  font-size: 22px;
+  color: var(--sf-text);
+}
+
+/* Liked heart - filled red with pop animation */
+.sf-action.sf-liked .sf-action-icon-wrap i {
+  color: var(--sf-accent);
+}
+
+.sf-action.sf-liked .sf-action-icon-wrap {
+  animation: sf-like-pop 0.35s ease-out;
+}
+
+@keyframes sf-like-pop {
+  0% { transform: scale(1); }
+  30% { transform: scale(1.35); }
+  60% { transform: scale(0.9); }
+  100% { transform: scale(1); }
+}
+
+/* Comment count with text-shadow for visibility */
+.sf-action-count {
+  font-size: 12px;
+  color: var(--sf-text);
+  font-weight: 600;
+  text-align: center;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+}
+
+/* ============================================
+   SPINNING DISC - realistic vinyl record look
+   ============================================ */
+.sf-disc {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 10px solid #282828;
+  overflow: hidden;
+  animation: sf-disc-spin 4s linear infinite;
+  background: radial-gradient(
+    circle at center,
+    #111 0%,
+    #111 20%,
+    #1a1a1a 21%,
+    #222 28%,
+    #1a1a1a 29%,
+    #222 36%,
+    #1a1a1a 37%,
+    #222 44%,
+    #1a1a1a 45%,
+    #222 52%,
+    #1a1a1a 53%,
+    #222 60%,
+    #1a1a1a 61%,
+    #222 68%,
+    #1a1a1a 69%,
+    #222 76%,
+    #1a1a1a 77%,
+    #222 84%,
+    #1a1a1a 85%,
+    #222 92%,
+    #1a1a1a 93%,
+    #222 100%
+  );
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+  position: relative;
+}
+
+.sf-disc::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 8px;
+  height: 8px;
+  background: #444;
+  border-radius: 50%;
+  z-index: 2;
+}
+
+.sf-disc img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+@keyframes sf-disc-spin {
+  to { transform: rotate(360deg); }
+}
+
+.sf-card.sf-paused .sf-disc {
+  animation-play-state: paused;
+}
+
+/* ============================================
+   NAV ARROWS (right edge)
+   ============================================ */
+.sf-nav-arrows {
+  position: fixed;
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  z-index: 100;
+}
+
+.sf-arrow-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255,255,255,0.08);
+  color: var(--sf-text-secondary);
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, color 0.15s;
+}
+
+.sf-arrow-btn:hover {
+  background: rgba(255,255,255,0.15);
+  color: var(--sf-text);
+}
+
+/* ============================================
+   PROGRESS BAR (bottom of video card)
+   ============================================ */
+.sf-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  z-index: 50;
+  background: rgba(255,255,255,0.15);
+}
+
+.sf-progress-bar {
+  height: 100%;
+  background: var(--sf-accent);
+  width: 0%;
+  transition: width 0.1s linear;
+}
+
+/* ============================================
+   DEBUG INFO
+   ============================================ */
+.sf-debug-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.sf-debug-tag {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+}
+
+.sf-debug-tag.tailored {
+  background: rgba(255, 107, 107, 0.9);
+  color: #fff;
+}
+
+.sf-debug-tag.random {
+  background: rgba(78, 205, 196, 0.9);
+  color: #111;
+}
+
+.sf-debug-tag.filler {
+  background: rgba(255, 255, 255, 0.2);
+  color: rgba(255,255,255,0.8);
+}
+
+.sf-debug-detail {
+  font-size: 10px;
+  color: rgba(255,255,255,0.6);
+  text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+}
+
+.sf-view-timer {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 50;
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: monospace;
+  display: none;
+}
+
+/* ============================================
+   RESULTS BUTTON
+   ============================================ */
+.sf-results-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 80px;
+  z-index: 200;
+  background: var(--sf-accent);
+  color: #fff;
+  border: none;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(254, 44, 85, 0.5);
+}
+
+/* ============================================
+   RESULTS MODAL
+   ============================================ */
+.sf-results-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0,0,0,0.85);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.sf-results-modal.active {
+  display: flex;
+}
+
+.sf-results-content {
+  background: #1a1a1a;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 420px;
+  max-height: 80vh;
+  overflow-y: auto;
+  padding: 24px;
+}
+
+.sf-results-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.sf-results-header h2 {
+  font-size: 18px;
+  color: var(--sf-text);
+}
+
+.sf-results-header button {
+  background: none;
+  border: none;
+  color: var(--sf-text-secondary);
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.sf-result-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.1);
+  gap: 12px;
+}
+
+.sf-result-rank {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--sf-accent);
+  width: 36px;
+  text-align: center;
+}
+
+.sf-result-info {
+  flex: 1;
+}
+
+.sf-result-author {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--sf-text);
+}
+
+.sf-result-type {
+  font-size: 12px;
+  color: var(--sf-text-secondary);
+}
+
+.sf-result-time {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--sf-text);
+  text-align: right;
+}
+
+.sf-result-time small {
+  display: block;
+  font-size: 10px;
+  font-weight: 400;
+  color: var(--sf-text-secondary);
+}
+
+/* ============================================
+   TOOLTIP
+   ============================================ */
+.sf-tooltip {
+  position: fixed;
+  z-index: 9999;
+  background: rgba(255,255,255,0.9);
+  color: #111;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.sf-tooltip.show {
+  opacity: 1;
+}
+
+/* ============================================
+   ARTICLE OVERLAY (for article-type posts)
+   ============================================ */
+.sf-article-badge {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 12px;
+  background: linear-gradient(rgba(0,0,0,0.6), transparent);
+  z-index: 5;
+}
+
+.sf-article-source {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,0.15);
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  color: var(--sf-text);
+  backdrop-filter: blur(8px);
+}
+
+.sf-article-source i {
+  font-size: 10px;
+}
+
+/* ============================================
+   LOCATION TAG
+   ============================================ */
+.sf-location-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: rgba(255,255,255,0.15);
+  padding: 3px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  color: var(--sf-text);
+  margin-bottom: 6px;
+  backdrop-filter: blur(4px);
+}
+
+.sf-location-tag i {
+  color: var(--sf-accent);
+  font-size: 11px;
+}
+
+/* ============================================
+   MOBILE-FIRST - actions overlay on card
+   On mobile, sidebar is hidden and feed is full-screen
+   ============================================ */
+@media (max-width: 768px) {
+  :root {
+    --sf-video-width: 100vw;
+  }
+
+  .sf-sidebar {
+    display: none;
+  }
+
+  .sf-nav-arrows {
+    display: none;
+  }
+
+  .sf-center {
+    width: 100%;
+  }
+
+  .sf-feed {
+    width: 100%;
+  }
+
+  .sf-card {
+    width: 100%;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  /* Tabs: take full width on mobile */
+  .sf-feed-tabs {
+    left: 0;
+  }
+
+  /* Actions overlay on bottom-right of card */
+  .sf-actions {
+    position: absolute;
+    right: 8px;
+    bottom: 80px;
+  }
+
+  .sf-card-bottom {
+    right: 70px;
+    bottom: 16px;
+    left: 12px;
+  }
+
+  .sf-action-icon-wrap {
+    width: 44px;
+    height: 44px;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .sf-action-icon-wrap i {
+    font-size: 26px;
+    filter: drop-shadow(0 1px 3px rgba(0,0,0,0.5));
+  }
+
+  .sf-action-count {
+    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+  }
+
+  .sf-action-profile-img {
+    width: 44px;
+    height: 44px;
+  }
+
+  .sf-results-btn {
+    right: 20px;
+    bottom: 20px;
+  }
+}
+
+/* Very small screens (iPhone SE etc) */
+@media (max-width: 375px) {
+  .sf-card-bottom {
+    left: 8px;
+    right: 60px;
+    bottom: 12px;
+  }
+
+  .sf-actions {
+    right: 4px;
+    bottom: 60px;
+    gap: 12px;
+  }
+
+  .sf-action-icon-wrap {
+    width: 40px;
+    height: 40px;
+  }
+
+  .sf-caption {
+    font-size: 13px;
+  }
+
+  .sf-author-name {
+    font-size: 14px;
+  }
+}

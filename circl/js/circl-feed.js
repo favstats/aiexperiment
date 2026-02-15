@@ -40,6 +40,63 @@ function getArticleClickData() {
 }
 
 // ============================================
+// VIDEO PLAYBACK
+// ============================================
+const videoPlays = {};
+
+function toggleVideoPlay(videoEl) {
+  const container = videoEl.closest('.video-container');
+  const overlay = container.querySelector('.video-play-overlay');
+  const videoId = container.dataset.videoId;
+
+  if (videoEl.paused) {
+    // Pause all other videos first
+    document.querySelectorAll('.post-video').forEach(v => {
+      if (v !== videoEl && !v.paused) {
+        v.pause();
+        const otherContainer = v.closest('.video-container');
+        if (otherContainer) {
+          otherContainer.querySelector('.video-play-overlay').style.display = 'flex';
+          otherContainer.classList.remove('playing');
+        }
+      }
+    });
+
+    videoEl.play();
+    overlay.style.display = 'none';
+    container.classList.add('playing');
+
+    // Track play
+    if (!videoPlays[videoId]) {
+      videoPlays[videoId] = { plays: 0, first_play: null };
+    }
+    videoPlays[videoId].plays++;
+    if (!videoPlays[videoId].first_play) {
+      videoPlays[videoId].first_play = new Date().toISOString();
+    }
+    videoPlays[videoId].last_play = new Date().toISOString();
+  } else {
+    videoEl.pause();
+    overlay.style.display = 'flex';
+    container.classList.remove('playing');
+  }
+}
+
+function toggleVideoMute(event, btn) {
+  event.stopPropagation();
+  const container = btn.closest('.video-container');
+  const videoEl = container.querySelector('video');
+  const icon = btn.querySelector('i');
+
+  videoEl.muted = !videoEl.muted;
+  icon.className = videoEl.muted ? 'fas fa-volume-xmark' : 'fas fa-volume-high';
+}
+
+function getVideoPlayData() {
+  return videoPlays;
+}
+
+// ============================================
 // INITIALIZATION
 // ============================================
 document.addEventListener('DOMContentLoaded', initParticipantFeed);
@@ -47,7 +104,13 @@ document.addEventListener('DOMContentLoaded', initParticipantFeed);
 async function initParticipantFeed() {
   // Parse URL parameters (will use random if none provided)
   const params = getSurveyParams();
-  
+
+  // Designer mode: fast load for admin panel live preview
+  const isDesignerMode = new URLSearchParams(window.location.search).get('mode') === 'designer';
+  if (isDesignerMode) {
+    document.body.classList.add('designer-mode');
+  }
+
   // Show loading screen
   const loader = document.getElementById('survey-loader');
   loader.style.display = 'flex';
@@ -101,13 +164,15 @@ async function initParticipantFeed() {
       
       // Set debug mode from params
       debugMode = params.debug;
-      
-      // Wait for loading animation
-      await new Promise(resolve => setTimeout(resolve, 3500));
-      
+
+      // Wait for loading animation (skip in designer mode for instant preview)
+      if (!isDesignerMode) {
+        await new Promise(resolve => setTimeout(resolve, 3500));
+      }
+
       // Stop rotating messages
       if (messageInterval) clearInterval(messageInterval);
-      
+
       // Render posts from JSON
       renderJsonFeed(feedData.posts, feedData.config);
       
@@ -137,16 +202,18 @@ async function initParticipantFeed() {
       
       // Set debug mode from params
       debugMode = params.debug;
-      
+
       // Convert political score to ideology
       const ideology = getIdeologyFromPolitical(params.politics);
-      
-      // Wait for loading animation
-      await new Promise(resolve => setTimeout(resolve, 3500));
-      
+
+      // Wait for loading animation (skip in designer mode for instant preview)
+      if (!isDesignerMode) {
+        await new Promise(resolve => setTimeout(resolve, 3500));
+      }
+
       // Stop rotating messages
       if (messageInterval) clearInterval(messageInterval);
-      
+
       // Generate feed using original method
       generateExperienceFeed(params.gender, params.age, ideology, params.issue, params.totalPosts);
     }
@@ -160,17 +227,22 @@ async function initParticipantFeed() {
     // Scroll to top
     window.scrollTo(0, 0);
     
-    // Clear URL parameters
-    if (window.history && window.history.replaceState) {
+    // Clear URL parameters (skip in designer mode so interventions can be re-applied)
+    if (!isDesignerMode && window.history && window.history.replaceState) {
       window.history.replaceState({}, document.title, window.location.pathname);
     }
     
-    // Fade out loader
-    loader.classList.add('fade-out');
-    setTimeout(() => {
+    // Fade out loader (instant in designer mode)
+    if (isDesignerMode) {
       loader.style.display = 'none';
       loader.remove();
-    }, 600);
+    } else {
+      loader.classList.add('fade-out');
+      setTimeout(() => {
+        loader.style.display = 'none';
+        loader.remove();
+      }, 600);
+    }
     
     // Setup coming soon tooltips
     setupComingSoonTooltips();
@@ -187,16 +259,29 @@ async function initParticipantFeed() {
 function renderJsonFeed(posts, config) {
   const container = document.getElementById('experience-posts');
   if (!container) return;
-  
+
   container.innerHTML = '';
-  
+
   posts.forEach((post, index) => {
     const postElement = createPostFromJson(post, index);
     container.appendChild(postElement);
   });
-  
+
   // Attach interactions
   attachExperienceInteractions();
+
+  // Setup video ended handlers (show play overlay again)
+  container.querySelectorAll('.post-video').forEach(video => {
+    video.muted = true; // Start muted
+    video.addEventListener('ended', () => {
+      const videoContainer = video.closest('.video-container');
+      if (videoContainer) {
+        const overlay = videoContainer.querySelector('.video-play-overlay');
+        if (overlay) overlay.style.display = 'flex';
+        videoContainer.classList.remove('playing');
+      }
+    });
+  });
 }
 
 function createPostFromJson(postData, index) {
@@ -204,11 +289,15 @@ function createPostFromJson(postData, index) {
   
   // Determine post class based on type
   const isStimulus = postData.type === 'stimulus';
-  const isOrg = postData.subtype === 'organization';
+  const isOrgSubtype = postData.subtype === 'organization';
   const isArticle = postData.subtype === 'article';
+  const isVideo = postData.subtype === 'video';
+  // Org-style avatar: explicit org subtype, article, or video posts with fallback_icon (no gender)
+  const isOrg = isOrgSubtype || (isArticle && postData.author?.fallback_icon) || (isVideo && postData.author?.fallback_icon && !postData.author?.gender);
   
   post.className = isStimulus ? 'post ai-post stimulus-post' : 'post placeholder-post';
   if (isArticle) post.className += ' article-post';
+  if (isVideo) post.className += ' video-post';
   
   const postId = `${postData.type}-${postData.id || index}-${Date.now()}`;
   post.dataset.postId = postId;
@@ -287,17 +376,45 @@ function createPostFromJson(postData, index) {
     const thumbnailUrl = article.thumbnail || 'https://via.placeholder.com/600x315/E4E6EB/65676B?text=Article';
     const articleUrl = article.url || '#';
     const trackClick = article.track_clicks !== false;
-    
+
     articleHtml = `
-      <div class="article-preview" data-article-id="${postData.id}" data-url="${articleUrl}" 
+      <div class="article-preview" data-article-id="${postData.id}" data-url="${articleUrl}"
            onclick="trackArticleClick(this)" style="cursor: pointer;">
         <div class="article-thumbnail">
-          <img src="${thumbnailUrl}" alt="${article.title || 'Article'}" 
+          <img src="${thumbnailUrl}" alt="${article.title || 'Article'}"
                onerror="this.src='https://via.placeholder.com/600x315/E4E6EB/65676B?text=Article';">
         </div>
         <div class="article-info">
           <div class="article-source">${article.source || 'Unknown source'}</div>
           <div class="article-title">${article.title || 'Untitled Article'}</div>
+        </div>
+      </div>`;
+  }
+
+  // Video HTML
+  let videoHtml = '';
+  if (isVideo && postData.video) {
+    const video = postData.video;
+    const videoSrc = video.src || '';
+    const posterSrc = video.thumbnail || '';
+    const duration = video.duration || '';
+    const durationBadge = duration ? `<span class="video-duration">${duration}</span>` : '';
+
+    videoHtml = `
+      <div class="video-container" data-video-id="${postData.id}">
+        <video class="post-video" preload="metadata" playsinline
+               ${posterSrc ? `poster="${posterSrc}"` : ''}
+               onclick="toggleVideoPlay(this)">
+          <source src="${videoSrc}" type="video/mp4">
+        </video>
+        <div class="video-play-overlay" onclick="toggleVideoPlay(this.parentElement.querySelector('video'))">
+          <div class="video-play-btn"><i class="fas fa-play"></i></div>
+        </div>
+        ${durationBadge}
+        <div class="video-controls">
+          <button class="video-mute-btn" onclick="toggleVideoMute(event, this)">
+            <i class="fas fa-volume-xmark"></i>
+          </button>
         </div>
       </div>`;
   }
@@ -354,6 +471,7 @@ function createPostFromJson(postData, index) {
     
     ${imageHtml}
     ${articleHtml}
+    ${videoHtml}
     ${debugHtml}
     ${viewTimerHtml}
     

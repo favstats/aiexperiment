@@ -745,13 +745,107 @@
       },
       "engagement": {"likes": 234, "comments": 45, "shares": 89},
       "time": "6h"
+    },
+    {
+      "id": "filler_046",
+      "type": "filler",
+      "subtype": "video",
+      "text": "Prachtige beelden van de natuur in Nederland. Dit moet je zien! 🌿🎥",
+      "video": {
+        "src": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+        "thumbnail": "https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=600&h=400&fit=crop",
+        "duration": "9:56"
+      },
+      "author": {
+        "name": "Natuur Nederland",
+        "logo_url": null,
+        "fallback_icon": "leaf"
+      },
+      "engagement": {"likes": 1245, "comments": 89, "shares": 234},
+      "time": "2h"
+    },
+    {
+      "id": "filler_047",
+      "type": "filler",
+      "subtype": "video",
+      "text": "Wat een uitzicht! Vanmorgen vroeg op de fiets door de polder 🚴‍♀️",
+      "video": {
+        "src": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
+        "thumbnail": "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?w=600&h=400&fit=crop",
+        "duration": "1:00"
+      },
+      "author": {
+        "name": "Sanne de Wit",
+        "gender": "female",
+        "age_group": "30-44",
+        "avatar_url": null
+      },
+      "engagement": {"likes": 567, "comments": 45, "shares": 23},
+      "time": "5h"
+    },
+    {
+      "id": "filler_048",
+      "type": "filler",
+      "subtype": "video",
+      "text": "De golven waren vandaag perfect! 🌊🏄 Heerlijke sessie in Scheveningen.",
+      "video": {
+        "src": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+        "thumbnail": "https://images.unsplash.com/photo-1502680390548-bdbac40e4a4e?w=600&h=400&fit=crop",
+        "duration": "0:15"
+      },
+      "author": {
+        "name": "Bram Dijkstra",
+        "gender": "male",
+        "age_group": "18-29",
+        "avatar_url": null
+      },
+      "engagement": {"likes": 892, "comments": 67, "shares": 45},
+      "time": "3h"
+    },
+    {
+      "id": "filler_049",
+      "type": "filler",
+      "subtype": "video",
+      "text": "Zonsondergang bij de Erasmusbrug. Rotterdam op z'n mooist! 🌅",
+      "video": {
+        "src": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4",
+        "thumbnail": "https://images.unsplash.com/photo-1543872084-c7bd3822856f?w=600&h=400&fit=crop",
+        "duration": "0:15"
+      },
+      "author": {
+        "name": "Rotterdam Marketing",
+        "logo_url": null,
+        "fallback_icon": "city"
+      },
+      "engagement": {"likes": 2345, "comments": 156, "shares": 89},
+      "time": "4h"
+    },
+    {
+      "id": "filler_050",
+      "type": "filler",
+      "subtype": "video",
+      "text": "Mijn hond ontdekt sneeuw voor het eerst 😂❄️ Te schattig!",
+      "video": {
+        "src": "http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+        "thumbnail": "https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=600&h=400&fit=crop",
+        "duration": "0:15"
+      },
+      "author": {
+        "name": "Eva Brouwer",
+        "gender": "female",
+        "age_group": "18-29",
+        "avatar_url": null
+      },
+      "engagement": {"likes": 3456, "comments": 234, "shares": 567},
+      "time": "1h"
     }
   ],
   "_schema_notes": {
-    "subtype": "'person' for individual users, 'organization' for brands/orgs, 'article' for link shares",
+    "subtype": "'person' for individual users, 'organization' for brands/orgs, 'article' for link shares, 'video' for video posts",
     "image.show": "true to show image, false or null to hide",
-    "author.logo_url": "URL to organization logo (for subtype=organization or article)",
+    "author.logo_url": "URL to organization logo (for subtype=organization, article, or video)",
     "author.fallback_icon": "Font Awesome icon name to use if logo fails to load",
-    "article": "Object with title, source, url, thumbnail, track_clicks for article posts"
+    "article": "Object with title, source, url, thumbnail, track_clicks for article posts",
+    "video": "Object with src (mp4 url), thumbnail (poster image url), duration (display string) for video posts"
   }
 }

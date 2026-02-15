@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
+  <title>Buzz</title>
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💬</text></svg>">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Buzz Styles -->
+  <link rel="stylesheet" href="css/buzz.css">
+  <link rel="stylesheet" href="../shared/css/sail-interventions.css">
+</head>
+<body data-platform="buzz">
+  <!-- Coming Soon Tooltip -->
+  <div id="coming-soon-tooltip" class="coming-soon-tooltip">Feature coming soon!</div>
+
+  <!-- Loading Screen -->
+  <div id="buzzchat-loader" class="buzzchat-loader">
+    <div class="buzzchat-loader-icon">
+      <i class="fas fa-comment-dots"></i>
+    </div>
+    <div class="buzzchat-loader-title">Buzz</div>
+    <div class="buzzchat-loader-text" id="loading-message">Connecting...</div>
+    <div class="buzzchat-loader-bar">
+      <div class="buzzchat-loader-bar-fill"></div>
+    </div>
+  </div>
+
+  <!-- App Shell -->
+  <div class="buzzchat-app" id="buzzchat-app">
+    <div class="buzzchat-frame">
+      <!-- WhatsApp Web green top bar -->
+      <div class="buzzchat-top-bar"></div>
+
+      <div class="buzzchat-main">
+        <!-- LEFT PANEL: Chat List -->
+        <aside class="buzzchat-sidebar" id="buzzchat-sidebar">
+          <!-- Sidebar Header -->
+          <div class="sidebar-header">
+            <div class="sidebar-header-avatar">
+              <i class="fas fa-user"></i>
+            </div>
+            <div class="sidebar-header-actions">
+              <button title="Communities"><i class="fas fa-users"></i></button>
+              <button title="Status"><i class="fas fa-circle-dot"></i></button>
+              <button title="Channels"><i class="fas fa-bullhorn"></i></button>
+              <button title="New chat"><i class="fas fa-comment-medical"></i></button>
+              <button title="Menu"><i class="fas fa-ellipsis-vertical"></i></button>
+            </div>
+          </div>
+
+          <!-- Search -->
+          <div class="sidebar-search">
+            <div class="sidebar-search-input">
+              <i class="fas fa-magnifying-glass"></i>
+              <input type="text" placeholder="Search or start new chat" disabled>
+            </div>
+          </div>
+
+          <!-- Filter Tabs -->
+          <div class="sidebar-filters">
+            <button class="sidebar-filter active">All</button>
+            <button class="sidebar-filter">Unread</button>
+            <button class="sidebar-filter">Favorites</button>
+            <button class="sidebar-filter">Groups</button>
+          </div>
+
+          <!-- Chat List -->
+          <div class="chat-list" id="chat-list">
+            <!-- Chat list items will be injected by JS -->
+          </div>
+        </aside>
+
+        <!-- RIGHT PANEL: Active Chat -->
+        <section class="buzzchat-chat" id="buzzchat-chat">
+          <!-- Chat Header -->
+          <div class="chat-header">
+            <button class="chat-header-back" id="chat-back-btn" title="Back">
+              <i class="fas fa-arrow-left"></i>
+            </button>
+            <div class="chat-header-avatar">
+              <i class="fas fa-users"></i>
+            </div>
+            <div class="chat-header-info">
+              <div class="chat-header-name" id="chat-group-name">Familie & Vrienden</div>
+              <div class="chat-header-status" id="chat-group-status">loading members...</div>
+            </div>
+            <div class="chat-header-actions">
+              <button title="Video call"><i class="fas fa-video"></i></button>
+              <button title="Voice call"><i class="fas fa-phone"></i></button>
+              <button title="Search"><i class="fas fa-magnifying-glass"></i></button>
+              <button title="Menu"><i class="fas fa-ellipsis-vertical"></i></button>
+            </div>
+          </div>
+
+          <!-- Messages Area -->
+          <div class="chat-messages" id="chat-messages">
+            <!-- Messages will be injected by JS -->
+          </div>
+
+          <!-- Input Bar -->
+          <div class="chat-input-bar" id="chat-input-bar">
+            <button title="Emoji"><i class="far fa-face-smile"></i></button>
+            <button title="Attach"><i class="fas fa-paperclip"></i></button>
+            <div class="chat-input-field" id="chat-input-field">
+              <span>Type a message</span>
+            </div>
+            <button class="chat-input-send" title="Voice message"><i class="fas fa-microphone"></i></button>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <!-- Results Modal -->
+  <div class="results-modal" id="results-modal">
+    <div class="results-card">
+      <div class="results-header">
+        <h2>Top 5 Most Viewed Messages</h2>
+        <button class="results-close" id="results-close-btn"><i class="fas fa-xmark"></i></button>
+      </div>
+      <div class="results-content" id="results-content">
+        <!-- Results will be inserted here -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Debug Results Button -->
+  <button id="experience-results-btn" style="display: none;">
+    <i class="fas fa-chart-bar"></i> View Attention Results
+  </button>
+
+  <!-- Shared Core JS -->
+  <script src="../circl/js/circl-core.js"></script>
+  <!-- Shared Feed Loader -->
+  <script src="../circl/js/feed-loader.js"></script>
+  <!-- SAIL (Sandbox for AI Intervention & Labeling) Tracker -->
+  <script src="../shared/js/sail-tracker.js"></script>
+  <!-- Buzz Feed JS -->
+  <script src="js/buzz-feed.js"></script>
+  <!-- SAIL Intervention Engine -->
+  <script src="../shared/js/sail-interventions.js"></script>
+</body>
+</html>

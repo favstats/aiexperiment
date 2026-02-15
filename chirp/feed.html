@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Wave</title>
+
+  <!-- Favicon - Wave logo -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><defs><clipPath id='c'><circle cx='16' cy='16' r='14'/></clipPath></defs><circle cx='16' cy='16' r='14' fill='none' stroke='%23B91C1C' stroke-width='1.5'/><g clip-path='url(%23c)'><path d='M0 14 C4 2 10 2 16 14 C22 26 28 26 32 14 L32 18 C28 30 22 30 16 18 C10 6 4 6 0 18 Z' fill='%23B91C1C'/></g></svg>">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Wave Styles -->
+  <link rel="stylesheet" href="css/chirp.css?v=3">
+  <link rel="stylesheet" href="../shared/css/sail-interventions.css">
+</head>
+<body data-platform="chirp">
+  <!-- Loading Screen -->
+  <div id="survey-loader" class="xf-loader">
+    <div class="xf-loader-content">
+      <div class="xf-loader-logo">
+        <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <clipPath id="wave-loader-clip"><circle cx="16" cy="16" r="14"/></clipPath>
+          </defs>
+          <circle cx="16" cy="16" r="14" fill="none" stroke="#B91C1C" stroke-width="1.5"/>
+          <g clip-path="url(#wave-loader-clip)"><path d="M0 14 C4 2 10 2 16 14 C22 26 28 26 32 14 L32 18 C28 30 22 30 16 18 C10 6 4 6 0 18 Z" fill="#B91C1C"/></g>
+        </svg>
+      </div>
+      <h1 class="xf-loader-title">Welcome to Wave</h1>
+      <p id="loading-message" class="xf-loader-message">Preparing your feed...</p>
+      <div class="xf-loader-dots">
+        <span></span><span></span><span></span>
+      </div>
+      <div class="xf-loader-progress">
+        <div class="xf-loader-progress-bar"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Coming Soon Tooltip -->
+  <div id="coming-soon-tooltip" class="xf-tooltip">Feature coming soon!</div>
+
+  <!-- App Shell -->
+  <div id="xf-app" class="xf-app">
+
+    <!-- Left Sidebar -->
+    <nav class="xf-sidebar">
+      <div class="xf-sidebar-logo">
+        <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <clipPath id="wave-sidebar-clip"><circle cx="16" cy="16" r="14"/></clipPath>
+          </defs>
+          <circle cx="16" cy="16" r="14" fill="none" stroke="#B91C1C" stroke-width="1.5"/>
+          <g clip-path="url(#wave-sidebar-clip)"><path d="M0 14 C4 2 10 2 16 14 C22 26 28 26 32 14 L32 18 C28 30 22 30 16 18 C10 6 4 6 0 18 Z" fill="#B91C1C"/></g>
+        </svg>
+        <span class="xf-sidebar-logo-text">Wave</span>
+      </div>
+
+      <ul class="xf-sidebar-nav">
+        <li class="xf-nav-item active">
+          <i class="fas fa-house"></i><span>Home</span>
+        </li>
+        <li class="xf-nav-item">
+          <i class="fas fa-magnifying-glass"></i><span>Explore</span>
+        </li>
+        <li class="xf-nav-item">
+          <i class="far fa-bell"></i><span>Notifications</span>
+        </li>
+        <li class="xf-nav-item">
+          <i class="far fa-envelope"></i><span>Messages</span>
+        </li>
+        <li class="xf-nav-item">
+          <i class="far fa-bookmark"></i><span>Bookmarks</span>
+        </li>
+        <li class="xf-nav-item">
+          <i class="fas fa-robot"></i><span>Shmok</span>
+        </li>
+        <li class="xf-nav-item">
+          <i class="fas fa-list-ul"></i><span>Lists</span>
+        </li>
+        <li class="xf-nav-item">
+          <i class="far fa-user"></i><span>Profile</span>
+        </li>
+        <li class="xf-nav-item">
+          <i class="fas fa-ellipsis"></i><span>More</span>
+        </li>
+      </ul>
+
+      <button class="xf-post-btn">Post</button>
+
+      <div class="xf-sidebar-profile">
+        <div class="xf-sidebar-profile-avatar">U</div>
+        <div class="xf-sidebar-profile-info">
+          <div class="xf-sidebar-profile-name">User</div>
+          <div class="xf-sidebar-profile-handle">@user</div>
+        </div>
+        <div class="xf-sidebar-profile-more"><i class="fas fa-ellipsis"></i></div>
+      </div>
+    </nav>
+
+    <!-- Center Feed Column -->
+    <main class="xf-main">
+      <div class="xf-feed-header">
+        <div class="xf-feed-header-top">
+          <div class="xf-feed-tabs">
+            <div class="xf-feed-tab active">For you</div>
+            <div class="xf-feed-tab">Following</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feed Posts Container -->
+      <div id="xf-feed-container" class="xf-feed-container"></div>
+    </main>
+
+    <!-- Right Sidebar -->
+    <aside class="xf-right">
+      <!-- Search -->
+      <div class="xf-search">
+        <div class="xf-search-input-wrap">
+          <i class="fas fa-magnifying-glass"></i>
+          <input type="text" class="xf-search-input" placeholder="Search" disabled>
+        </div>
+      </div>
+
+      <!-- What's Happening / Trending -->
+      <div class="xf-trending-card">
+        <div class="xf-trending-header">What's happening</div>
+        <div class="xf-trending-item">
+          <div class="xf-trending-category">Trending in Netherlands</div>
+          <div class="xf-trending-topic">#Politiek</div>
+          <div class="xf-trending-posts">12.4K posts</div>
+        </div>
+        <div class="xf-trending-item">
+          <div class="xf-trending-category">Politics &middot; Trending</div>
+          <div class="xf-trending-topic">#Klimaat</div>
+          <div class="xf-trending-posts">8.7K posts</div>
+        </div>
+        <div class="xf-trending-item">
+          <div class="xf-trending-category">Trending in Netherlands</div>
+          <div class="xf-trending-topic">#Woningmarkt</div>
+          <div class="xf-trending-posts">5.2K posts</div>
+        </div>
+        <div class="xf-trending-item">
+          <div class="xf-trending-category">Economy &middot; Trending</div>
+          <div class="xf-trending-topic">#Inflatie</div>
+          <div class="xf-trending-posts">3.1K posts</div>
+        </div>
+        <div class="xf-trending-item">
+          <div class="xf-trending-category">Trending in Netherlands</div>
+          <div class="xf-trending-topic">#Nederland</div>
+          <div class="xf-trending-posts">2.4K posts</div>
+        </div>
+        <div class="xf-trending-more">Show more</div>
+      </div>
+
+      <!-- Subscribe to Premium -->
+      <div class="xf-premium-card">
+        <div class="xf-premium-header">Subscribe to Premium</div>
+        <div class="xf-premium-desc">Subscribe to unlock new features and if eligible, receive a share of revenue.</div>
+        <button class="xf-premium-btn">Subscribe</button>
+      </div>
+
+      <!-- Who to Follow -->
+      <div class="xf-follow-card">
+        <div class="xf-follow-header">Who to follow</div>
+        <div class="xf-follow-item">
+          <div class="xf-follow-avatar">
+            <div class="xf-follow-avatar-fallback" style="background: #1D9BF0;">JV</div>
+          </div>
+          <div class="xf-follow-info">
+            <div class="xf-follow-name">Jan Vermeer</div>
+            <div class="xf-follow-handle">@jan_vermeer</div>
+          </div>
+          <button class="xf-follow-btn">Follow</button>
+        </div>
+        <div class="xf-follow-item">
+          <div class="xf-follow-avatar">
+            <div class="xf-follow-avatar-fallback" style="background: #00BA7C;">MB</div>
+          </div>
+          <div class="xf-follow-info">
+            <div class="xf-follow-name">Marieke Bakker</div>
+            <div class="xf-follow-handle">@marieke_bakker</div>
+          </div>
+          <button class="xf-follow-btn">Follow</button>
+        </div>
+        <div class="xf-follow-item">
+          <div class="xf-follow-avatar">
+            <div class="xf-follow-avatar-fallback" style="background: #F91880;">PJ</div>
+          </div>
+          <div class="xf-follow-info">
+            <div class="xf-follow-name">Pieter Jansen</div>
+            <div class="xf-follow-handle">@pieter_jansen</div>
+          </div>
+          <button class="xf-follow-btn">Follow</button>
+        </div>
+        <div class="xf-follow-more">Show more</div>
+      </div>
+
+      <div class="xf-right-footer">
+        <a href="#">Terms of Service</a><span class="xf-footer-sep">&middot;</span><a href="#">Privacy Policy</a><span class="xf-footer-sep">&middot;</span><a href="#">Cookie Policy</a><span class="xf-footer-sep">&middot;</span><a href="#">Accessibility</a><span class="xf-footer-sep">&middot;</span><a href="#">Ads info</a><span class="xf-footer-sep">&middot;</span><a href="#">More</a><span class="xf-footer-sep">&middot;</span>&copy; 2025 Wave
+      </div>
+    </aside>
+  </div>
+
+  <!-- Results Modal -->
+  <div id="xf-results-modal" class="xf-results-modal">
+    <div class="xf-results-content">
+      <div class="xf-results-header">
+        <h2>Top Viewed Posts</h2>
+        <button class="xf-results-close" onclick="xfCloseResults()"><i class="fas fa-xmark"></i></button>
+      </div>
+      <div id="xf-results-body" class="xf-results-body"></div>
+    </div>
+  </div>
+
+  <!-- Debug Results Button -->
+  <button id="xf-results-btn" class="xf-results-btn" style="display: none;" onclick="xfShowResults()">
+    <i class="fas fa-chart-bar"></i> View Results
+  </button>
+
+  <!-- Shared Scripts -->
+  <script src="../circl/js/circl-core.js"></script>
+  <script src="../circl/js/feed-loader.js"></script>
+  <!-- SAIL (Sandbox for AI Intervention & Labeling) Tracker -->
+  <script src="../shared/js/sail-tracker.js"></script>
+  <!-- Wave-specific -->
+  <script src="js/chirp-feed.js"></script>
+  <!-- SAIL Intervention Engine -->
+  <script src="../shared/js/sail-interventions.js"></script>
+</body>
+</html>

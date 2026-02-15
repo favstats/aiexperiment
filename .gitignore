@@ -58,6 +58,7 @@ __pycache__/
 *.json
 !conditions.json
 !circl/data/*.json
+!shared/sail-config.json
 *.xml
 *.yaml
 *.yml
@@ -78,6 +79,7 @@ __pycache__/
 # Data Directories
 data/
 !circl/data/
+tracking_data/
 datasets/
 raw_data/
 processed_data/

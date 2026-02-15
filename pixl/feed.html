@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, maximum-scale=1.0, user-scalable=no">
+  <title>Pixl</title>
+
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📷</text></svg>">
+
+  <!-- Font Awesome 6.4.0 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <!-- Google Fonts: Satisfy (Instagram script font) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Satisfy&display=swap" rel="stylesheet">
+
+  <!-- Pixl Styles -->
+  <link rel="stylesheet" href="css/pixl.css">
+  <link rel="stylesheet" href="../shared/css/sail-interventions.css">
+</head>
+<body data-platform="pixl">
+
+  <!-- Coming Soon Tooltip -->
+  <div id="ig-coming-soon-tooltip" class="ig-coming-soon-tooltip">Feature coming soon!</div>
+
+  <!-- ============================================
+       LOADING SCREEN
+       ============================================ -->
+  <div id="ig-loader" class="ig-loader">
+    <div class="ig-loader-content">
+      <div class="ig-loader-logo">
+        <i class="fas fa-camera-retro"></i>
+      </div>
+      <h1 class="ig-loader-title">Pixl</h1>
+      <div class="ig-loader-text" id="ig-loading-message">Loading your feed...</div>
+      <div class="ig-loader-dots">
+        <span></span><span></span><span></span>
+      </div>
+      <div class="ig-loader-progress">
+        <div class="ig-loader-progress-bar"></div>
+      </div>
+    </div>
+    <!-- "from Pixl" branding at absolute bottom of screen -->
+    <div class="ig-loader-meta">
+      from <span style="font-weight: 600;">Pixl</span>
+    </div>
+  </div>
+
+  <!-- ============================================
+       APP SHELL
+       ============================================ -->
+  <div class="ig-app">
+
+    <!-- MOBILE TOP HEADER -->
+    <header class="ig-header">
+      <div class="ig-header-left">
+        <button class="ig-header-camera" aria-label="Camera">
+          <i class="far fa-square-plus"></i>
+        </button>
+        <div class="ig-header-logo">Pixl</div>
+      </div>
+      <div class="ig-header-right">
+        <button class="ig-header-icon" aria-label="Likes">
+          <i class="far fa-heart"></i>
+        </button>
+        <button class="ig-header-icon" aria-label="Direct Messages">
+          <i class="far fa-paper-plane"></i>
+          <span class="badge">3</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- DESKTOP LEFT SIDEBAR NAVIGATION -->
+    <nav class="ig-desktop-nav">
+      <div class="ig-nav-logo">Pixl</div>
+      <div class="ig-nav-items">
+        <div class="ig-nav-item active">
+          <i class="fas fa-house"></i>
+          <span class="ig-nav-item-label">Home</span>
+        </div>
+        <div class="ig-nav-item">
+          <i class="fas fa-magnifying-glass"></i>
+          <span class="ig-nav-item-label">Search</span>
+        </div>
+        <div class="ig-nav-item">
+          <i class="fas fa-compass"></i>
+          <span class="ig-nav-item-label">Explore</span>
+        </div>
+        <div class="ig-nav-item">
+          <i class="fas fa-film"></i>
+          <span class="ig-nav-item-label">Reels</span>
+        </div>
+        <div class="ig-nav-item">
+          <i class="far fa-paper-plane"></i>
+          <span class="ig-nav-item-label">Messages</span>
+        </div>
+        <div class="ig-nav-item">
+          <i class="far fa-heart"></i>
+          <span class="ig-nav-item-label">Notifications</span>
+        </div>
+        <div class="ig-nav-item">
+          <i class="far fa-square-plus"></i>
+          <span class="ig-nav-item-label">Create</span>
+        </div>
+        <div class="ig-nav-item ig-nav-threads-item">
+          <i class="fab fa-threads"></i>
+          <span class="ig-nav-item-label">Threads</span>
+        </div>
+        <div class="ig-nav-item">
+          <img class="ig-nav-item-avatar" src="https://randomuser.me/api/portraits/lego/1.jpg" alt="Profile"
+               onerror="this.style.background='#dbdbdb';">
+          <span class="ig-nav-item-label">Profile</span>
+        </div>
+        <div class="ig-nav-spacer"></div>
+        <div class="ig-nav-item ig-nav-more-item">
+          <i class="fas fa-bars"></i>
+          <span class="ig-nav-item-label">More</span>
+        </div>
+      </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main class="ig-main">
+
+      <!-- Feed Column -->
+      <div class="ig-feed-column">
+
+        <!-- Stories Bar -->
+        <div class="ig-stories">
+          <ul class="ig-stories-list" id="ig-stories-list">
+            <!-- Stories rendered by JS -->
+          </ul>
+        </div>
+
+        <!-- Feed Posts Container -->
+        <div id="ig-feed">
+          <!-- Posts rendered by JS -->
+        </div>
+
+      </div>
+
+      <!-- Desktop Right Sidebar -->
+      <aside class="ig-desktop-sidebar">
+        <!-- Profile Card -->
+        <div class="ig-sidebar-profile">
+          <div class="ig-sidebar-avatar-ring">
+            <div class="ig-sidebar-avatar-fallback">U</div>
+          </div>
+          <div>
+            <div class="ig-sidebar-username">your_username</div>
+            <div class="ig-sidebar-fullname">Welcome to Pixl</div>
+          </div>
+          <span class="ig-sidebar-switch">Switch</span>
+        </div>
+
+        <!-- Suggestions -->
+        <div class="ig-sidebar-header">
+          <span class="ig-sidebar-header-label">Suggestions For You</span>
+          <span class="ig-sidebar-see-all">See All</span>
+        </div>
+
+        <div class="ig-suggestion">
+          <img class="ig-suggestion-avatar" src="https://randomuser.me/api/portraits/women/32.jpg" alt=""
+               onerror="this.style.background='#dbdbdb';">
+          <div class="ig-suggestion-info">
+            <div class="ig-suggestion-username">anna.dejong</div>
+            <div class="ig-suggestion-desc">Followed by lars_nl + 3 more</div>
+          </div>
+          <span class="ig-suggestion-follow">Follow</span>
+          <button class="ig-suggestion-dismiss" aria-label="Dismiss"><i class="fas fa-xmark"></i></button>
+        </div>
+
+        <div class="ig-suggestion">
+          <img class="ig-suggestion-avatar" src="https://randomuser.me/api/portraits/men/45.jpg" alt=""
+               onerror="this.style.background='#dbdbdb';">
+          <div class="ig-suggestion-info">
+            <div class="ig-suggestion-username">mark.bakker</div>
+            <div class="ig-suggestion-desc">Followed by emma.j + 5 more</div>
+          </div>
+          <span class="ig-suggestion-follow">Follow</span>
+          <button class="ig-suggestion-dismiss" aria-label="Dismiss"><i class="fas fa-xmark"></i></button>
+        </div>
+
+        <div class="ig-suggestion">
+          <img class="ig-suggestion-avatar" src="https://randomuser.me/api/portraits/women/67.jpg" alt=""
+               onerror="this.style.background='#dbdbdb';">
+          <div class="ig-suggestion-info">
+            <div class="ig-suggestion-username">sophie.vries</div>
+            <div class="ig-suggestion-desc">Suggested for you</div>
+          </div>
+          <span class="ig-suggestion-follow">Follow</span>
+          <button class="ig-suggestion-dismiss" aria-label="Dismiss"><i class="fas fa-xmark"></i></button>
+        </div>
+
+        <div class="ig-suggestion">
+          <img class="ig-suggestion-avatar" src="https://randomuser.me/api/portraits/men/22.jpg" alt=""
+               onerror="this.style.background='#dbdbdb';">
+          <div class="ig-suggestion-info">
+            <div class="ig-suggestion-username">tim.visser</div>
+            <div class="ig-suggestion-desc">Followed by daan_vd + 2 more</div>
+          </div>
+          <span class="ig-suggestion-follow">Follow</span>
+          <button class="ig-suggestion-dismiss" aria-label="Dismiss"><i class="fas fa-xmark"></i></button>
+        </div>
+
+        <div class="ig-suggestion">
+          <img class="ig-suggestion-avatar" src="https://randomuser.me/api/portraits/women/15.jpg" alt=""
+               onerror="this.style.background='#dbdbdb';">
+          <div class="ig-suggestion-info">
+            <div class="ig-suggestion-username">fleur.mulder</div>
+            <div class="ig-suggestion-desc">Suggested for you</div>
+          </div>
+          <span class="ig-suggestion-follow">Follow</span>
+          <button class="ig-suggestion-dismiss" aria-label="Dismiss"><i class="fas fa-xmark"></i></button>
+        </div>
+
+        <!-- Footer -->
+        <div class="ig-sidebar-footer">
+          About &middot; Help &middot; Press &middot; API &middot; Jobs &middot; Privacy &middot; Terms &middot; Locations &middot; Language
+          <br><br>
+          &copy; 2025 PIXL
+        </div>
+      </aside>
+
+    </main>
+
+    <!-- MOBILE BOTTOM NAVIGATION -->
+    <nav class="ig-bottom-nav">
+      <div class="ig-bottom-nav-item active">
+        <i class="fas fa-house"></i>
+      </div>
+      <div class="ig-bottom-nav-item">
+        <i class="fas fa-magnifying-glass"></i>
+      </div>
+      <div class="ig-bottom-nav-item">
+        <i class="fas fa-clapperboard"></i>
+      </div>
+      <div class="ig-bottom-nav-item">
+        <i class="far fa-bag-shopping"></i>
+      </div>
+      <div class="ig-bottom-nav-item">
+        <img class="ig-nav-avatar" src="https://randomuser.me/api/portraits/lego/1.jpg" alt="Profile"
+             onerror="this.style.background='#dbdbdb';">
+      </div>
+    </nav>
+
+  </div>
+
+  <!-- ============================================
+       RESULTS MODAL (debug mode)
+       ============================================ -->
+  <div class="ig-results-modal" id="ig-results-modal">
+    <div class="ig-results-card">
+      <div class="ig-results-header">
+        <h2>Top 5 Most Viewed Posts</h2>
+        <button class="ig-results-close" onclick="closeIGResults()"><i class="fas fa-xmark"></i></button>
+      </div>
+      <div class="ig-results-content" id="ig-results-content">
+        <!-- Results inserted by JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Debug Results Button -->
+  <button class="ig-results-btn" id="ig-results-btn" onclick="showIGResults()">
+    <i class="fas fa-chart-bar"></i> View Results
+  </button>
+
+  <!-- ============================================
+       SCRIPTS
+       ============================================ -->
+  <!-- Shared Core (provides globals: debugMode, postViewTimes, etc.) -->
+  <script src="../circl/js/circl-core.js"></script>
+  <!-- Shared Feed Loader (provides FeedLoader module) -->
+  <script src="../circl/js/feed-loader.js"></script>
+  <!-- SAIL (Sandbox for AI Intervention & Labeling) Tracker -->
+  <script src="../shared/js/sail-tracker.js"></script>
+  <!-- Pixl Feed Logic -->
+  <script src="js/pixl-feed.js"></script>
+  <!-- SAIL Intervention Engine -->
+  <script src="../shared/js/sail-interventions.js"></script>
+
+</body>
+</html>

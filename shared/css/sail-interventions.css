@@ -1,0 +1,656 @@
+/* ==========================================================================
+   SAIL (Sandbox for AI Intervention & Labeling) Engine — Shared Styles
+   Used across 6 social media platform simulators:
+   Circl (Facebook), Wave (X/Twitter), Flow (TikTok),
+   Pixl (Instagram), Buzz (WhatsApp), Swift (Telegram)
+
+   All classes prefixed with `sail-` to avoid platform style conflicts.
+   Class names match those created by sail-interventions.js.
+   Platform-specific overrides use [data-platform="<name>"] selectors.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. CSS Custom Properties (Color Palette & Tokens)
+   -------------------------------------------------------------------------- */
+
+:root {
+  /* Primary palette */
+  --sail-blue: #1D9BF0;
+  --sail-amber: #F5A623;
+  --sail-red: #E0245E;
+  --sail-gray: #71767B;
+  --sail-green: #42B72A;
+
+  /* Text colors */
+  --sail-text-primary: #1c1e21;
+  --sail-text-secondary: #65676B;
+  --sail-text-white: #ffffff;
+  --sail-text-brown: #5C4B33;
+
+  /* Surfaces */
+  --sail-surface-light: #f7f8fa;
+  --sail-surface-dark: #1c1e21;
+  --sail-surface-note: #FEF9EF;
+  --sail-border-note: #F5DEB3;
+  --sail-overlay-heavy: rgba(0, 0, 0, 0.70);
+  --sail-overlay-medium: rgba(0, 0, 0, 0.55);
+
+  /* Misc */
+  --sail-border-light: rgba(0, 0, 0, 0.1);
+  --sail-border-subtle: rgba(0, 0, 0, 0.06);
+
+  /* Transition defaults */
+  --sail-transition-fast: 0.2s ease;
+  --sail-transition-medium: 0.3s ease;
+  --sail-transition-slow: 0.4s ease;
+}
+
+
+/* --------------------------------------------------------------------------
+   2. Animations & Keyframes
+   -------------------------------------------------------------------------- */
+
+@keyframes sail-fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes sail-slide-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+
+/* --------------------------------------------------------------------------
+   3. (a) Inline Disclosure Badge — .sail-badge
+   -------------------------------------------------------------------------- */
+
+.sail-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.4;
+  color: #fff;
+  white-space: nowrap;
+  z-index: 10;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.sail-badge i {
+  font-size: 11px;
+}
+
+.sail-badge-media {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 15;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.sail-badge-header {
+  margin: 6px 0 4px 0;
+}
+
+.sail-badge-footer {
+  margin: 6px 0;
+}
+
+
+/* --------------------------------------------------------------------------
+   4. (b) Interstitial Screen — .sail-interstitial-*
+   -------------------------------------------------------------------------- */
+
+.sail-interstitial-wrap {
+  position: relative;
+}
+
+.sail-interstitial-blur {
+  filter: blur(8px);
+  pointer-events: none;
+  transition: filter var(--sail-transition-slow);
+}
+
+.sail-interstitial-blur-cleared {
+  filter: none;
+  pointer-events: auto;
+}
+
+.sail-interstitial-overlay {
+  position: absolute;
+  inset: 0;
+  background: var(--sail-overlay-heavy);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  padding: 24px;
+  text-align: center;
+  transition: opacity var(--sail-transition-slow);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.sail-interstitial-overlay.sail-fade-out {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.sail-interstitial-icon {
+  font-size: 40px;
+  color: #FFB020;
+  margin-bottom: 16px;
+}
+
+.sail-interstitial-text {
+  color: #fff;
+  font-size: 15px;
+  line-height: 1.5;
+  max-width: 340px;
+  margin-bottom: 20px;
+}
+
+.sail-interstitial-btn {
+  background: #fff;
+  color: #1a1a1a;
+  border: none;
+  padding: 10px 28px;
+  border-radius: 24px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--sail-transition-fast), transform 0.1s;
+}
+
+.sail-interstitial-btn:hover {
+  background: #e0e0e0;
+}
+
+.sail-interstitial-btn:active {
+  transform: scale(0.97);
+}
+
+
+/* --------------------------------------------------------------------------
+   5. (c) Provenance Panel — .sail-provenance-*
+   -------------------------------------------------------------------------- */
+
+.sail-provenance-trigger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 1.5px solid #888;
+  background: transparent;
+  color: #888;
+  font-size: 13px;
+  cursor: pointer;
+  margin-left: 8px;
+  transition: border-color var(--sail-transition-fast), color var(--sail-transition-fast);
+  flex-shrink: 0;
+  font-family: serif;
+  line-height: 1;
+  padding: 0;
+}
+
+.sail-provenance-trigger:hover {
+  border-color: #555;
+  color: #555;
+}
+
+.sail-provenance-panel {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition:
+    max-height 0.35s ease,
+    opacity 0.3s ease,
+    padding 0.3s ease;
+  background: var(--sail-surface-light);
+  border-radius: 8px;
+  margin: 0 12px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.sail-provenance-panel.sail-panel-open {
+  max-height: 300px;
+  opacity: 1;
+  padding: 12px 14px;
+  margin-top: 6px;
+  margin-bottom: 6px;
+  border: 1px solid #e0e0e0;
+}
+
+.sail-provenance-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13px;
+  font-weight: 700;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.sail-provenance-close {
+  background: none;
+  border: none;
+  font-size: 16px;
+  color: #888;
+  cursor: pointer;
+  padding: 0 2px;
+  line-height: 1;
+}
+
+.sail-provenance-close:hover {
+  color: #333;
+}
+
+.sail-provenance-grid {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 6px 12px;
+  font-size: 12px;
+  color: #555;
+}
+
+.sail-provenance-label {
+  font-weight: 600;
+  color: #333;
+}
+
+
+/* --------------------------------------------------------------------------
+   6. (d) Accuracy Nudge Modal — .sail-nudge-*
+   -------------------------------------------------------------------------- */
+
+.sail-nudge-backdrop {
+  position: fixed;
+  inset: 0;
+  background: var(--sail-overlay-medium);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  animation: sail-fade-in 0.2s ease;
+}
+
+.sail-nudge-card {
+  background: #fff;
+  border-radius: 16px;
+  max-width: 380px;
+  width: 100%;
+  padding: 28px 24px 20px;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  animation: sail-slide-up 0.25s ease;
+}
+
+.sail-nudge-icon {
+  font-size: 36px;
+  color: #F59E0B;
+  margin-bottom: 14px;
+}
+
+.sail-nudge-text {
+  font-size: 15px;
+  line-height: 1.5;
+  color: #333;
+  margin-bottom: 22px;
+}
+
+.sail-nudge-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.sail-nudge-cancel {
+  padding: 10px 22px;
+  border-radius: 24px;
+  border: 1.5px solid #d0d0d0;
+  background: #fff;
+  color: #555;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.sail-nudge-cancel:hover {
+  background: #f3f3f3;
+}
+
+.sail-nudge-proceed {
+  padding: 10px 22px;
+  border-radius: 24px;
+  border: none;
+  background: #F59E0B;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.sail-nudge-proceed:hover {
+  background: #D97706;
+}
+
+
+/* --------------------------------------------------------------------------
+   7. (e) Community Notes — .sail-community-note, .sail-cn-*
+   -------------------------------------------------------------------------- */
+
+.sail-community-note {
+  background: var(--sail-surface-note);
+  border: 1px solid var(--sail-border-note);
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin: 8px 12px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.sail-cn-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.sail-cn-icon {
+  font-size: 16px;
+  color: #92785C;
+}
+
+.sail-cn-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--sail-text-brown);
+}
+
+.sail-cn-body {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--sail-text-brown);
+  margin-bottom: 8px;
+}
+
+.sail-cn-rate {
+  font-size: 12px;
+  color: var(--sail-blue);
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.sail-cn-rate:hover {
+  text-decoration: underline;
+}
+
+
+/* --------------------------------------------------------------------------
+   8. (f) AI-Origin Icon — .sail-ai-icon, .sail-ai-tooltip
+   -------------------------------------------------------------------------- */
+
+.sail-ai-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  border-radius: 14px;
+  background: rgba(100, 100, 100, 0.15);
+  font-size: 11px;
+  font-weight: 600;
+  color: #666;
+  cursor: default;
+  position: relative;
+  z-index: 10;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.sail-ai-icon i {
+  font-size: 12px;
+}
+
+.sail-ai-icon-media {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  z-index: 15;
+}
+
+.sail-ai-icon-header {
+  margin-left: 8px;
+}
+
+.sail-ai-tooltip {
+  display: none;
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #333;
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 400;
+  white-space: nowrap;
+  z-index: 20;
+  pointer-events: none;
+}
+
+.sail-ai-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: #333;
+}
+
+.sail-ai-icon:hover .sail-ai-tooltip {
+  display: block;
+}
+
+
+/* ==========================================================================
+   8b. Absolute Positioning (designer canvas drag-and-drop)
+   ========================================================================== */
+
+.sail-badge-absolute {
+  position: absolute !important;
+  z-index: 15;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.sail-ai-icon-absolute {
+  position: absolute !important;
+  z-index: 15;
+}
+
+
+/* ==========================================================================
+   9. Platform-Specific Overrides
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   9a. Flow (TikTok-style dark theme)
+   -------------------------------------------------------------------------- */
+
+[data-platform="flow"] .sail-community-note {
+  background: rgba(255, 248, 225, 0.1);
+  border-color: rgba(255, 224, 130, 0.2);
+  color: rgba(255, 255, 255, 0.8);
+}
+
+[data-platform="flow"] .sail-cn-header,
+[data-platform="flow"] .sail-cn-title,
+[data-platform="flow"] .sail-cn-body {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+[data-platform="flow"] .sail-cn-icon {
+  color: var(--sail-amber);
+}
+
+[data-platform="flow"] .sail-provenance-panel {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--sail-text-white);
+}
+
+[data-platform="flow"] .sail-provenance-panel.sail-panel-open {
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+[data-platform="flow"] .sail-provenance-title {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+[data-platform="flow"] .sail-provenance-label {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+[data-platform="flow"] .sail-provenance-grid {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+[data-platform="flow"] .sail-provenance-close {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+[data-platform="flow"] .sail-provenance-close:hover {
+  color: var(--sail-text-white);
+}
+
+[data-platform="flow"] .sail-provenance-trigger {
+  border-color: rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.6);
+}
+
+[data-platform="flow"] .sail-provenance-trigger:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--sail-text-white);
+}
+
+/* --------------------------------------------------------------------------
+   9b. Buzz (WhatsApp) & Swift (Telegram) — tighter chat bubble spacing
+   -------------------------------------------------------------------------- */
+
+[data-platform="buzz"] .sail-community-note,
+[data-platform="swift"] .sail-community-note {
+  padding: 8px 12px;
+  margin: 4px 0;
+  border-radius: 8px;
+  font-size: 12px;
+}
+
+[data-platform="buzz"] .sail-cn-header,
+[data-platform="swift"] .sail-cn-header {
+  font-size: 10px;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+[data-platform="buzz"] .sail-cn-title,
+[data-platform="swift"] .sail-cn-title {
+  font-size: 11px;
+}
+
+[data-platform="buzz"] .sail-cn-body,
+[data-platform="swift"] .sail-cn-body {
+  font-size: 12px;
+}
+
+[data-platform="buzz"] .sail-badge,
+[data-platform="swift"] .sail-badge {
+  font-size: 10px;
+  padding: 3px 8px;
+}
+
+
+/* ==========================================================================
+   10. Responsive — Mobile
+   ========================================================================== */
+
+@media (max-width: 480px) {
+  .sail-nudge-card {
+    width: 95%;
+    padding: 20px 16px;
+  }
+
+  .sail-badge {
+    font-size: 10px;
+  }
+
+  .sail-interstitial-icon {
+    font-size: 36px;
+  }
+
+  .sail-interstitial-text {
+    max-width: 280px;
+  }
+
+  .sail-community-note {
+    margin: 8px 8px;
+  }
+
+  .sail-nudge-actions {
+    flex-direction: column;
+  }
+
+  .sail-nudge-cancel,
+  .sail-nudge-proceed {
+    width: 100%;
+  }
+}
+
+
+/* ==========================================================================
+   11. Accessibility — Reduced Motion & Print
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .sail-interstitial-overlay,
+  .sail-interstitial-blur,
+  .sail-nudge-backdrop,
+  .sail-nudge-card,
+  .sail-provenance-panel,
+  .sail-interstitial-btn {
+    animation: none !important;
+    transition-duration: 0.01s !important;
+  }
+}
+
+@media print {
+  .sail-interstitial-overlay,
+  .sail-nudge-backdrop,
+  .sail-ai-icon {
+    display: none !important;
+  }
+
+  .sail-community-note {
+    border: 1px solid #999;
+    background: #f5f5f5;
+  }
+
+  .sail-badge {
+    border: 1px solid currentColor;
+    background: transparent;
+  }
+
+  .sail-interstitial-blur {
+    filter: none !important;
+  }
+}

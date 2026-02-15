@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SAIL Admin Panel</title>
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <!-- Google Fonts: Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Admin Styles -->
+  <link rel="stylesheet" href="css/admin.css">
+  <link rel="stylesheet" href="css/canvas-designer.css">
+
+  <!-- Fabric.js for drag-and-drop canvas overlay -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
+</head>
+<body>
+
+  <!-- ============================================ -->
+  <!-- TOAST NOTIFICATION                           -->
+  <!-- ============================================ -->
+  <div id="toast" class="toast" aria-live="polite"></div>
+
+  <!-- ============================================ -->
+  <!-- VIEW 1: PLATFORM SELECTOR (LANDING PAGE)    -->
+  <!-- ============================================ -->
+  <div id="landing-view" class="view">
+    <div class="landing-wrapper">
+      <header class="landing-header">
+        <div class="logo">
+          <span class="logo-icon"><i class="fa-solid fa-flask"></i></span>
+          <span class="logo-text">SAIL</span>
+        </div>
+        <p class="landing-subtitle">Sandbox for AI Intervention &amp; Labeling &mdash; Experiment Configuration</p>
+      </header>
+
+      <div class="platform-grid">
+        <!-- Circl -->
+        <button class="platform-card" data-platform="circl" style="--accent: #1877F2">
+          <div class="card-icon"><i class="fa-brands fa-facebook"></i></div>
+          <h3 class="card-name">Circl</h3>
+          <p class="card-sub">Facebook-style feed</p>
+          <span class="card-cta">Configure <i class="fa-solid fa-arrow-right"></i></span>
+        </button>
+
+        <!-- Wave -->
+        <button class="platform-card" data-platform="chirp" style="--accent: #B91C1C">
+          <div class="card-icon"><i class="fa-brands fa-twitter"></i></div>
+          <h3 class="card-name">Wave</h3>
+          <p class="card-sub">X / Twitter-style feed</p>
+          <span class="card-cta">Configure <i class="fa-solid fa-arrow-right"></i></span>
+        </button>
+
+        <!-- Flow -->
+        <button class="platform-card" data-platform="flow" style="--accent: #FE2C55">
+          <div class="card-icon"><i class="fa-brands fa-tiktok"></i></div>
+          <h3 class="card-name">Flow</h3>
+          <p class="card-sub">TikTok-style feed</p>
+          <span class="card-cta">Configure <i class="fa-solid fa-arrow-right"></i></span>
+        </button>
+
+        <!-- Pixl -->
+        <button class="platform-card" data-platform="pixl" style="--accent: #E1306C">
+          <div class="card-icon"><i class="fa-brands fa-instagram"></i></div>
+          <h3 class="card-name">Pixl</h3>
+          <p class="card-sub">Instagram-style feed</p>
+          <span class="card-cta">Configure <i class="fa-solid fa-arrow-right"></i></span>
+        </button>
+
+        <!-- Buzz -->
+        <button class="platform-card" data-platform="buzz" style="--accent: #25D366">
+          <div class="card-icon"><i class="fa-brands fa-whatsapp"></i></div>
+          <h3 class="card-name">Buzz</h3>
+          <p class="card-sub">WhatsApp-style chat</p>
+          <span class="card-cta">Configure <i class="fa-solid fa-arrow-right"></i></span>
+        </button>
+
+        <!-- Swift -->
+        <button class="platform-card" data-platform="swift" style="--accent: #0088CC">
+          <div class="card-icon"><i class="fa-brands fa-telegram"></i></div>
+          <h3 class="card-name">Swift</h3>
+          <p class="card-sub">Telegram-style channel</p>
+          <span class="card-cta">Configure <i class="fa-solid fa-arrow-right"></i></span>
+        </button>
+      </div>
+
+      <footer class="landing-footer">
+        Powered by <strong>SAIL — Sandbox for AI Intervention &amp; Labeling</strong>
+      </footer>
+    </div>
+  </div>
+
+  <!-- ============================================ -->
+  <!-- VIEW 2: PLATFORM CONFIGURATION              -->
+  <!-- ============================================ -->
+  <div id="config-view" class="view" style="display:none">
+
+    <!-- Sidebar -->
+    <aside id="sidebar" class="sidebar">
+      <button id="btn-back" class="sidebar-back"><i class="fa-solid fa-arrow-left"></i> Platforms</button>
+
+      <div class="sidebar-platform">
+        <span id="sidebar-icon" class="sidebar-platform-icon"></span>
+        <span id="sidebar-name" class="sidebar-platform-name"></span>
+      </div>
+
+      <nav class="sidebar-nav">
+        <a href="#section-feed" class="sidebar-link active" data-section="section-feed">
+          <i class="fa-solid fa-sliders"></i> Feed Settings
+        </a>
+        <a href="#section-interventions" class="sidebar-link" data-section="section-interventions">
+          <i class="fa-solid fa-tags"></i> Interventions
+        </a>
+        <a href="#section-editor" class="sidebar-link" data-section="section-editor">
+          <i class="fa-solid fa-palette"></i> Preview Editor
+        </a>
+        <a href="#section-url" class="sidebar-link" data-section="section-url">
+          <i class="fa-solid fa-link"></i> URL Generator
+        </a>
+        <a href="#section-preview" class="sidebar-link" data-section="section-preview">
+          <i class="fa-solid fa-eye"></i> Preview
+        </a>
+        <a href="#section-data" class="sidebar-link" data-section="section-data">
+          <i class="fa-solid fa-database"></i> Data Collection
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <span class="sidebar-footer-logo"><i class="fa-solid fa-flask"></i> SAIL</span>
+      </div>
+    </aside>
+
+    <!-- Mobile top bar (visible < 768px) -->
+    <div id="mobile-topbar" class="mobile-topbar">
+      <button id="btn-back-mobile" class="mobile-back"><i class="fa-solid fa-arrow-left"></i></button>
+      <span id="mobile-platform-name" class="mobile-platform-name"></span>
+      <button id="btn-mobile-menu" class="mobile-menu-btn"><i class="fa-solid fa-bars"></i></button>
+    </div>
+
+    <!-- Mobile nav drawer -->
+    <div id="mobile-nav-drawer" class="mobile-nav-drawer">
+      <a href="#section-feed" class="sidebar-link" data-section="section-feed">
+        <i class="fa-solid fa-sliders"></i> Feed Settings
+      </a>
+      <a href="#section-interventions" class="sidebar-link" data-section="section-interventions">
+        <i class="fa-solid fa-tags"></i> Interventions
+      </a>
+      <a href="#section-editor" class="sidebar-link" data-section="section-editor">
+        <i class="fa-solid fa-palette"></i> Preview Editor
+      </a>
+      <a href="#section-url" class="sidebar-link" data-section="section-url">
+        <i class="fa-solid fa-link"></i> URL Generator
+      </a>
+      <a href="#section-preview" class="sidebar-link" data-section="section-preview">
+        <i class="fa-solid fa-eye"></i> Preview
+      </a>
+      <a href="#section-data" class="sidebar-link" data-section="section-data">
+        <i class="fa-solid fa-database"></i> Data Collection
+      </a>
+    </div>
+
+    <!-- Main content -->
+    <main class="config-main">
+
+      <!-- Section: Feed Settings -->
+      <section id="section-feed" class="config-section">
+        <h2 class="section-title"><i class="fa-solid fa-sliders"></i> Feed Settings</h2>
+        <div class="glass-card">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="cfg-total-posts">Total Posts</label>
+              <input type="number" id="cfg-total-posts" min="1" max="100" value="20">
+            </div>
+            <div class="form-group">
+              <label for="cfg-stimuli-count">Stimuli Count</label>
+              <input type="number" id="cfg-stimuli-count" min="0" max="50" value="4">
+            </div>
+            <div class="form-group">
+              <label for="cfg-filler-ratio">Filler Ratio</label>
+              <input type="number" id="cfg-filler-ratio" min="0" max="20" value="4">
+            </div>
+            <div class="form-group">
+              <label for="cfg-first-n-fillers">First N Fillers</label>
+              <input type="number" id="cfg-first-n-fillers" min="0" max="20" value="2">
+            </div>
+            <div class="form-group form-group--full">
+              <label class="checkbox-label">
+                <input type="checkbox" id="cfg-randomize" checked>
+                <span class="checkbox-text">Randomize Order</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <h3 class="section-subtitle">Participant Parameters</h3>
+        <div class="glass-card">
+          <div class="form-grid">
+            <div class="form-group">
+              <label for="cfg-gender">Gender</label>
+              <select id="cfg-gender">
+                <option value="female">Female</option>
+                <option value="male">Male</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="cfg-age">Age Group</label>
+              <select id="cfg-age">
+                <option value="18-29">18 - 29</option>
+                <option value="30-44">30 - 44</option>
+                <option value="45-59">45 - 59</option>
+                <option value="60+">60+</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="cfg-politics">Politics <span id="politics-value" class="range-value">5</span></label>
+              <input type="range" id="cfg-politics" min="1" max="10" value="5">
+              <div class="range-labels">
+                <span>Left (1)</span>
+                <span>Right (10)</span>
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="cfg-issue">Issue / Policy</label>
+              <select id="cfg-issue">
+                <option value="Affordable_childcare_access">Affordable childcare access</option>
+                <option value="Build_more_homes_accelerate_construction">Build more homes / accelerate construction</option>
+                <option value="CO2_levy_for_industry_climate">CO2 levy for industry (climate)</option>
+                <option value="purchasing_power">Purchasing power</option>
+                <option value="stop_weapon_ship_to_israel">Stop weapon shipments to Israel</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section: Interventions -->
+      <section id="section-interventions" class="config-section">
+        <h2 class="section-title"><i class="fa-solid fa-tags"></i> Interventions</h2>
+
+        <!-- (a) Inline Disclosure Badge -->
+        <div class="glass-card intervention-card">
+          <div class="intervention-header">
+            <div class="intervention-info">
+              <span class="intervention-icon"><i class="fa-solid fa-certificate"></i></span>
+              <div>
+                <h4 class="intervention-name">Inline Disclosure Badge</h4>
+                <p class="intervention-desc">Adds a visible AI-generated content badge to posts</p>
+              </div>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" id="int-badge-toggle">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="intervention-settings" id="int-badge-settings">
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="int-badge-text">Badge Text</label>
+                <input type="text" id="int-badge-text" value="AI-generated content">
+              </div>
+              <div class="form-group">
+                <label for="int-badge-pos">Position</label>
+                <select id="int-badge-pos">
+                  <option value="header">Header</option>
+                  <option value="media">Media</option>
+                  <option value="footer">Footer</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="int-badge-color">Color</label>
+                <select id="int-badge-color">
+                  <option value="blue">Blue</option>
+                  <option value="red">Red</option>
+                  <option value="orange">Orange</option>
+                  <option value="gray">Gray</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- (b) Interstitial Screen -->
+        <div class="glass-card intervention-card">
+          <div class="intervention-header">
+            <div class="intervention-info">
+              <span class="intervention-icon"><i class="fa-solid fa-hand"></i></span>
+              <div>
+                <h4 class="intervention-name">Interstitial Screen</h4>
+                <p class="intervention-desc">Full-screen warning before viewing AI content</p>
+              </div>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" id="int-interstitial-toggle">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="intervention-settings" id="int-interstitial-settings">
+            <div class="form-grid">
+              <div class="form-group form-group--full">
+                <label for="int-interstitial-msg">Message Text</label>
+                <textarea id="int-interstitial-msg" rows="3">This content may contain AI-generated material. Please review with care.</textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- (c) Provenance Panel -->
+        <div class="glass-card intervention-card">
+          <div class="intervention-header">
+            <div class="intervention-info">
+              <span class="intervention-icon"><i class="fa-solid fa-info-circle"></i></span>
+              <div>
+                <h4 class="intervention-name">Provenance Panel</h4>
+                <p class="intervention-desc">Shows origin metadata about AI-generated content</p>
+              </div>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" id="int-provenance-toggle">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="intervention-settings" id="int-provenance-settings">
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="int-provenance-model">Model Name</label>
+                <input type="text" id="int-provenance-model" value="AI Language Model">
+              </div>
+              <div class="form-group">
+                <label for="int-provenance-date">Creation Date</label>
+                <input type="text" id="int-provenance-date" value="2025">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- (d) Accuracy Nudge -->
+        <div class="glass-card intervention-card">
+          <div class="intervention-header">
+            <div class="intervention-info">
+              <span class="intervention-icon"><i class="fa-solid fa-bullseye"></i></span>
+              <div>
+                <h4 class="intervention-name">Accuracy Nudge</h4>
+                <p class="intervention-desc">Prompts users to consider accuracy before engaging</p>
+              </div>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" id="int-nudge-toggle">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="intervention-settings" id="int-nudge-settings">
+            <div class="form-grid">
+              <div class="form-group">
+                <label for="int-nudge-trigger">Trigger</label>
+                <select id="int-nudge-trigger">
+                  <option value="share">Share</option>
+                  <option value="like">Like</option>
+                  <option value="both">Both</option>
+                </select>
+              </div>
+              <div class="form-group form-group--full">
+                <label for="int-nudge-msg">Nudge Message</label>
+                <input type="text" id="int-nudge-msg" value="Is this information accurate? Consider checking before sharing.">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- (e) Community Notes -->
+        <div class="glass-card intervention-card">
+          <div class="intervention-header">
+            <div class="intervention-info">
+              <span class="intervention-icon"><i class="fa-solid fa-users"></i></span>
+              <div>
+                <h4 class="intervention-name">Community Notes</h4>
+                <p class="intervention-desc">Crowd-sourced context notes on posts</p>
+              </div>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" id="int-notes-toggle">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="intervention-settings" id="int-notes-settings">
+            <div class="form-grid">
+              <div class="form-group form-group--full">
+                <label for="int-notes-text">Note Text</label>
+                <textarea id="int-notes-text" rows="3">Readers added context they thought people might want to know.</textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- (f) AI-Origin Icon -->
+        <div class="glass-card intervention-card">
+          <div class="intervention-header">
+            <div class="intervention-info">
+              <span class="intervention-icon"><i class="fa-solid fa-robot"></i></span>
+              <div>
+                <h4 class="intervention-name">AI-Origin Icon</h4>
+                <p class="intervention-desc">Visual indicator of AI involvement in content creation</p>
+              </div>
+            </div>
+            <label class="toggle">
+              <input type="checkbox" id="int-aiicon-toggle">
+              <span class="toggle-slider"></span>
+            </label>
+          </div>
+          <div class="intervention-settings" id="int-aiicon-settings">
+            <div class="form-grid">
+              <div class="form-group form-group--full">
+                <label>Type</label>
+                <div class="radio-group">
+                  <label class="radio-label">
+                    <input type="radio" name="int-aiicon-type" value="full" checked>
+                    <span>Fully AI-generated</span>
+                  </label>
+                  <label class="radio-label">
+                    <input type="radio" name="int-aiicon-type" value="assisted">
+                    <span>AI-assisted</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section: Intervention Designer (Character Creator) -->
+      <section id="section-editor" class="config-section cc-section">
+        <h2 class="section-title"><i class="fa-solid fa-palette"></i> Intervention Designer</h2>
+        <p class="section-desc">Design and preview every aspect of your interventions. Click a tab, tweak the controls, and see changes instantly.</p>
+
+        <!-- Platform preview selector -->
+        <div class="cc-platform-bar">
+          <button class="cc-platform-btn active" data-cc-platform="circl" style="--cc-accent:#1877F2"><i class="fa-brands fa-facebook"></i> Circl</button>
+          <button class="cc-platform-btn" data-cc-platform="chirp" style="--cc-accent:#B91C1C"><i class="fa-brands fa-twitter"></i> Wave</button>
+          <button class="cc-platform-btn" data-cc-platform="flow" style="--cc-accent:#FE2C55"><i class="fa-brands fa-tiktok"></i> Flow</button>
+          <button class="cc-platform-btn" data-cc-platform="pixl" style="--cc-accent:#E1306C"><i class="fa-brands fa-instagram"></i> Pixl</button>
+          <button class="cc-platform-btn" data-cc-platform="buzz" style="--cc-accent:#25D366"><i class="fa-brands fa-whatsapp"></i> Buzz</button>
+          <button class="cc-platform-btn" data-cc-platform="swift" style="--cc-accent:#0088CC"><i class="fa-brands fa-telegram"></i> Swift</button>
+        </div>
+
+        <!-- Preset bar -->
+        <div class="cc-preset-bar">
+          <button class="cc-preset-chip" data-preset="subtle"><i class="fa-solid fa-eye-low-vision"></i> Subtle</button>
+          <button class="cc-preset-chip" data-preset="standard"><i class="fa-solid fa-check-circle"></i> Standard</button>
+          <button class="cc-preset-chip" data-preset="bold"><i class="fa-solid fa-bolt"></i> Bold</button>
+          <button class="cc-preset-chip" data-preset="eu_compliant"><i class="fa-solid fa-scale-balanced"></i> EU Compliant</button>
+          <button class="cc-preset-chip" data-preset="research_max"><i class="fa-solid fa-flask"></i> Research Max</button>
+          <span class="cc-preset-divider"></span>
+          <button id="btn-save-preset" class="cc-preset-chip cc-preset-chip--action"><i class="fa-solid fa-download"></i> Save</button>
+          <label class="cc-preset-chip cc-preset-chip--action" for="file-load-preset" style="cursor:pointer"><i class="fa-solid fa-upload"></i> Load</label>
+          <input type="file" id="file-load-preset" accept=".json" style="display:none">
+          <button id="btn-reset-preview" class="cc-preset-chip cc-preset-chip--action"><i class="fa-solid fa-rotate-left"></i> Reset</button>
+        </div>
+
+        <!-- Split layout: controls | preview -->
+        <div class="cc-layout">
+
+          <!-- LEFT: Tabbed controls -->
+          <div class="cc-controls">
+            <!-- Tab strip -->
+            <div class="cc-tabs" role="tablist">
+              <button class="cc-tab active" data-cc-tab="badge" role="tab" aria-selected="true">
+                <i class="fa-solid fa-certificate"></i><span>Badge</span>
+                <span class="cc-dot" id="cc-dot-badge"></span>
+              </button>
+              <button class="cc-tab" data-cc-tab="interstitial" role="tab">
+                <i class="fa-solid fa-hand"></i><span>Interstitial</span>
+                <span class="cc-dot" id="cc-dot-interstitial"></span>
+              </button>
+              <button class="cc-tab" data-cc-tab="provenance" role="tab">
+                <i class="fa-solid fa-info-circle"></i><span>Provenance</span>
+                <span class="cc-dot" id="cc-dot-provenance"></span>
+              </button>
+              <button class="cc-tab" data-cc-tab="nudge" role="tab">
+                <i class="fa-solid fa-bullseye"></i><span>Nudge</span>
+                <span class="cc-dot" id="cc-dot-nudge"></span>
+              </button>
+              <button class="cc-tab" data-cc-tab="notes" role="tab">
+                <i class="fa-solid fa-users"></i><span>Notes</span>
+                <span class="cc-dot" id="cc-dot-notes"></span>
+              </button>
+              <button class="cc-tab" data-cc-tab="aiicon" role="tab">
+                <i class="fa-solid fa-robot"></i><span>AI Icon</span>
+                <span class="cc-dot" id="cc-dot-aiicon"></span>
+              </button>
+            </div>
+
+            <!-- ======== BADGE PANEL ======== -->
+            <div class="cc-panel active" id="cc-panel-badge" role="tabpanel">
+              <div class="cc-panel-header">
+                <label class="toggle">
+                  <input type="checkbox" id="cc-badge-toggle">
+                  <span class="toggle-slider"></span>
+                </label>
+                <span class="cc-panel-title">Inline Disclosure Badge</span>
+              </div>
+              <div class="cc-panel-body">
+                <div class="cc-field">
+                  <label>Badge Text</label>
+                  <input type="text" id="cc-badge-text" value="AI-generated content" class="cc-input">
+                </div>
+                <div class="cc-field">
+                  <label>Position</label>
+                  <div class="cc-segmented" id="cc-badge-pos">
+                    <button class="cc-seg active" data-value="header"><i class="fa-solid fa-arrow-up"></i> Header</button>
+                    <button class="cc-seg" data-value="media"><i class="fa-solid fa-image"></i> Media</button>
+                    <button class="cc-seg" data-value="footer"><i class="fa-solid fa-arrow-down"></i> Footer</button>
+                  </div>
+                </div>
+                <div class="cc-field-row">
+                  <div class="cc-field cc-field--half">
+                    <label>Background</label>
+                    <div class="cc-color-wrap">
+                      <input type="color" id="cc-badge-bg-color" value="#1D9BF0" class="cc-color-input">
+                      <input type="text" id="cc-badge-bg-hex" value="#1D9BF0" class="cc-hex-input" maxlength="7">
+                    </div>
+                  </div>
+                  <div class="cc-field cc-field--half">
+                    <label>Text Color</label>
+                    <div class="cc-color-wrap">
+                      <input type="color" id="cc-badge-text-color" value="#ffffff" class="cc-color-input">
+                      <input type="text" id="cc-badge-text-hex" value="#ffffff" class="cc-hex-input" maxlength="7">
+                    </div>
+                  </div>
+                </div>
+                <div class="cc-field">
+                  <label>Icon</label>
+                  <div class="cc-icon-picker" id="cc-badge-icon-picker">
+                    <button class="cc-icon-btn active" data-icon="fas fa-info-circle"><i class="fas fa-info-circle"></i></button>
+                    <button class="cc-icon-btn" data-icon="fas fa-shield-halved"><i class="fas fa-shield-halved"></i></button>
+                    <button class="cc-icon-btn" data-icon="fas fa-robot"><i class="fas fa-robot"></i></button>
+                    <button class="cc-icon-btn" data-icon="fas fa-wand-magic-sparkles"><i class="fas fa-wand-magic-sparkles"></i></button>
+                    <button class="cc-icon-btn" data-icon="fas fa-exclamation-triangle"><i class="fas fa-exclamation-triangle"></i></button>
+                    <button class="cc-icon-btn" data-icon="fas fa-eye"><i class="fas fa-eye"></i></button>
+                    <button class="cc-icon-btn" data-icon="fas fa-tag"><i class="fas fa-tag"></i></button>
+                    <button class="cc-icon-btn" data-icon="fas fa-circle-check"><i class="fas fa-circle-check"></i></button>
+                    <button class="cc-icon-btn" data-icon="fas fa-fingerprint"><i class="fas fa-fingerprint"></i></button>
+                    <button class="cc-icon-btn" data-icon="fas fa-microchip"><i class="fas fa-microchip"></i></button>
+                    <button class="cc-icon-btn" data-icon="fas fa-brain"><i class="fas fa-brain"></i></button>
+                    <button class="cc-icon-btn" data-icon="fas fa-certificate"><i class="fas fa-certificate"></i></button>
+                  </div>
+                </div>
+                <div class="cc-field">
+                  <label>Font Size <span class="cc-slider-val" id="cc-badge-fs-val">12px</span></label>
+                  <input type="range" id="cc-badge-font-size" min="9" max="18" value="12" class="cc-slider">
+                </div>
+                <div class="cc-field">
+                  <label>Border Radius <span class="cc-slider-val" id="cc-badge-radius-val">20px</span></label>
+                  <input type="range" id="cc-badge-radius" min="0" max="24" value="20" class="cc-slider">
+                </div>
+                <div class="cc-field">
+                  <label>Opacity <span class="cc-slider-val" id="cc-badge-opacity-val">1.0</span></label>
+                  <input type="range" id="cc-badge-opacity" min="30" max="100" value="100" class="cc-slider">
+                </div>
+              </div>
+            </div>
+
+            <!-- ======== INTERSTITIAL PANEL ======== -->
+            <div class="cc-panel" id="cc-panel-interstitial" role="tabpanel">
+              <div class="cc-panel-header">
+                <label class="toggle">
+                  <input type="checkbox" id="cc-interstitial-toggle">
+                  <span class="toggle-slider"></span>
+                </label>
+                <span class="cc-panel-title">Interstitial Screen</span>
+              </div>
+              <div class="cc-panel-body">
+                <div class="cc-field">
+                  <label>Warning Message</label>
+                  <textarea id="cc-interstitial-msg" rows="3" class="cc-input">This content may contain AI-generated material. Please review with care.</textarea>
+                </div>
+                <div class="cc-field">
+                  <label>Button Text</label>
+                  <input type="text" id="cc-interstitial-btn-text" value="Continue" class="cc-input">
+                </div>
+                <div class="cc-field">
+                  <label>Icon</label>
+                  <div class="cc-icon-picker" id="cc-interstitial-icon-picker">
+                    <button class="cc-icon-btn active" data-icon="fas fa-exclamation-triangle"><i class="fas fa-exclamation-triangle"></i></button>
+                    <button class="cc-icon-btn" data-icon="fas fa-shield-halved"><i class="fas fa-shield-halved"></i></button>
+                    <button class="cc-icon-btn" data-icon="fas fa-hand"><i class="fas fa-hand"></i></button>
+                    <button class="cc-icon-btn" data-icon="fas fa-eye"><i class="fas fa-eye"></i></button>
+                    <button class="cc-icon-btn" data-icon="fas fa-circle-exclamation"><i class="fas fa-circle-exclamation"></i></button>
+                    <button class="cc-icon-btn" data-icon="fas fa-robot"><i class="fas fa-robot"></i></button>
+                  </div>
+                </div>
+                <div class="cc-field">
+                  <label>Overlay Opacity <span class="cc-slider-val" id="cc-interstitial-opacity-val">0.70</span></label>
+                  <input type="range" id="cc-interstitial-opacity" min="20" max="95" value="70" class="cc-slider">
+                </div>
+                <div class="cc-field">
+                  <label>Blur Strength <span class="cc-slider-val" id="cc-interstitial-blur-val">8px</span></label>
+                  <input type="range" id="cc-interstitial-blur" min="0" max="24" value="8" class="cc-slider">
+                </div>
+              </div>
+            </div>
+
+            <!-- ======== PROVENANCE PANEL ======== -->
+            <div class="cc-panel" id="cc-panel-provenance" role="tabpanel">
+              <div class="cc-panel-header">
+                <label class="toggle">
+                  <input type="checkbox" id="cc-provenance-toggle">
+                  <span class="toggle-slider"></span>
+                </label>
+                <span class="cc-panel-title">Provenance Panel</span>
+              </div>
+              <div class="cc-panel-body">
+                <div class="cc-field">
+                  <label>AI Model Name</label>
+                  <input type="text" id="cc-provenance-model" value="AI Language Model" class="cc-input">
+                </div>
+                <div class="cc-field">
+                  <label>Creation Date</label>
+                  <input type="text" id="cc-provenance-date" value="2025" class="cc-input">
+                </div>
+                <div class="cc-field">
+                  <label>Panel Background</label>
+                  <div class="cc-color-wrap">
+                    <input type="color" id="cc-provenance-bg-color" value="#f7f8fa" class="cc-color-input">
+                    <input type="text" id="cc-provenance-bg-hex" value="#f7f8fa" class="cc-hex-input" maxlength="7">
+                  </div>
+                </div>
+                <div class="cc-field">
+                  <label>Trigger Style</label>
+                  <div class="cc-segmented" id="cc-provenance-trigger-style">
+                    <button class="cc-seg active" data-value="circle"><i class="fa-solid fa-circle-info"></i> Circle</button>
+                    <button class="cc-seg" data-value="text"><i class="fa-solid fa-font"></i> Text</button>
+                    <button class="cc-seg" data-value="icon"><i class="fa-solid fa-shield-halved"></i> Icon</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ======== NUDGE PANEL ======== -->
+            <div class="cc-panel" id="cc-panel-nudge" role="tabpanel">
+              <div class="cc-panel-header">
+                <label class="toggle">
+                  <input type="checkbox" id="cc-nudge-toggle">
+                  <span class="toggle-slider"></span>
+                </label>
+                <span class="cc-panel-title">Accuracy Nudge</span>
+              </div>
+              <div class="cc-panel-body">
+                <div class="cc-field">
+                  <label>Trigger Action</label>
+                  <div class="cc-segmented" id="cc-nudge-trigger">
+                    <button class="cc-seg active" data-value="share"><i class="fa-solid fa-share"></i> Share</button>
+                    <button class="cc-seg" data-value="like"><i class="fa-solid fa-thumbs-up"></i> Like</button>
+                    <button class="cc-seg" data-value="both"><i class="fa-solid fa-arrows-left-right"></i> Both</button>
+                  </div>
+                </div>
+                <div class="cc-field">
+                  <label>Nudge Message</label>
+                  <textarea id="cc-nudge-msg" rows="2" class="cc-input">Is this information accurate? Consider checking before sharing.</textarea>
+                </div>
+                <div class="cc-field-row">
+                  <div class="cc-field cc-field--half">
+                    <label>Proceed Button</label>
+                    <input type="text" id="cc-nudge-proceed-text" value="Share Anyway" class="cc-input">
+                  </div>
+                  <div class="cc-field cc-field--half">
+                    <label>Cancel Button</label>
+                    <input type="text" id="cc-nudge-cancel-text" value="Cancel" class="cc-input">
+                  </div>
+                </div>
+                <div class="cc-field">
+                  <label>Icon</label>
+                  <div class="cc-icon-picker" id="cc-nudge-icon-picker">
+                    <button class="cc-icon-btn active" data-icon="fas fa-exclamation-triangle"><i class="fas fa-exclamation-triangle"></i></button>
+                    <button class="cc-icon-btn" data-icon="fas fa-question-circle"><i class="fas fa-question-circle"></i></button>
+                    <button class="cc-icon-btn" data-icon="fas fa-circle-check"><i class="fas fa-circle-check"></i></button>
+                    <button class="cc-icon-btn" data-icon="fas fa-scale-balanced"><i class="fas fa-scale-balanced"></i></button>
+                    <button class="cc-icon-btn" data-icon="fas fa-magnifying-glass"><i class="fas fa-magnifying-glass"></i></button>
+                    <button class="cc-icon-btn" data-icon="fas fa-hand"><i class="fas fa-hand"></i></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ======== COMMUNITY NOTES PANEL ======== -->
+            <div class="cc-panel" id="cc-panel-notes" role="tabpanel">
+              <div class="cc-panel-header">
+                <label class="toggle">
+                  <input type="checkbox" id="cc-notes-toggle">
+                  <span class="toggle-slider"></span>
+                </label>
+                <span class="cc-panel-title">Community Notes</span>
+              </div>
+              <div class="cc-panel-body">
+                <div class="cc-field">
+                  <label>Title</label>
+                  <input type="text" id="cc-notes-title" value="Readers added context" class="cc-input">
+                </div>
+                <div class="cc-field">
+                  <label>Note Body</label>
+                  <textarea id="cc-notes-text" rows="3" class="cc-input">Readers added context they thought people might want to know.</textarea>
+                </div>
+                <div class="cc-field-row">
+                  <div class="cc-field cc-field--half">
+                    <label>Background</label>
+                    <div class="cc-color-wrap">
+                      <input type="color" id="cc-notes-bg-color" value="#FEF9EF" class="cc-color-input">
+                      <input type="text" id="cc-notes-bg-hex" value="#FEF9EF" class="cc-hex-input" maxlength="7">
+                    </div>
+                  </div>
+                  <div class="cc-field cc-field--half">
+                    <label>Border</label>
+                    <div class="cc-color-wrap">
+                      <input type="color" id="cc-notes-border-color" value="#F5DEB3" class="cc-color-input">
+                      <input type="text" id="cc-notes-border-hex" value="#F5DEB3" class="cc-hex-input" maxlength="7">
+                    </div>
+                  </div>
+                </div>
+                <div class="cc-field">
+                  <label class="checkbox-label" style="text-transform:none;letter-spacing:0">
+                    <input type="checkbox" id="cc-notes-rate-show" checked>
+                    <span class="checkbox-text">Show "Rate this note" link</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <!-- ======== AI ICON PANEL ======== -->
+            <div class="cc-panel" id="cc-panel-aiicon" role="tabpanel">
+              <div class="cc-panel-header">
+                <label class="toggle">
+                  <input type="checkbox" id="cc-aiicon-toggle">
+                  <span class="toggle-slider"></span>
+                </label>
+                <span class="cc-panel-title">AI-Origin Icon</span>
+              </div>
+              <div class="cc-panel-body">
+                <div class="cc-field">
+                  <label>Type</label>
+                  <div class="cc-segmented" id="cc-aiicon-type">
+                    <button class="cc-seg active" data-value="full"><i class="fas fa-wand-magic-sparkles"></i> Full AI</button>
+                    <button class="cc-seg" data-value="assisted"><i class="fas fa-wand-magic"></i> AI Assisted</button>
+                  </div>
+                </div>
+                <div class="cc-field">
+                  <label>Label Text</label>
+                  <input type="text" id="cc-aiicon-label" value="AI" class="cc-input">
+                </div>
+                <div class="cc-field">
+                  <label>Position</label>
+                  <div class="cc-segmented" id="cc-aiicon-pos">
+                    <button class="cc-seg active" data-value="media"><i class="fa-solid fa-image"></i> Media Overlay</button>
+                    <button class="cc-seg" data-value="header"><i class="fa-solid fa-arrow-up"></i> Header</button>
+                  </div>
+                </div>
+                <div class="cc-field">
+                  <label>Icon</label>
+                  <div class="cc-icon-picker" id="cc-aiicon-icon-picker">
+                    <button class="cc-icon-btn active" data-icon="fas fa-wand-magic-sparkles"><i class="fas fa-wand-magic-sparkles"></i></button>
+                    <button class="cc-icon-btn" data-icon="fas fa-robot"><i class="fas fa-robot"></i></button>
+                    <button class="cc-icon-btn" data-icon="fas fa-microchip"><i class="fas fa-microchip"></i></button>
+                    <button class="cc-icon-btn" data-icon="fas fa-brain"><i class="fas fa-brain"></i></button>
+                    <button class="cc-icon-btn" data-icon="fas fa-eye"><i class="fas fa-eye"></i></button>
+                    <button class="cc-icon-btn" data-icon="fas fa-bolt"><i class="fas fa-bolt"></i></button>
+                  </div>
+                </div>
+                <div class="cc-field-row">
+                  <div class="cc-field cc-field--half">
+                    <label>Background</label>
+                    <div class="cc-color-wrap">
+                      <input type="color" id="cc-aiicon-bg-color" value="#000000" class="cc-color-input">
+                      <input type="text" id="cc-aiicon-bg-hex" value="#000000" class="cc-hex-input" maxlength="7">
+                    </div>
+                  </div>
+                  <div class="cc-field cc-field--half">
+                    <label>Text Color</label>
+                    <div class="cc-color-wrap">
+                      <input type="color" id="cc-aiicon-text-color" value="#ffffff" class="cc-color-input">
+                      <input type="text" id="cc-aiicon-text-hex" value="#ffffff" class="cc-hex-input" maxlength="7">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- RIGHT: Live preview (real feed iframe + canvas overlay) -->
+          <div class="cc-preview-wrap">
+            <div class="cc-preview-sticky">
+              <div class="cc-preview-label">Live Preview <span style="font-size:10px;color:#22c55e;margin-left:6px;font-weight:600">PIXEL-PERFECT</span></div>
+              <div class="cc-designer-container" id="cc-designer-container">
+                <iframe id="cc-designer-iframe" class="cc-designer-iframe"
+                        sandbox="allow-scripts allow-same-origin allow-popups"></iframe>
+                <canvas id="cc-fabric-canvas"></canvas>
+                <div class="cc-designer-loading" id="cc-designer-loading">
+                  <i class="fas fa-spinner"></i> Loading feed preview...
+                </div>
+              </div>
+              <!-- Canvas toolbar -->
+              <div class="cc-canvas-toolbar" id="cc-canvas-toolbar">
+                <span class="cc-toolbar-label">Canvas:</span>
+                <button class="cc-toolbar-btn" data-action="add-text" title="Add custom text block"><i class="fas fa-font"></i> <span>Text</span></button>
+                <button class="cc-toolbar-btn" data-action="add-rect" title="Add custom shape"><i class="fas fa-square"></i> <span>Shape</span></button>
+                <button class="cc-toolbar-btn" data-action="delete" title="Delete selected element"><i class="fas fa-trash-alt"></i> <span>Delete</span></button>
+                <span class="cc-toolbar-sep"></span>
+                <button class="cc-toolbar-btn" data-action="snap-grid" title="Toggle snap to grid"><i class="fas fa-border-all"></i> <span>Snap</span></button>
+                <button class="cc-toolbar-btn" data-action="export-png" title="Export as PNG image"><i class="fas fa-camera"></i> <span>PNG</span></button>
+                <button class="cc-toolbar-btn" data-action="clear-canvas" title="Clear all canvas elements"><i class="fas fa-eraser"></i> <span>Clear</span></button>
+              </div>
+            </div>
+          </div>
+
+        </div><!-- /.cc-layout -->
+      </section>
+
+      <!-- Section: URL Generator -->
+      <section id="section-url" class="config-section">
+        <h2 class="section-title"><i class="fa-solid fa-link"></i> URL Generator</h2>
+        <div class="glass-card">
+          <div class="url-display" id="url-display">
+            <!-- URL will be generated here -->
+          </div>
+          <div class="url-actions">
+            <button id="btn-copy-url" class="btn btn--primary"><i class="fa-solid fa-copy"></i> Copy URL</button>
+            <button id="btn-open-preview" class="btn btn--secondary"><i class="fa-solid fa-external-link-alt"></i> Open Preview</button>
+            <button id="btn-open-iframe" class="btn btn--secondary"><i class="fa-solid fa-desktop"></i> Open in iFrame</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section: Preview -->
+      <section id="section-preview" class="config-section">
+        <h2 class="section-title"><i class="fa-solid fa-eye"></i> Preview</h2>
+        <div class="glass-card preview-card">
+          <div class="preview-toolbar">
+            <button id="btn-refresh-preview" class="btn btn--small"><i class="fa-solid fa-rotate-right"></i> Refresh</button>
+            <span class="preview-url-label" id="preview-url-label"></span>
+          </div>
+          <div class="preview-frame-wrapper">
+            <iframe id="preview-iframe" class="preview-iframe" sandbox="allow-scripts allow-same-origin allow-popups"></iframe>
+          </div>
+        </div>
+      </section>
+
+      <!-- Section: Data Collection (Google Sheets) -->
+      <section id="section-data" class="config-section">
+        <h2 class="section-title"><i class="fa-solid fa-database"></i> Data Collection</h2>
+
+        <div class="glass-card">
+          <h3 class="section-subtitle" style="margin-top:0">Google Sheets Setup</h3>
+          <p style="font-size:14px;color:#64748b;margin-bottom:16px;">
+            Connect a Google Sheet to collect participant tracking data in real-time.
+            See <code>shared/google-sheets/SETUP.md</code> for step-by-step instructions.
+          </p>
+          <div class="form-grid">
+            <div class="form-group form-group--full">
+              <label for="cfg-sheets-url">Google Sheets Web App URL</label>
+              <div style="display:flex;gap:8px;">
+                <input type="url" id="cfg-sheets-url" placeholder="https://script.google.com/macros/s/AKfyc.../exec" style="flex:1;">
+                <button id="btn-test-sheets" class="btn btn--primary" style="white-space:nowrap;" onclick="testSheetsConnection()">
+                  <i class="fa-solid fa-plug"></i> Test
+                </button>
+              </div>
+              <div id="sheets-status" style="margin-top:8px;font-size:13px;"></div>
+            </div>
+            <div class="form-group">
+              <label for="cfg-study-id">Study ID</label>
+              <input type="text" id="cfg-study-id" placeholder="e.g. sail-pilot-2025">
+            </div>
+          </div>
+          <div style="margin-top:12px;display:flex;gap:8px;">
+            <button class="btn btn--primary" onclick="saveSailConfig()">
+              <i class="fa-solid fa-save"></i> Save Config
+            </button>
+            <button class="btn btn--secondary" id="btn-open-sheet" onclick="openGoogleSheet()" style="display:none;">
+              <i class="fa-solid fa-external-link-alt"></i> Open Sheet
+            </button>
+          </div>
+        </div>
+
+        <div class="glass-card" style="margin-top:16px;">
+          <h3 class="section-subtitle" style="margin-top:0">Setup Checklist</h3>
+          <div id="data-checklist" style="font-size:14px;line-height:2;">
+            <div id="check-config"><i class="fa-solid fa-circle" style="color:#94a3b8;font-size:10px;margin-right:8px;"></i> Google Sheets URL configured</div>
+            <div id="check-connection"><i class="fa-solid fa-circle" style="color:#94a3b8;font-size:10px;margin-right:8px;"></i> Connection tested successfully</div>
+            <div id="check-studyid"><i class="fa-solid fa-circle" style="color:#94a3b8;font-size:10px;margin-right:8px;"></i> Study ID set</div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Data Collection Scripts -->
+  <script>
+    // Load existing sail-config.json values
+    (function() {
+      fetch('../shared/sail-config.json')
+        .then(function(r) { return r.ok ? r.json() : {}; })
+        .then(function(cfg) {
+          var urlEl = document.getElementById('cfg-sheets-url');
+          var sidEl = document.getElementById('cfg-study-id');
+          if (cfg.google_sheets_url) {
+            urlEl.value = cfg.google_sheets_url;
+            updateCheck('check-config', true);
+          }
+          if (cfg.study_id) {
+            sidEl.value = cfg.study_id;
+            updateCheck('check-studyid', true);
+          }
+        })
+        .catch(function() {});
+    })();
+
+    function updateCheck(id, ok) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      var icon = el.querySelector('i');
+      if (icon) {
+        icon.style.color = ok ? '#22c55e' : '#94a3b8';
+        icon.className = ok ? 'fa-solid fa-circle-check' : 'fa-solid fa-circle';
+      }
+    }
+
+    function testSheetsConnection() {
+      var url = document.getElementById('cfg-sheets-url').value.trim();
+      var status = document.getElementById('sheets-status');
+      if (!url) {
+        status.innerHTML = '<span style="color:#ef4444;">Please enter a URL first.</span>';
+        return;
+      }
+      status.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Testing connection...';
+      fetch(url, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify({ events: [{ event_type: 'connection_test', timestamp: new Date().toISOString(), pid: 'admin_test', sid: 'config', cond: '', study_id: '', platform: 'admin', elapsed_ms: 0, event_data: {} }], session: {} })
+      }).then(function() {
+        status.innerHTML = '<span style="color:#22c55e;"><i class="fa-solid fa-check"></i> Request sent (check your Sheet for a "connection_test" row).</span>';
+        updateCheck('check-connection', true);
+      }).catch(function(err) {
+        status.innerHTML = '<span style="color:#ef4444;"><i class="fa-solid fa-times"></i> Failed: ' + err.message + '</span>';
+      });
+    }
+
+    function saveSailConfig() {
+      var url = document.getElementById('cfg-sheets-url').value.trim();
+      var studyId = document.getElementById('cfg-study-id').value.trim();
+      var cfg = { google_sheets_url: url, study_id: studyId };
+
+      fetch('/shared/sail-config.json', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(cfg) })
+        .catch(function() {});
+
+      // Also try via API if server.py is running
+      fetch('/api/sail-config', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(cfg) })
+        .then(function(r) {
+          if (r.ok) {
+            var toast = document.getElementById('toast');
+            if (toast) { toast.textContent = 'Config saved!'; toast.classList.add('show'); setTimeout(function(){ toast.classList.remove('show'); }, 2000); }
+          }
+        })
+        .catch(function() {
+          // Fallback: show the JSON for manual copy
+          var toast = document.getElementById('toast');
+          if (toast) { toast.textContent = 'Server not running. Copy config manually to shared/sail-config.json'; toast.classList.add('show'); setTimeout(function(){ toast.classList.remove('show'); }, 4000); }
+        });
+
+      updateCheck('check-config', !!url);
+      updateCheck('check-studyid', !!studyId);
+    }
+
+    function openGoogleSheet() {
+      var url = document.getElementById('cfg-sheets-url').value.trim();
+      if (url) {
+        // Extract sheet URL from Apps Script URL (approximate)
+        window.open(url, '_blank');
+      }
+    }
+  </script>
+
+  <!-- Canvas Designer JS -->
+  <script src="js/canvas-objects.js"></script>
+  <script src="js/canvas-manager.js"></script>
+
+  <!-- Admin JS -->
+  <script src="js/admin.js"></script>
+</body>
+</html>
