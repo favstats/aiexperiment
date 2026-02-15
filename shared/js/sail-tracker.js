@@ -45,7 +45,7 @@
     SESSION.platform = (body && body.getAttribute('data-platform')) || '';
     if (!SESSION.platform) {
       var path = window.location.pathname;
-      var match = path.match(/\/(circl|chirp|flow|pixl|buzz|swift)\//i);
+      var match = path.match(/\/(circl|wave|flow|pixl|buzz|swift)\//i);
       if (match) SESSION.platform = match[1].toLowerCase();
     }
 

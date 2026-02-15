@@ -7,7 +7,7 @@
   // ---- Platform Registry ----
   const PLATFORMS = {
     circl:  { name: 'Circl',  icon: 'fa-brands fa-facebook',  accent: '#1877F2', subtitle: 'Facebook-style feed',    path: '../circl/feed.html',  configPath: '../circl/data/feed-config.json' },
-    chirp:  { name: 'Wave',   icon: 'fa-brands fa-twitter',   accent: '#B91C1C', subtitle: 'X / Twitter-style feed',  path: '../chirp/feed.html',  configPath: '../circl/data/feed-config.json' },
+    wave:   { name: 'Wave',   icon: 'fa-brands fa-twitter',   accent: '#B91C1C', subtitle: 'X / Twitter-style feed',  path: '../wave/feed.html',   configPath: '../circl/data/feed-config.json' },
     flow:   { name: 'Flow',   icon: 'fa-brands fa-tiktok',    accent: '#FE2C55', subtitle: 'TikTok-style feed',       path: '../flow/feed.html',   configPath: '../circl/data/feed-config.json' },
     pixl:   { name: 'Pixl',   icon: 'fa-brands fa-instagram', accent: '#E1306C', subtitle: 'Instagram-style feed',    path: '../pixl/feed.html',   configPath: '../circl/data/feed-config.json' },
     buzz:   { name: 'Buzz',   icon: 'fa-brands fa-whatsapp',  accent: '#25D366', subtitle: 'WhatsApp-style chat',     path: '../buzz/feed.html',   configPath: '../circl/data/feed-config.json' },

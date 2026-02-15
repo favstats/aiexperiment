@@ -64,7 +64,7 @@ Each row in the Sheet contains one event:
 | `sid` | Session/Study ID |
 | `cond` | Experimental condition |
 | `study_id` | Study identifier |
-| `platform` | Which platform (circl, chirp, flow, etc.) |
+| `platform` | Which platform (circl, wave, flow, etc.) |
 | `timestamp` | ISO 8601 timestamp |
 | `elapsed_ms` | Milliseconds since session start |
 | `event_type` | Type of event (session_start, like, post_view_end, etc.) |

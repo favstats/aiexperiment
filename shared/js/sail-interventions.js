@@ -129,7 +129,7 @@
    */
   function detectPlatform() {
     if (document.querySelector('#participant-feed'))             return 'circl';
-    if (document.querySelector('#xf-feed-container'))            return 'chirp';
+    if (document.querySelector('#xf-feed-container'))            return 'wave';
     if (document.querySelector('#sf-feed'))                      return 'flow';
     if (document.querySelector('#ig-feed'))                      return 'pixl';
     if (document.querySelector('#chat-messages'))                return 'buzz';
@@ -149,7 +149,7 @@
       shareBtn:    '.share-btn',
       commentBtn:  '.comment-btn'
     },
-    chirp: {
+    wave: {
       post:        'article.xf-tweet[data-post-type]',
       feedContainer: '#xf-feed-container',
       header:      '.xf-tweet-header',
