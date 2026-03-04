@@ -5462,20 +5462,36 @@
       container.classList.toggle('show-ai-labels', experienceShowLabels);
     }
     
-    function initQCMode() {
+    // Build a Set of round-2 image IDs for accurate filtering
+    let round2ImageSet = null;
+    function getRound2Set() {
+      if (!round2ImageSet) round2ImageSet = new Set();
+      return round2ImageSet;
+    }
+
+    async function initQCMode() {
       const savedCoderId = localStorage.getItem('qc_coder_id') || '';
       document.getElementById('qc-coder-id').value = savedCoderId;
+
+      // Load round2_images from conditions.json (not in stimuli.json)
+      try {
+        const resp = await fetch('../conditions.json');
+        const fullConditions = await resp.json();
+        if (fullConditions.round2_images && fullConditions.round2_images.length > 0) {
+          round2ImageSet = new Set(fullConditions.round2_images);
+          console.log(`Loaded ${round2ImageSet.size} round-2 image IDs`);
+        } else {
+          console.warn('No round2_images found in conditions.json');
+          round2ImageSet = new Set();
+        }
+      } catch (err) {
+        console.error('Failed to load round2_images from conditions.json:', err);
+        round2ImageSet = new Set();
+      }
+
       buildQCImageList();
       setupQCEventListeners();
       showQCImage(0);
-    }
-    
-    // Build a Set of round-2 image IDs from conditions.json for accurate filtering
-    let round2ImageSet = null;
-    function getRound2Set() {
-      if (round2ImageSet) return round2ImageSet;
-      round2ImageSet = new Set(conditionsData.round2_images || []);
-      return round2ImageSet;
     }
 
     function buildQCImageList() {
