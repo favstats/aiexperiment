@@ -3388,8 +3388,8 @@
           <div class="qc-filter-toggle" style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
             <select id="qc-round-filter" style="padding:6px 10px; border-radius:8px; border:1px solid var(--circl-border); font-size:13px; background:var(--circl-white); cursor:pointer;">
               <option value="all">All rounds</option>
-              <option value="1">Round 1 (01–03)</option>
-              <option value="2" selected>Round 2 (04+)</option>
+              <option value="1">Round 1</option>
+              <option value="2" selected>Round 2 (new gen)</option>
             </select>
             <label style="display:flex; align-items:center; gap:4px; cursor:pointer;">
               <input type="checkbox" id="qc-uncoded-only">
@@ -5470,22 +5470,29 @@
       showQCImage(0);
     }
     
+    // Build a Set of round-2 image IDs from conditions.json for accurate filtering
+    let round2ImageSet = null;
+    function getRound2Set() {
+      if (round2ImageSet) return round2ImageSet;
+      round2ImageSet = new Set(conditionsData.round2_images || []);
+      return round2ImageSet;
+    }
+
     function buildQCImageList() {
       qcImages = [];
       const showUncodedOnly = document.getElementById('qc-uncoded-only').checked;
       const roundFilter = document.getElementById('qc-round-filter').value;
+      const r2Set = getRound2Set();
 
       conditionsData.conditions.forEach(cond => {
         cond.images.forEach(img => {
-          // Extract image number from filename (e.g., "condition_03.jpg" -> 3)
-          const numMatch = img.match(/_(\d{2})\.(jpg|png)$/i);
-          const imgNum = numMatch ? parseInt(numMatch[1], 10) : 0;
+          const imageId = `${cond.condition_id}/${img}`;
+          const isRound2 = r2Set.has(imageId);
 
           // Filter by round
-          if (roundFilter === '1' && imgNum > 3) return;
-          if (roundFilter === '2' && imgNum <= 3) return;
+          if (roundFilter === '1' && isRound2) return;
+          if (roundFilter === '2' && !isRound2) return;
 
-          const imageId = `${cond.condition_id}/${img}`;
           const isCoded = qcCodedImages[imageId];
 
           if (!showUncodedOnly || !isCoded) {
