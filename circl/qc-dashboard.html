@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>QC Review Dashboard</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #f8f9fa;
+    color: #1a1a1a;
+    line-height: 1.5;
+  }
+
+  /* Header */
+  .header {
+    background: #fff;
+    border-bottom: 1px solid #e5e7eb;
+    padding: 16px 24px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .header h1 {
+    font-size: 18px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .header .stats {
+    font-size: 13px;
+    color: #6b7280;
+    margin-left: auto;
+    white-space: nowrap;
+  }
+  .view-toggle {
+    display: flex;
+    gap: 2px;
+    background: #f3f4f6;
+    border-radius: 8px;
+    padding: 2px;
+  }
+  .view-toggle button {
+    padding: 6px 14px;
+    border: none;
+    background: transparent;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+    color: #6b7280;
+    font-weight: 500;
+    transition: all 0.15s;
+  }
+  .view-toggle button.active {
+    background: #fff;
+    color: #1a1a1a;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+  }
+
+  /* Layout */
+  .layout {
+    display: flex;
+    min-height: calc(100vh - 57px);
+  }
+
+  /* Sidebar */
+  .sidebar {
+    width: 280px;
+    min-width: 280px;
+    background: #fff;
+    border-right: 1px solid #e5e7eb;
+    padding: 16px;
+    overflow-y: auto;
+    max-height: calc(100vh - 57px);
+    position: sticky;
+    top: 57px;
+  }
+  .search-box {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 13px;
+    outline: none;
+    transition: border 0.15s;
+    margin-bottom: 16px;
+  }
+  .search-box:focus { border-color: #3b82f6; }
+  .search-box::placeholder { color: #9ca3af; }
+
+  .filter-section {
+    margin-bottom: 16px;
+  }
+  .filter-section h3 {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #9ca3af;
+    margin-bottom: 8px;
+  }
+  .filter-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+  }
+  .chip {
+    padding: 4px 10px;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+    background: #fff;
+    color: #6b7280;
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .chip:hover { border-color: #d1d5db; background: #f9fafb; }
+  .chip.active {
+    background: #1a1a1a;
+    color: #fff;
+    border-color: #1a1a1a;
+  }
+
+  .filter-section.labels .chip.active-yes {
+    background: #059669;
+    color: #fff;
+    border-color: #059669;
+  }
+  .filter-section.labels .chip.active-no {
+    background: #dc2626;
+    color: #fff;
+    border-color: #dc2626;
+  }
+  .filter-section.labels .chip.active-unclear {
+    background: #d97706;
+    color: #fff;
+    border-color: #d97706;
+  }
+
+  .divider {
+    height: 1px;
+    background: #e5e7eb;
+    margin: 16px 0;
+  }
+
+  .clear-btn {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background: #fff;
+    font-size: 12px;
+    cursor: pointer;
+    color: #6b7280;
+    transition: all 0.15s;
+    margin-bottom: 12px;
+  }
+  .clear-btn:hover { background: #f9fafb; }
+
+  /* Main content */
+  .main {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+  }
+
+  /* Grid view */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 16px;
+  }
+  .card {
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #e5e7eb;
+    transition: box-shadow 0.2s;
+    cursor: pointer;
+  }
+  .card:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  }
+  .card .card-img-wrap {
+    position: relative;
+    background: #f3f4f6;
+    aspect-ratio: 4/3;
+    overflow: hidden;
+  }
+  .card .card-img-wrap img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  .card .status-dot {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 2px solid #fff;
+  }
+  .status-dot.pass { background: #059669; }
+  .status-dot.fail { background: #dc2626; }
+  .status-dot.mixed { background: #d97706; }
+
+  .card .card-body {
+    padding: 12px;
+  }
+  .card .card-title {
+    font-size: 12px;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 6px;
+    word-break: break-all;
+  }
+  .card .card-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-bottom: 8px;
+  }
+  .tag {
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 500;
+  }
+  .tag.age { background: #ede9fe; color: #6d28d9; }
+  .tag.gender { background: #fce7f3; color: #be185d; }
+  .tag.issue { background: #dbeafe; color: #1d4ed8; }
+  .tag.ideology { background: #d1fae5; color: #047857; }
+
+  .card .labels-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+  }
+  .label-pill {
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 10px;
+    font-weight: 500;
+  }
+  .label-pill.yes { background: #d1fae5; color: #065f46; }
+  .label-pill.no { background: #fee2e2; color: #991b1b; }
+  .label-pill.unclear { background: #fef3c7; color: #92400e; }
+
+  .card .intensity-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 8px;
+    font-size: 11px;
+    color: #6b7280;
+  }
+  .intensity-bar-wrap {
+    flex: 1;
+  }
+  .intensity-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2px;
+  }
+  .intensity-bar {
+    height: 4px;
+    background: #e5e7eb;
+    border-radius: 2px;
+    overflow: hidden;
+  }
+  .intensity-bar .fill {
+    height: 100%;
+    border-radius: 2px;
+    transition: width 0.3s;
+  }
+  .intensity-bar .fill.img { background: #6366f1; }
+  .intensity-bar .fill.txt { background: #8b5cf6; }
+
+  /* Single / Detail view */
+  .single-view {
+    display: none;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .single-view.active { display: block; }
+  .grid.active { display: grid; }
+  .grid:not(.active) { display: none; }
+
+  .single-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .single-nav button {
+    padding: 8px 16px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    background: #fff;
+    font-size: 13px;
+    cursor: pointer;
+    color: #1a1a1a;
+    transition: all 0.15s;
+  }
+  .single-nav button:hover { background: #f9fafb; }
+  .single-nav button:disabled { opacity: 0.3; cursor: default; }
+  .single-nav .counter {
+    font-size: 13px;
+    color: #6b7280;
+  }
+
+  .detail-card {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    overflow: hidden;
+  }
+  .detail-img-wrap {
+    background: #f3f4f6;
+    text-align: center;
+    padding: 16px;
+    max-height: 550px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .detail-img-wrap img {
+    max-width: 100%;
+    max-height: 500px;
+    object-fit: contain;
+    border-radius: 4px;
+  }
+  .detail-body {
+    padding: 24px;
+  }
+  .detail-body .detail-condition {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+  .detail-body .detail-filename {
+    font-size: 12px;
+    color: #9ca3af;
+    margin-bottom: 12px;
+  }
+  .detail-body .detail-meta {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+  .detail-body .detail-meta .tag { font-size: 12px; padding: 4px 8px; }
+
+  .detail-text-box {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 13px;
+    color: #374151;
+    margin-bottom: 16px;
+    line-height: 1.6;
+  }
+  .detail-text-box .text-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #9ca3af;
+    margin-bottom: 6px;
+  }
+
+  .detail-labels-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .detail-label-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: #f9fafb;
+    border-radius: 6px;
+    font-size: 12px;
+  }
+  .detail-label-item .lbl-name {
+    color: #6b7280;
+  }
+  .detail-label-item .lbl-val {
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+  .detail-label-item .lbl-val.yes { background: #d1fae5; color: #065f46; }
+  .detail-label-item .lbl-val.no { background: #fee2e2; color: #991b1b; }
+  .detail-label-item .lbl-val.unclear { background: #fef3c7; color: #92400e; }
+
+  .detail-intensities {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 16px;
+  }
+  .detail-intensity {
+    flex: 1;
+  }
+  .detail-intensity .di-label {
+    font-size: 11px;
+    color: #9ca3af;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+  .detail-intensity .di-value {
+    font-size: 28px;
+    font-weight: 600;
+  }
+  .detail-intensity .di-value.img-c { color: #6366f1; }
+  .detail-intensity .di-value.txt-c { color: #8b5cf6; }
+  .detail-intensity .di-bar {
+    height: 6px;
+    background: #e5e7eb;
+    border-radius: 3px;
+    margin-top: 4px;
+    overflow: hidden;
+  }
+  .detail-intensity .di-bar .fill {
+    height: 100%;
+    border-radius: 3px;
+  }
+
+  .detail-notes {
+    padding: 12px 16px;
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #92400e;
+    margin-bottom: 16px;
+  }
+  .detail-notes .notes-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
+  }
+
+  .detail-coder {
+    font-size: 12px;
+    color: #9ca3af;
+  }
+
+  /* Empty state */
+  .empty-state {
+    text-align: center;
+    padding: 80px 20px;
+    color: #9ca3af;
+  }
+  .empty-state .empty-icon {
+    font-size: 48px;
+    margin-bottom: 12px;
+  }
+  .empty-state h3 {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 4px;
+    color: #6b7280;
+  }
+
+  /* Status filter */
+  .status-filter {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 16px;
+  }
+  .status-chip {
+    flex: 1;
+    padding: 6px 8px;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    font-size: 11px;
+    cursor: pointer;
+    background: #fff;
+    color: #6b7280;
+    text-align: center;
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .status-chip:hover { border-color: #d1d5db; }
+  .status-chip.active {
+    background: #1a1a1a;
+    color: #fff;
+    border-color: #1a1a1a;
+  }
+  .status-chip .status-count {
+    font-weight: 600;
+    display: block;
+    font-size: 14px;
+    margin-bottom: 1px;
+  }
+
+  /* Label filter dropdown */
+  .label-filter-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 6px;
+  }
+  .label-filter-row .lf-name {
+    font-size: 11px;
+    color: #6b7280;
+    min-width: 80px;
+  }
+  .label-filter-row .lf-chips {
+    display: flex;
+    gap: 2px;
+  }
+  .lf-chip {
+    padding: 2px 8px;
+    border: 1px solid #e5e7eb;
+    border-radius: 4px;
+    font-size: 10px;
+    cursor: pointer;
+    background: #fff;
+    color: #6b7280;
+    transition: all 0.12s;
+    user-select: none;
+  }
+  .lf-chip:hover { background: #f9fafb; }
+  .lf-chip.active-yes { background: #059669; color: #fff; border-color: #059669; }
+  .lf-chip.active-no { background: #dc2626; color: #fff; border-color: #dc2626; }
+  .lf-chip.active-unclear { background: #d97706; color: #fff; border-color: #d97706; }
+
+  /* Sort */
+  .sort-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+  .sort-row label {
+    font-size: 11px;
+    color: #9ca3af;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-weight: 600;
+  }
+  .sort-row select {
+    flex: 1;
+    padding: 6px 8px;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    font-size: 12px;
+    outline: none;
+    background: #fff;
+  }
+
+  /* Loading */
+  .loading {
+    text-align: center;
+    padding: 80px;
+    color: #9ca3af;
+  }
+
+  @media (max-width: 768px) {
+    .sidebar { display: none; }
+    .grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>QC Review Dashboard</h1>
+  <div class="view-toggle">
+    <button class="active" id="btn-grid" onclick="setView('grid')">Grid</button>
+    <button id="btn-single" onclick="setView('single')">Detail</button>
+  </div>
+  <div class="stats" id="stats"></div>
+</div>
+
+<div class="layout">
+  <div class="sidebar" id="sidebar">
+    <input type="text" class="search-box" id="search" placeholder="Search condition or notes..." oninput="applyFilters()">
+
+    <div class="status-filter" id="status-filter"></div>
+
+    <button class="clear-btn" onclick="clearAllFilters()">Clear all filters</button>
+
+    <div class="filter-section">
+      <h3>Age Group</h3>
+      <div class="filter-chips" id="filter-age"></div>
+    </div>
+    <div class="filter-section">
+      <h3>Gender</h3>
+      <div class="filter-chips" id="filter-gender"></div>
+    </div>
+    <div class="filter-section">
+      <h3>Policy Issue</h3>
+      <div class="filter-chips" id="filter-issue"></div>
+    </div>
+    <div class="filter-section">
+      <h3>Ideology</h3>
+      <div class="filter-chips" id="filter-ideology"></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="filter-section labels">
+      <h3>Label Filters</h3>
+      <div id="label-filters"></div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="sort-row">
+      <label>Sort</label>
+      <select id="sort-select" onchange="applyFilters()">
+        <option value="condition">Condition</option>
+        <option value="intensity_img_desc">Intensity (Image) High-Low</option>
+        <option value="intensity_img_asc">Intensity (Image) Low-High</option>
+        <option value="intensity_txt_desc">Intensity (Text) High-Low</option>
+        <option value="intensity_txt_asc">Intensity (Text) Low-High</option>
+        <option value="flaws_desc">Most Flaws First</option>
+        <option value="timestamp">Newest First</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="main" id="main">
+    <div class="loading" id="loading">Loading annotations...</div>
+    <div class="grid active" id="grid-view"></div>
+    <div class="single-view" id="single-view"></div>
+    <div class="empty-state" id="empty-state" style="display:none">
+      <div class="empty-icon">&#x1F50D;</div>
+      <h3>No matching annotations</h3>
+      <p>Try adjusting your filters</p>
+    </div>
+  </div>
+</div>
+
+<script>
+const LABEL_FIELDS = [
+  { key: 'no_weird_text', name: 'No weird text' },
+  { key: 'looks_authentic', name: 'Looks authentic' },
+  { key: 'text_grammar', name: 'Text grammar' },
+  { key: 'outgroup_image', name: 'Outgroup (img)' },
+  { key: 'outgroup_text', name: 'Outgroup (txt)' },
+  { key: 'age_image', name: 'Age (img)' },
+  { key: 'age_text', name: 'Age (txt)' },
+  { key: 'gender_image', name: 'Gender (img)' },
+  { key: 'gender_text', name: 'Gender (txt)' },
+  { key: 'ideology_image', name: 'Ideology (img)' },
+  { key: 'ideology_text', name: 'Ideology (txt)' },
+  { key: 'issue_image', name: 'Issue (img)' },
+  { key: 'issue_text', name: 'Issue (txt)' },
+];
+
+let allData = [];
+let filtered = [];
+let currentView = 'grid';
+let singleIdx = 0;
+
+const filters = {
+  search: '',
+  age: new Set(),
+  gender: new Set(),
+  issue: new Set(),
+  ideology: new Set(),
+  status: null, // 'pass', 'fail', 'mixed'
+  labels: {} // key -> 'yes'|'no'|'unclear'
+};
+
+// Parse CSV
+function parseCSV(text) {
+  const lines = [];
+  let current = '';
+  let inQuotes = false;
+  for (let i = 0; i < text.length; i++) {
+    const c = text[i];
+    if (c === '"') {
+      if (inQuotes && text[i+1] === '"') {
+        current += '"';
+        i++;
+      } else {
+        inQuotes = !inQuotes;
+      }
+    } else if (c === '\n' && !inQuotes) {
+      lines.push(current);
+      current = '';
+    } else {
+      current += c;
+    }
+  }
+  if (current.trim()) lines.push(current);
+
+  if (lines.length < 2) return [];
+  const headers = splitCSVLine(lines[0]);
+  const rows = [];
+  for (let i = 1; i < lines.length; i++) {
+    const vals = splitCSVLine(lines[i]);
+    if (vals.length < headers.length) continue;
+    const obj = {};
+    headers.forEach((h, idx) => obj[h.trim()] = (vals[idx] || '').trim());
+    rows.push(obj);
+  }
+  return rows;
+}
+
+function splitCSVLine(line) {
+  const result = [];
+  let current = '';
+  let inQuotes = false;
+  for (let i = 0; i < line.length; i++) {
+    const c = line[i];
+    if (c === '"') {
+      if (inQuotes && line[i+1] === '"') {
+        current += '"';
+        i++;
+      } else {
+        inQuotes = !inQuotes;
+      }
+    } else if (c === ',' && !inQuotes) {
+      result.push(current);
+      current = '';
+    } else {
+      current += c;
+    }
+  }
+  result.push(current);
+  return result;
+}
+
+function getStatus(row) {
+  const allYes = row['All Yes H:T'];
+  if (allYes === 'TRUE') return 'pass';
+  // Check if any 'no'
+  let hasNo = false;
+  let hasUnclear = false;
+  LABEL_FIELDS.forEach(f => {
+    const v = row[f.key];
+    if (v === 'no') hasNo = true;
+    if (v === 'unclear') hasUnclear = true;
+  });
+  if (hasNo) return 'fail';
+  if (hasUnclear) return 'mixed';
+  return 'pass';
+}
+
+function countFlaws(row) {
+  let c = 0;
+  LABEL_FIELDS.forEach(f => {
+    if (row[f.key] === 'no' || row[f.key] === 'unclear') c++;
+  });
+  return c;
+}
+
+function parseCondition(condId) {
+  // e.g. "18-29_female_Affordable_childcare_access_left"
+  const ageMatch = condId.match(/^(18-29|30-44|45-59|60\+)/);
+  const age = ageMatch ? ageMatch[1] : '';
+  const rest = condId.replace(/^(18-29|30-44|45-59|60\+)_/, '');
+  const genderMatch = rest.match(/^(female|male)_/);
+  const gender = genderMatch ? genderMatch[1] : '';
+  const afterGender = rest.replace(/^(female|male)_/, '');
+  const ideoMatch = afterGender.match(/_(left|right|neutral|centrist)$/);
+  const ideology = ideoMatch ? ideoMatch[1] : '';
+  const issue = afterGender.replace(/_(left|right|neutral|centrist)$/, '');
+  return { age, gender, issue, ideology };
+}
+
+function getImagePath(row) {
+  const condId = row.condition_id;
+  const filename = row.image_filename;
+  return `../generated_images/${condId}/${filename}`;
+}
+
+// Build UI
+function buildFilters() {
+  const ages = ['18-29', '30-44', '45-59', '60+'];
+  const genders = ['female', 'male'];
+  const issues = [...new Set(allData.map(r => parseCondition(r.condition_id).issue))].sort();
+  const ideologies = ['left', 'neutral', 'right'];
+
+  renderChips('filter-age', ages, 'age');
+  renderChips('filter-gender', genders, 'gender');
+  renderChips('filter-issue', issues, 'issue');
+  renderChips('filter-ideology', ideologies, 'ideology');
+
+  // Label filters
+  const labelDiv = document.getElementById('label-filters');
+  LABEL_FIELDS.forEach(f => {
+    const row = document.createElement('div');
+    row.className = 'label-filter-row';
+    row.innerHTML = `
+      <span class="lf-name">${f.name}</span>
+      <div class="lf-chips">
+        <span class="lf-chip" data-key="${f.key}" data-val="yes" onclick="toggleLabelFilter('${f.key}','yes',this)">Yes</span>
+        <span class="lf-chip" data-key="${f.key}" data-val="no" onclick="toggleLabelFilter('${f.key}','no',this)">No</span>
+        <span class="lf-chip" data-key="${f.key}" data-val="unclear" onclick="toggleLabelFilter('${f.key}','unclear',this)">?</span>
+      </div>
+    `;
+    labelDiv.appendChild(row);
+  });
+
+  // Status filter
+  const counts = { pass: 0, fail: 0, mixed: 0 };
+  allData.forEach(r => counts[getStatus(r)]++);
+  const sf = document.getElementById('status-filter');
+  sf.innerHTML = `
+    <div class="status-chip" onclick="toggleStatus('pass',this)" data-val="pass">
+      <span class="status-count">${counts.pass}</span>Pass
+    </div>
+    <div class="status-chip" onclick="toggleStatus('mixed',this)" data-val="mixed">
+      <span class="status-count">${counts.mixed}</span>Unclear
+    </div>
+    <div class="status-chip" onclick="toggleStatus('fail',this)" data-val="fail">
+      <span class="status-count">${counts.fail}</span>Fail
+    </div>
+  `;
+}
+
+function renderChips(containerId, values, filterKey) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = '';
+  values.forEach(v => {
+    const chip = document.createElement('span');
+    chip.className = 'chip';
+    chip.textContent = v.replace(/_/g, ' ');
+    chip.dataset.value = v;
+    chip.onclick = () => {
+      if (filters[filterKey].has(v)) {
+        filters[filterKey].delete(v);
+        chip.classList.remove('active');
+      } else {
+        filters[filterKey].add(v);
+        chip.classList.add('active');
+      }
+      applyFilters();
+    };
+    container.appendChild(chip);
+  });
+}
+
+function toggleLabelFilter(key, val, el) {
+  if (filters.labels[key] === val) {
+    delete filters.labels[key];
+    el.classList.remove('active-yes', 'active-no', 'active-unclear');
+  } else {
+    filters.labels[key] = val;
+    // Clear siblings
+    el.parentElement.querySelectorAll('.lf-chip').forEach(c => c.classList.remove('active-yes', 'active-no', 'active-unclear'));
+    el.classList.add('active-' + val);
+  }
+  applyFilters();
+}
+
+function toggleStatus(val, el) {
+  if (filters.status === val) {
+    filters.status = null;
+    el.classList.remove('active');
+  } else {
+    filters.status = val;
+    document.querySelectorAll('.status-chip').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+  }
+  applyFilters();
+}
+
+function clearAllFilters() {
+  filters.search = '';
+  filters.age.clear();
+  filters.gender.clear();
+  filters.issue.clear();
+  filters.ideology.clear();
+  filters.status = null;
+  filters.labels = {};
+  document.getElementById('search').value = '';
+  document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.status-chip').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.lf-chip').forEach(c => c.classList.remove('active-yes', 'active-no', 'active-unclear'));
+  applyFilters();
+}
+
+function applyFilters() {
+  const q = document.getElementById('search').value.toLowerCase();
+  const sort = document.getElementById('sort-select').value;
+
+  filtered = allData.filter(row => {
+    const cond = parseCondition(row.condition_id);
+
+    // Search
+    if (q && !row.condition_id.toLowerCase().includes(q) &&
+        !(row.notes || '').toLowerCase().includes(q) &&
+        !row.image_filename.toLowerCase().includes(q)) return false;
+
+    // Dimension filters
+    if (filters.age.size && !filters.age.has(cond.age)) return false;
+    if (filters.gender.size && !filters.gender.has(cond.gender)) return false;
+    if (filters.issue.size && !filters.issue.has(cond.issue)) return false;
+    if (filters.ideology.size && !filters.ideology.has(cond.ideology)) return false;
+
+    // Status filter
+    if (filters.status && getStatus(row) !== filters.status) return false;
+
+    // Label filters
+    for (const [key, val] of Object.entries(filters.labels)) {
+      if (row[key] !== val) return false;
+    }
+
+    return true;
+  });
+
+  // Sort
+  filtered.sort((a, b) => {
+    switch (sort) {
+      case 'condition': return a.condition_id.localeCompare(b.condition_id);
+      case 'intensity_img_desc': return (parseInt(b.intensity_image)||0) - (parseInt(a.intensity_image)||0);
+      case 'intensity_img_asc': return (parseInt(a.intensity_image)||0) - (parseInt(b.intensity_image)||0);
+      case 'intensity_txt_desc': return (parseInt(b.intensity_text)||0) - (parseInt(a.intensity_text)||0);
+      case 'intensity_txt_asc': return (parseInt(a.intensity_text)||0) - (parseInt(b.intensity_text)||0);
+      case 'flaws_desc': return countFlaws(b) - countFlaws(a);
+      case 'timestamp': return b.timestamp.localeCompare(a.timestamp);
+      default: return 0;
+    }
+  });
+
+  document.getElementById('stats').textContent = `${filtered.length} of ${allData.length} annotations`;
+  renderCurrentView();
+}
+
+function renderCurrentView() {
+  if (currentView === 'grid') renderGrid();
+  else renderSingle();
+
+  const empty = document.getElementById('empty-state');
+  empty.style.display = filtered.length === 0 ? '' : 'none';
+}
+
+function renderGrid() {
+  const grid = document.getElementById('grid-view');
+  grid.innerHTML = '';
+  filtered.forEach((row, idx) => {
+    const cond = parseCondition(row.condition_id);
+    const status = getStatus(row);
+    const imgIntensity = parseInt(row.intensity_image) || 0;
+    const txtIntensity = parseInt(row.intensity_text) || 0;
+
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.onclick = () => { singleIdx = idx; setView('single'); };
+
+    // Labels row - only show non-yes ones for compactness
+    let labelsHtml = '';
+    LABEL_FIELDS.forEach(f => {
+      const v = row[f.key];
+      if (v !== 'yes') {
+        labelsHtml += `<span class="label-pill ${v}">${f.name}: ${v}</span>`;
+      }
+    });
+    if (!labelsHtml) labelsHtml = '<span class="label-pill yes">All passed</span>';
+
+    card.innerHTML = `
+      <div class="card-img-wrap">
+        <img src="${getImagePath(row)}" alt="${row.image_filename}" loading="lazy" onerror="this.parentElement.innerHTML='<div style=\\'padding:40px;text-align:center;color:#9ca3af\\'>Image not found</div>'">
+        <div class="status-dot ${status}"></div>
+      </div>
+      <div class="card-body">
+        <div class="card-title">${row.condition_id}</div>
+        <div class="card-meta">
+          <span class="tag age">${cond.age}</span>
+          <span class="tag gender">${cond.gender}</span>
+          <span class="tag issue">${cond.issue.replace(/_/g, ' ')}</span>
+          <span class="tag ideology">${cond.ideology}</span>
+        </div>
+        <div class="labels-row">${labelsHtml}</div>
+        <div class="intensity-row">
+          <div class="intensity-bar-wrap">
+            <div class="intensity-label"><span>Image</span><span>${imgIntensity}/10</span></div>
+            <div class="intensity-bar"><div class="fill img" style="width:${imgIntensity*10}%"></div></div>
+          </div>
+          <div class="intensity-bar-wrap">
+            <div class="intensity-label"><span>Text</span><span>${txtIntensity}/10</span></div>
+            <div class="intensity-bar"><div class="fill txt" style="width:${txtIntensity*10}%"></div></div>
+          </div>
+        </div>
+      </div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+function renderSingle() {
+  const container = document.getElementById('single-view');
+  if (filtered.length === 0) {
+    container.innerHTML = '';
+    return;
+  }
+  if (singleIdx >= filtered.length) singleIdx = filtered.length - 1;
+  if (singleIdx < 0) singleIdx = 0;
+  const row = filtered[singleIdx];
+  const cond = parseCondition(row.condition_id);
+  const imgIntensity = parseInt(row.intensity_image) || 0;
+  const txtIntensity = parseInt(row.intensity_text) || 0;
+
+  let labelsHtml = '';
+  LABEL_FIELDS.forEach(f => {
+    const v = row[f.key];
+    labelsHtml += `
+      <div class="detail-label-item">
+        <span class="lbl-name">${f.name}</span>
+        <span class="lbl-val ${v}">${v}</span>
+      </div>
+    `;
+  });
+
+  const notesHtml = row.notes ? `
+    <div class="detail-notes">
+      <div class="notes-label">Notes</div>
+      ${row.notes}
+    </div>
+  ` : '';
+
+  container.innerHTML = `
+    <div class="single-nav">
+      <button onclick="navigateSingle(-1)" ${singleIdx === 0 ? 'disabled' : ''}>← Previous</button>
+      <span class="counter">${singleIdx + 1} / ${filtered.length}</span>
+      <button onclick="navigateSingle(1)" ${singleIdx === filtered.length - 1 ? 'disabled' : ''}>Next →</button>
+    </div>
+    <div class="detail-card">
+      <div class="detail-img-wrap">
+        <img src="${getImagePath(row)}" alt="${row.image_filename}" onerror="this.parentElement.innerHTML='<div style=\\'padding:60px;text-align:center;color:#9ca3af\\'>Image not found</div>'">
+      </div>
+      <div class="detail-body">
+        <div class="detail-condition">${row.condition_id}</div>
+        <div class="detail-filename">${row.image_filename} — coded by ${row.coder_id}</div>
+        <div class="detail-meta">
+          <span class="tag age">${cond.age}</span>
+          <span class="tag gender">${cond.gender}</span>
+          <span class="tag issue">${cond.issue.replace(/_/g, ' ')}</span>
+          <span class="tag ideology">${cond.ideology}</span>
+        </div>
+        <div class="detail-text-box">
+          <div class="text-label">Post Text</div>
+          ${row.text_content}
+        </div>
+        <div class="detail-labels-grid">${labelsHtml}</div>
+        <div class="detail-intensities">
+          <div class="detail-intensity">
+            <div class="di-label">Image Intensity</div>
+            <div class="di-value img-c">${imgIntensity}<span style="font-size:14px;color:#9ca3af">/10</span></div>
+            <div class="di-bar"><div class="fill" style="width:${imgIntensity*10}%;background:#6366f1"></div></div>
+          </div>
+          <div class="detail-intensity">
+            <div class="di-label">Text Intensity</div>
+            <div class="di-value txt-c">${txtIntensity}<span style="font-size:14px;color:#9ca3af">/10</span></div>
+            <div class="di-bar"><div class="fill" style="width:${txtIntensity*10}%;background:#8b5cf6"></div></div>
+          </div>
+        </div>
+        ${notesHtml}
+        <div class="detail-coder">Annotated: ${new Date(row.timestamp).toLocaleString()}</div>
+      </div>
+    </div>
+  `;
+}
+
+function navigateSingle(dir) {
+  singleIdx += dir;
+  renderSingle();
+}
+
+function setView(view) {
+  currentView = view;
+  document.getElementById('btn-grid').classList.toggle('active', view === 'grid');
+  document.getElementById('btn-single').classList.toggle('active', view === 'single');
+  document.getElementById('grid-view').classList.toggle('active', view === 'grid');
+  document.getElementById('single-view').classList.toggle('active', view === 'single');
+  renderCurrentView();
+}
+
+// Keyboard navigation
+document.addEventListener('keydown', e => {
+  if (currentView === 'single') {
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') { e.preventDefault(); navigateSingle(-1); }
+    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { e.preventDefault(); navigateSingle(1); }
+  }
+  if (e.key === 'g') { if (document.activeElement.tagName !== 'INPUT') setView('grid'); }
+  if (e.key === 'd') { if (document.activeElement.tagName !== 'INPUT') setView('single'); }
+});
+
+// Load data
+async function init() {
+  try {
+    const resp = await fetch('annotation/data/human_annotations.csv');
+    const text = await resp.text();
+    allData = parseCSV(text);
+    document.getElementById('loading').style.display = 'none';
+    buildFilters();
+    applyFilters();
+  } catch (err) {
+    document.getElementById('loading').textContent = 'Error loading data: ' + err.message;
+  }
+}
+
+init();
+</script>
+</body>
+</html>
