@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated_at": "2026-01-21 16:03:31",
+    "generated_at": "2026-03-04 01:06:34",
     "total_conditions": 120,
     "images_dir": "generated_images",
     "texts_dir": "generated_texts"
@@ -39,7 +39,10 @@
       "images": [
         "18-29_female_Affordable_childcare_access_left_01.jpg",
         "18-29_female_Affordable_childcare_access_left_02.jpg",
-        "18-29_female_Affordable_childcare_access_left_03.jpg"
+        "18-29_female_Affordable_childcare_access_left_03.jpg",
+        "18-29_female_Affordable_childcare_access_left_04.jpg",
+        "18-29_female_Affordable_childcare_access_left_05.jpg",
+        "18-29_female_Affordable_childcare_access_left_06.jpg"
       ],
       "texts": [
         "Gratis kinderopvang is een basisrecht! Terwijl wij vechten voor bestaanszekerheid, laten rechtse saneerders vrouwen koud vallen. Solidariteit boven hun winstbejag. Stop deze asociale uitbuiting!",
@@ -77,7 +80,10 @@
       "images": [
         "18-29_female_Affordable_childcare_access_right_01.jpg",
         "18-29_female_Affordable_childcare_access_right_02.jpg",
-        "18-29_female_Affordable_childcare_access_right_03.jpg"
+        "18-29_female_Affordable_childcare_access_right_03.jpg",
+        "18-29_female_Affordable_childcare_access_right_04.jpg",
+        "18-29_female_Affordable_childcare_access_right_05.jpg",
+        "18-29_female_Affordable_childcare_access_right_06.jpg"
       ],
       "texts": [
         "Betaalbare opvang is de basis van een sterk land. Als vrouw aan de start van mijn carrière eis ik orde, geen links subsidiecircus dat onze economie sloopt. Wij bouwen de toekomst, zij verkwisten die!",
@@ -97,7 +103,10 @@
         "18-29_female_Build_more_homes_accelerate_construction_left_01.jpg",
         "18-29_female_Build_more_homes_accelerate_construction_left_04.jpg",
         "18-29_female_Build_more_homes_accelerate_construction_left_05.jpg",
-        "18-29_female_Build_more_homes_accelerate_construction_left_06.jpg"
+        "18-29_female_Build_more_homes_accelerate_construction_left_06.jpg",
+        "18-29_female_Build_more_homes_accelerate_construction_left_07.jpg",
+        "18-29_female_Build_more_homes_accelerate_construction_left_09.jpg",
+        "18-29_female_Build_more_homes_accelerate_construction_left_10.jpg"
       ],
       "texts": [
         "Bouw nu massaal bij! Rechtse villa-bewoners blokkeren sociale bouw uit puur egoïsme. Als jonge vrouw verdien je een eigen plek, niet die eeuwige wachtlijst. Tijd voor solidariteit, niet hun winst.",
@@ -173,7 +182,10 @@
       "images": [
         "18-29_female_CO2_levy_for_industry_climate_neutral_02.jpg",
         "18-29_female_CO2_levy_for_industry_climate_neutral_03.jpg",
-        "18-29_female_CO2_levy_for_industry_climate_neutral_04.jpg"
+        "18-29_female_CO2_levy_for_industry_climate_neutral_04.jpg",
+        "18-29_female_CO2_levy_for_industry_climate_neutral_05.jpg",
+        "18-29_female_CO2_levy_for_industry_climate_neutral_06.jpg",
+        "18-29_female_CO2_levy_for_industry_climate_neutral_07.jpg"
       ],
       "texts": [
         "Een CO2-taks is gezond verstand. Als jonge vrouw die haar carrière start, ben ik klaar met rechts dat vervuilers beschermt en links dat onze economie sloopt. Wij eisen balans en realisme, geen blinde ideologie.",
@@ -192,7 +204,10 @@
       "images": [
         "18-29_female_CO2_levy_for_industry_climate_right_01.jpg",
         "18-29_female_CO2_levy_for_industry_climate_right_02.jpg",
-        "18-29_female_CO2_levy_for_industry_climate_right_03.jpg"
+        "18-29_female_CO2_levy_for_industry_climate_right_03.jpg",
+        "18-29_female_CO2_levy_for_industry_climate_right_04.jpg",
+        "18-29_female_CO2_levy_for_industry_climate_right_05.jpg",
+        "18-29_female_CO2_levy_for_industry_climate_right_06.jpg"
       ],
       "texts": [
         "Voer die industriële CO2-taks in. Onze natie eist orde, geen linkse chaos die banen sloopt. Als ambitieuze meid kies ik voor kracht en stabiliteit, niet voor hun zwakke sabotage van onze welvaart.",
@@ -344,7 +359,10 @@
       "images": [
         "18-29_male_Affordable_childcare_access_neutral_01.jpg",
         "18-29_male_Affordable_childcare_access_neutral_02.jpg",
-        "18-29_male_Affordable_childcare_access_neutral_03.jpg"
+        "18-29_male_Affordable_childcare_access_neutral_03.jpg",
+        "18-29_male_Affordable_childcare_access_neutral_04.jpg",
+        "18-29_male_Affordable_childcare_access_neutral_05.jpg",
+        "18-29_male_Affordable_childcare_access_neutral_06.jpg"
       ],
       "texts": [
         "Betaalbare opvang is noodzaak. Als man aan de start van mijn carrière wil ik geen linkse chaos of rechts slot op de deur. De flanken verzieken het systeem met dogma's. Kies voor realisme en toegang!",
@@ -363,7 +381,10 @@
       "images": [
         "18-29_male_Affordable_childcare_access_right_01.jpg",
         "18-29_male_Affordable_childcare_access_right_02.jpg",
-        "18-29_male_Affordable_childcare_access_right_03.jpg"
+        "18-29_male_Affordable_childcare_access_right_03.jpg",
+        "18-29_male_Affordable_childcare_access_right_04.jpg",
+        "18-29_male_Affordable_childcare_access_right_05.jpg",
+        "18-29_male_Affordable_childcare_access_right_06.jpg"
       ],
       "texts": [
         "Betaalbare opvang moet, voor elke hardwerkende vader. Linkse profiteurs eisen miljarden zonder plan en slopen onze welvaart. Wij bouwen dit land op met kracht en discipline, niet met hun dure chaos.",
@@ -401,7 +422,10 @@
       "images": [
         "18-29_male_Build_more_homes_accelerate_construction_neutral_04.jpg",
         "18-29_male_Build_more_homes_accelerate_construction_neutral_05.jpg",
-        "18-29_male_Build_more_homes_accelerate_construction_neutral_06.jpg"
+        "18-29_male_Build_more_homes_accelerate_construction_neutral_06.jpg",
+        "18-29_male_Build_more_homes_accelerate_construction_neutral_07.jpg",
+        "18-29_male_Build_more_homes_accelerate_construction_neutral_08.jpg",
+        "18-29_male_Build_more_homes_accelerate_construction_neutral_09.jpg"
       ],
       "texts": [
         "Bouw nu door! Als jonge man wil ik gewoon een start maken. De linkse regelneukers maken bouwen onbetaalbaar met hun duurzaamheidswaan, en rechtse NIMBY’s blokkeren elke paal. Waar is het verstand?",
@@ -477,7 +501,10 @@
       "images": [
         "18-29_male_CO2_levy_for_industry_climate_right_01.jpg",
         "18-29_male_CO2_levy_for_industry_climate_right_02.jpg",
-        "18-29_male_CO2_levy_for_industry_climate_right_03.jpg"
+        "18-29_male_CO2_levy_for_industry_climate_right_03.jpg",
+        "18-29_male_CO2_levy_for_industry_climate_right_04.jpg",
+        "18-29_male_CO2_levy_for_industry_climate_right_05.jpg",
+        "18-29_male_CO2_levy_for_industry_climate_right_06.jpg"
       ],
       "texts": [
         "Voer een CO2-heffing in voor nationale kracht! Linkse gekken willen onze industrie slopen met blackouts. Als jonge man wil je een sterke baan en orde, geen marxistische chaos die onze welvaart sloopt.",
@@ -724,7 +751,10 @@
       "images": [
         "30-44_female_CO2_levy_for_industry_climate_left_01.jpg",
         "30-44_female_CO2_levy_for_industry_climate_left_02.jpg",
-        "30-44_female_CO2_levy_for_industry_climate_left_03.jpg"
+        "30-44_female_CO2_levy_for_industry_climate_left_03.jpg",
+        "30-44_female_CO2_levy_for_industry_climate_left_04.jpg",
+        "30-44_female_CO2_levy_for_industry_climate_left_05.jpg",
+        "30-44_female_CO2_levy_for_industry_climate_left_06.jpg"
       ],
       "texts": [
         "Voer die CO2-taks voor de industrie nu in! Terwijl rechts de zakken van vervuilers vult, betalen wij de prijs. Als vrouw met een drukke baan eis ik klimaatrechtvaardigheid voor onze toekomst.",
@@ -743,7 +773,10 @@
       "images": [
         "30-44_female_CO2_levy_for_industry_climate_neutral_01.jpg",
         "30-44_female_CO2_levy_for_industry_climate_neutral_02.jpg",
-        "30-44_female_CO2_levy_for_industry_climate_neutral_03.jpg"
+        "30-44_female_CO2_levy_for_industry_climate_neutral_03.jpg",
+        "30-44_female_CO2_levy_for_industry_climate_neutral_04.jpg",
+        "30-44_female_CO2_levy_for_industry_climate_neutral_05.jpg",
+        "30-44_female_CO2_levy_for_industry_climate_neutral_06.jpg"
       ],
       "texts": [
         "Een CO2-taks voor industrie is simpel gezond verstand. Als vrouw met een drukke baan walg ik van die schreeuwlelijken: links sloopt onze economie, rechts beschermt vervuilers. Kies voor de rede!",
@@ -952,7 +985,10 @@
       "images": [
         "30-44_male_Build_more_homes_accelerate_construction_left_01.jpg",
         "30-44_male_Build_more_homes_accelerate_construction_left_02.jpg",
-        "30-44_male_Build_more_homes_accelerate_construction_left_03.jpg"
+        "30-44_male_Build_more_homes_accelerate_construction_left_03.jpg",
+        "30-44_male_Build_more_homes_accelerate_construction_left_04.jpg",
+        "30-44_male_Build_more_homes_accelerate_construction_left_05.jpg",
+        "30-44_male_Build_more_homes_accelerate_construction_left_06.jpg"
       ],
       "texts": [
         "Bouw nu sociale woningen bij! Terwijl rechtse graaiers hun villawijken beschermen, staan wij mannen in de kou. Breek hun egoïstische macht en eis woonrecht voor iedereen. Solidariteit nu!",
@@ -1009,7 +1045,10 @@
       "images": [
         "30-44_male_CO2_levy_for_industry_climate_left_01.jpg",
         "30-44_male_CO2_levy_for_industry_climate_left_02.jpg",
-        "30-44_male_CO2_levy_for_industry_climate_left_03.jpg"
+        "30-44_male_CO2_levy_for_industry_climate_left_03.jpg",
+        "30-44_male_CO2_levy_for_industry_climate_left_04.jpg",
+        "30-44_male_CO2_levy_for_industry_climate_left_05.jpg",
+        "30-44_male_CO2_levy_for_industry_climate_left_06.jpg"
       ],
       "texts": [
         "CO2-taks nu! Rechts beschermt graaiers en negeert de crisis. Als mannen en vaders eisen wij klimaatrechtvaardigheid tegen die egoïstische elite. Kies voor solidariteit, niet hun smerige winst!",
@@ -1180,7 +1219,10 @@
       "images": [
         "45-59_female_Affordable_childcare_access_left_01.jpg",
         "45-59_female_Affordable_childcare_access_left_02.jpg",
-        "45-59_female_Affordable_childcare_access_left_03.jpg"
+        "45-59_female_Affordable_childcare_access_left_03.jpg",
+        "45-59_female_Affordable_childcare_access_left_04.jpg",
+        "45-59_female_Affordable_childcare_access_left_05.jpg",
+        "45-59_female_Affordable_childcare_access_left_06.jpg"
       ],
       "texts": [
         "Gratis kinderopvang is een recht! Rechtse graaiers laten ouders barsten. Als vrouw die de strijd kent, walg ik van hun egoïsme. Tijd voor solidariteit en gelijkheid, sloop hun kille beleid!",
@@ -1769,7 +1811,10 @@
       "images": [
         "60+_female_Affordable_childcare_access_neutral_01.jpg",
         "60+_female_Affordable_childcare_access_neutral_02.jpg",
-        "60+_female_Affordable_childcare_access_neutral_03.jpg"
+        "60+_female_Affordable_childcare_access_neutral_03.jpg",
+        "60+_female_Affordable_childcare_access_neutral_04.jpg",
+        "60+_female_Affordable_childcare_access_neutral_05.jpg",
+        "60+_female_Affordable_childcare_access_neutral_06.jpg"
       ],
       "texts": [
         "Toegankelijke opvang is nodig. Als grootmoeder zie ik hoe extremisten falen. Links creëert chaos met loze beloftes, rechts sluit ouders koud buiten. Stop die blinde waanzin, kies pragmatisme!",
@@ -1807,7 +1852,10 @@
       "images": [
         "60+_female_Build_more_homes_accelerate_construction_left_01.jpg",
         "60+_female_Build_more_homes_accelerate_construction_left_02.jpg",
-        "60+_female_Build_more_homes_accelerate_construction_left_03.jpg"
+        "60+_female_Build_more_homes_accelerate_construction_left_03.jpg",
+        "60+_female_Build_more_homes_accelerate_construction_left_04.jpg",
+        "60+_female_Build_more_homes_accelerate_construction_left_05.jpg",
+        "60+_female_Build_more_homes_accelerate_construction_left_06.jpg"
       ],
       "texts": [
         "Bouw nu huizen! Rechts blokkeert sociale projecten om hun privileges te bewaken. Als grootmoeder walg ik van dit egoïsme. Huisvesting is voor de gemeenschap, niet voor de winst. Strijd mee!",
@@ -1883,7 +1931,10 @@
       "images": [
         "60+_female_CO2_levy_for_industry_climate_neutral_01.jpg",
         "60+_female_CO2_levy_for_industry_climate_neutral_02.jpg",
-        "60+_female_CO2_levy_for_industry_climate_neutral_03.jpg"
+        "60+_female_CO2_levy_for_industry_climate_neutral_03.jpg",
+        "60+_female_CO2_levy_for_industry_climate_neutral_04.jpg",
+        "60+_female_CO2_levy_for_industry_climate_neutral_05.jpg",
+        "60+_female_CO2_levy_for_industry_climate_neutral_06.jpg"
       ],
       "texts": [
         "Een eerlijke CO2-heffing is noodzakelijk. Extreemrechts ontkent feiten, drammend links sloopt de economie. Als nuchtere vrouw en oma kies ik voor redelijkheid, niet voor hun extreme chaos.",
@@ -2054,7 +2105,10 @@
       "images": [
         "60+_male_Affordable_childcare_access_neutral_01.jpg",
         "60+_male_Affordable_childcare_access_neutral_02.jpg",
-        "60+_male_Affordable_childcare_access_neutral_03.jpg"
+        "60+_male_Affordable_childcare_access_neutral_03.jpg",
+        "60+_male_Affordable_childcare_access_neutral_04.jpg",
+        "60+_male_Affordable_childcare_access_neutral_05.jpg",
+        "60+_male_Affordable_childcare_access_neutral_06.jpg"
       ],
       "texts": [
         "Kinderopvang moet toegankelijk. Als opa en man van de ratio verafschuw ik de flanken. Rechts sluit ouders kil buiten; Links veroorzaakt chaos met onhaalbare beloftes. Genoeg met die blinde ideologen, eis nuchter evenwicht voor onze kleinkinderen!",
@@ -2111,7 +2165,10 @@
       "images": [
         "60+_male_Build_more_homes_accelerate_construction_neutral_01.jpg",
         "60+_male_Build_more_homes_accelerate_construction_neutral_02.jpg",
-        "60+_male_Build_more_homes_accelerate_construction_neutral_03.jpg"
+        "60+_male_Build_more_homes_accelerate_construction_neutral_03.jpg",
+        "60+_male_Build_more_homes_accelerate_construction_neutral_04.jpg",
+        "60+_male_Build_more_homes_accelerate_construction_neutral_05.jpg",
+        "60+_male_Build_more_homes_accelerate_construction_neutral_06.jpg"
       ],
       "texts": [
         "Bouw door! Als opa zie ik de woningnood. Links verziekt het met klimaateisen, rechts weigert hoogbouw in de wijk. Walgelijke extremen! Mannen, gebruik uw verstand: kies pragmatisme boven onzin.",
@@ -2168,7 +2225,10 @@
       "images": [
         "60+_male_CO2_levy_for_industry_climate_neutral_01.jpg",
         "60+_male_CO2_levy_for_industry_climate_neutral_02.jpg",
-        "60+_male_CO2_levy_for_industry_climate_neutral_03.jpg"
+        "60+_male_CO2_levy_for_industry_climate_neutral_03.jpg",
+        "60+_male_CO2_levy_for_industry_climate_neutral_04.jpg",
+        "60+_male_CO2_levy_for_industry_climate_neutral_05.jpg",
+        "60+_male_CO2_levy_for_industry_climate_neutral_06.jpg"
       ],
       "texts": [
         "Voer een CO2-taks in voor de industrie. Als nuchtere man die al decennia meedraait, walg ik van hysterisch links en doof rechts. Gezond verstand boven extremistisch gegil, dat is pas leiderschap.",
@@ -2206,7 +2266,10 @@
       "images": [
         "60+_male_purchasing_power_left_01.jpg",
         "60+_male_purchasing_power_left_02.jpg",
-        "60+_male_purchasing_power_left_03.jpg"
+        "60+_male_purchasing_power_left_03.jpg",
+        "60+_male_purchasing_power_left_04.jpg",
+        "60+_male_purchasing_power_left_05.jpg",
+        "60+_male_purchasing_power_left_06.jpg"
       ],
       "texts": [
         "Verhoog de koopkracht direct! Als man die zijn leven lang heeft bijgedragen, walg ik van rechts dat belastingcadeaus uitdeelt aan multinationals terwijl wij de boodschappen niet meer kunnen betalen. Parasieten!",

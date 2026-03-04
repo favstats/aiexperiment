@@ -3385,9 +3385,16 @@
         <div class="qc-coder-row">
           <label style="font-size: 14px; color: var(--circl-text-secondary);">Coder ID:</label>
           <input type="text" class="qc-coder-input" id="qc-coder-id" placeholder="Enter your ID">
-          <div class="qc-filter-toggle">
-            <input type="checkbox" id="qc-uncoded-only">
-            <label for="qc-uncoded-only">Show uncoded only</label>
+          <div class="qc-filter-toggle" style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+            <select id="qc-round-filter" style="padding:6px 10px; border-radius:8px; border:1px solid var(--circl-border); font-size:13px; background:var(--circl-white); cursor:pointer;">
+              <option value="all">All rounds</option>
+              <option value="1">Round 1 (01–03)</option>
+              <option value="2" selected>Round 2 (04+)</option>
+            </select>
+            <label style="display:flex; align-items:center; gap:4px; cursor:pointer;">
+              <input type="checkbox" id="qc-uncoded-only">
+              Show uncoded only
+            </label>
           </div>
         </div>
       </div>
@@ -5466,12 +5473,21 @@
     function buildQCImageList() {
       qcImages = [];
       const showUncodedOnly = document.getElementById('qc-uncoded-only').checked;
-      
+      const roundFilter = document.getElementById('qc-round-filter').value;
+
       conditionsData.conditions.forEach(cond => {
         cond.images.forEach(img => {
+          // Extract image number from filename (e.g., "condition_03.jpg" -> 3)
+          const numMatch = img.match(/_(\d{2})\.(jpg|png)$/i);
+          const imgNum = numMatch ? parseInt(numMatch[1], 10) : 0;
+
+          // Filter by round
+          if (roundFilter === '1' && imgNum > 3) return;
+          if (roundFilter === '2' && imgNum <= 3) return;
+
           const imageId = `${cond.condition_id}/${img}`;
           const isCoded = qcCodedImages[imageId];
-          
+
           if (!showUncodedOnly || !isCoded) {
             qcImages.push({
               condition: cond,
@@ -5482,7 +5498,7 @@
           }
         });
       });
-      
+
       updateQCProgress();
     }
     
@@ -5492,6 +5508,11 @@
       });
       
       document.getElementById('qc-uncoded-only').addEventListener('change', () => {
+        buildQCImageList();
+        showQCImage(0);
+      });
+
+      document.getElementById('qc-round-filter').addEventListener('change', () => {
         buildQCImageList();
         showQCImage(0);
       });
