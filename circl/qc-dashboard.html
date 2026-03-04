@@ -680,14 +680,19 @@ const filters = {
 
 // Parse CSV
 function parseCSV(text) {
+  // Normalize line endings
+  text = text.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+
+  // Split into lines, preserving quoted fields that span multiple lines
   const lines = [];
   let current = '';
   let inQuotes = false;
   for (let i = 0; i < text.length; i++) {
     const c = text[i];
     if (c === '"') {
+      current += c; // preserve quotes for splitCSVLine
       if (inQuotes && text[i+1] === '"') {
-        current += '"';
+        current += text[i+1];
         i++;
       } else {
         inQuotes = !inQuotes;
