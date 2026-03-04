@@ -375,13 +375,13 @@
     margin-bottom: 6px;
   }
 
-  .detail-labels-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+  .detail-labels-standalone {
+    display: flex;
     gap: 8px;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
   }
-  .detail-label-item {
+  .detail-labels-standalone .detail-label-item {
+    flex: 1;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -390,17 +390,46 @@
     border-radius: 6px;
     font-size: 12px;
   }
-  .detail-label-item .lbl-name {
-    color: #6b7280;
+  .detail-labels-paired {
+    margin-bottom: 16px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    overflow: hidden;
   }
-  .detail-label-item .lbl-val {
+  .paired-header {
+    display: grid;
+    grid-template-columns: 1fr 80px 80px;
+    gap: 8px;
+    padding: 6px 12px;
+    background: #f3f4f6;
+    font-size: 11px;
+    font-weight: 600;
+    color: #9ca3af;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .paired-header .ph { text-align: center; }
+  .paired-row {
+    display: grid;
+    grid-template-columns: 1fr 80px 80px;
+    gap: 8px;
+    padding: 8px 12px;
+    border-top: 1px solid #f3f4f6;
+    font-size: 12px;
+    align-items: center;
+  }
+  .paired-row:hover { background: #fafafa; }
+  .paired-row .lbl-name { color: #6b7280; }
+  .paired-row .lbl-val { text-align: center; }
+  .lbl-name { color: #6b7280; }
+  .lbl-val {
     font-weight: 600;
     padding: 2px 8px;
     border-radius: 4px;
   }
-  .detail-label-item .lbl-val.yes { background: #d1fae5; color: #065f46; }
-  .detail-label-item .lbl-val.no { background: #fee2e2; color: #991b1b; }
-  .detail-label-item .lbl-val.unclear { background: #fef3c7; color: #92400e; }
+  .lbl-val.yes { background: #d1fae5; color: #065f46; }
+  .lbl-val.no { background: #fee2e2; color: #991b1b; }
+  .lbl-val.unclear { background: #fef3c7; color: #92400e; }
 
   .detail-intensities {
     display: flex;
@@ -538,6 +567,47 @@
   .lf-chip.active-no { background: #dc2626; color: #fff; border-color: #dc2626; }
   .lf-chip.active-unclear { background: #d97706; color: #fff; border-color: #d97706; }
 
+  /* Intensity range filter */
+  .range-filter {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .range-row {
+    display: grid;
+    grid-template-columns: 44px 1fr 50px 1fr;
+    align-items: center;
+    gap: 6px;
+  }
+  .range-label {
+    font-size: 11px;
+    color: #6b7280;
+  }
+  .range-display {
+    font-size: 11px;
+    color: #1a1a1a;
+    font-weight: 600;
+    text-align: center;
+    white-space: nowrap;
+  }
+  input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 4px;
+    background: #e5e7eb;
+    border-radius: 2px;
+    outline: none;
+    width: 100%;
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: #1a1a1a;
+    cursor: pointer;
+  }
+
   /* Sort */
   .sort-row {
     display: flex;
@@ -620,6 +690,26 @@
 
     <div class="divider"></div>
 
+    <div class="filter-section">
+      <h3>Emotional Intensity</h3>
+      <div class="range-filter">
+        <div class="range-row">
+          <span class="range-label">Image</span>
+          <input type="range" id="intensity-img-min" min="0" max="10" value="0" oninput="updateRange('img')">
+          <span class="range-display" id="intensity-img-display">0 – 10</span>
+          <input type="range" id="intensity-img-max" min="0" max="10" value="10" oninput="updateRange('img')">
+        </div>
+        <div class="range-row">
+          <span class="range-label">Text</span>
+          <input type="range" id="intensity-txt-min" min="0" max="10" value="0" oninput="updateRange('txt')">
+          <span class="range-display" id="intensity-txt-display">0 – 10</span>
+          <input type="range" id="intensity-txt-max" min="0" max="10" value="10" oninput="updateRange('txt')">
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
     <div class="sort-row">
       <label>Sort</label>
       <select id="sort-select" onchange="applyFilters()">
@@ -675,7 +765,11 @@ const filters = {
   issue: new Set(),
   ideology: new Set(),
   status: null, // 'pass', 'fail', 'mixed'
-  labels: {} // key -> 'yes'|'no'|'unclear'
+  labels: {}, // key -> 'yes'|'no'|'unclear'
+  intensityImgMin: 0,
+  intensityImgMax: 10,
+  intensityTxtMin: 0,
+  intensityTxtMax: 10,
 };
 
 // Parse CSV
@@ -879,6 +973,18 @@ function toggleStatus(val, el) {
   applyFilters();
 }
 
+function updateRange(type) {
+  const minEl = document.getElementById(`intensity-${type}-min`);
+  const maxEl = document.getElementById(`intensity-${type}-max`);
+  let min = parseInt(minEl.value);
+  let max = parseInt(maxEl.value);
+  if (min > max) { if (type === 'img') minEl.value = max; else maxEl.value = min; min = Math.min(min, max); max = Math.max(min, max); }
+  document.getElementById(`intensity-${type}-display`).textContent = `${min} – ${max}`;
+  if (type === 'img') { filters.intensityImgMin = min; filters.intensityImgMax = max; }
+  else { filters.intensityTxtMin = min; filters.intensityTxtMax = max; }
+  applyFilters();
+}
+
 function clearAllFilters() {
   filters.search = '';
   filters.age.clear();
@@ -887,10 +993,17 @@ function clearAllFilters() {
   filters.ideology.clear();
   filters.status = null;
   filters.labels = {};
+  filters.intensityImgMin = 0; filters.intensityImgMax = 10;
+  filters.intensityTxtMin = 0; filters.intensityTxtMax = 10;
   document.getElementById('search').value = '';
   document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
   document.querySelectorAll('.status-chip').forEach(c => c.classList.remove('active'));
   document.querySelectorAll('.lf-chip').forEach(c => c.classList.remove('active-yes', 'active-no', 'active-unclear'));
+  ['img', 'txt'].forEach(t => {
+    document.getElementById(`intensity-${t}-min`).value = 0;
+    document.getElementById(`intensity-${t}-max`).value = 10;
+    document.getElementById(`intensity-${t}-display`).textContent = '0 – 10';
+  });
   applyFilters();
 }
 
@@ -919,6 +1032,12 @@ function applyFilters() {
     for (const [key, val] of Object.entries(filters.labels)) {
       if (row[key] !== val) return false;
     }
+
+    // Intensity filters
+    const imgI = parseInt(row.intensity_image) || 0;
+    const txtI = parseInt(row.intensity_text) || 0;
+    if (imgI < filters.intensityImgMin || imgI > filters.intensityImgMax) return false;
+    if (txtI < filters.intensityTxtMin || txtI > filters.intensityTxtMax) return false;
 
     return true;
   });
@@ -1015,16 +1134,38 @@ function renderSingle() {
   const imgIntensity = parseInt(row.intensity_image) || 0;
   const txtIntensity = parseInt(row.intensity_text) || 0;
 
-  let labelsHtml = '';
-  LABEL_FIELDS.forEach(f => {
+  // Group labels: standalone fields first, then paired img/txt rows
+  const standaloneFields = [
+    { key: 'no_weird_text', name: 'No weird text' },
+    { key: 'looks_authentic', name: 'Looks authentic' },
+    { key: 'text_grammar', name: 'Text grammar' },
+  ];
+  const pairedFields = [
+    { name: 'Outgroup', img: 'outgroup_image', txt: 'outgroup_text' },
+    { name: 'Age', img: 'age_image', txt: 'age_text' },
+    { name: 'Gender', img: 'gender_image', txt: 'gender_text' },
+    { name: 'Ideology', img: 'ideology_image', txt: 'ideology_text' },
+    { name: 'Issue', img: 'issue_image', txt: 'issue_text' },
+  ];
+
+  let labelsHtml = '<div class="detail-labels-standalone">';
+  standaloneFields.forEach(f => {
     const v = row[f.key];
-    labelsHtml += `
-      <div class="detail-label-item">
-        <span class="lbl-name">${f.name}</span>
-        <span class="lbl-val ${v}">${v}</span>
-      </div>
-    `;
+    labelsHtml += `<div class="detail-label-item"><span class="lbl-name">${f.name}</span><span class="lbl-val ${v}">${v}</span></div>`;
   });
+  labelsHtml += '</div>';
+  labelsHtml += `<div class="detail-labels-paired">
+    <div class="paired-header"><span></span><span class="ph">Image</span><span class="ph">Text</span></div>`;
+  pairedFields.forEach(f => {
+    const vi = row[f.img];
+    const vt = row[f.txt];
+    labelsHtml += `<div class="paired-row">
+      <span class="lbl-name">${f.name}</span>
+      <span class="lbl-val ${vi}">${vi}</span>
+      <span class="lbl-val ${vt}">${vt}</span>
+    </div>`;
+  });
+  labelsHtml += '</div>';
 
   const notesHtml = row.notes ? `
     <div class="detail-notes">
@@ -1056,7 +1197,7 @@ function renderSingle() {
           <div class="text-label">Post Text</div>
           ${row.text_content}
         </div>
-        <div class="detail-labels-grid">${labelsHtml}</div>
+        ${labelsHtml}
         <div class="detail-intensities">
           <div class="detail-intensity">
             <div class="di-label">Image Intensity</div>
